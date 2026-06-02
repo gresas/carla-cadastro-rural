@@ -1601,7 +1601,108 @@ Reencaminha todos os documentos de um processo para reprocessamento OCR.
 
 ---
 
-### 4.8 Webhooks e Notificações — `/api/v1`
+### 4.8 Canal WhatsApp — `/api/v1/whatsapp`
+
+#### Fluxo de Vinculação Gov.br
+
+O WhatsApp não suporta redirecionamento OAuth2. A solução é um token temporário como "ponte":
+
+```
+1. Bot detecta número não vinculado
+2. Solicita token: POST /api/v1/whatsapp/vincular/solicitar
+3. Bot envia link: https://carla.gov.br/auth/wpp?token={token}
+4. Usuário abre no browser do celular → Gov.br OAuth2 flow
+5. Callback: GET /api/v1/whatsapp/vincular/callback?token=...&code=...
+6. Sistema vincula number_hash ↔ user_id no Redis (TTL 30 dias)
+7. Bot retoma a conversa já com o usuário identificado
+```
+
+---
+
+**POST /api/v1/whatsapp/vincular/solicitar**
+
+Gera token temporário de vinculação para um número WhatsApp.
+
+- **Auth:** API Key interna (entre serviços)
+- **Body:** `{"whatsapp_number_hash": "sha256_do_numero"}`
+- **Response 200:**
+```json
+{
+  "data": {
+    "token": "abc123xyz",
+    "link": "https://carla.gov.br/auth/wpp?token=abc123xyz",
+    "expires_in_seconds": 600
+  }
+}
+```
+
+---
+
+**GET /api/v1/whatsapp/vincular/callback**
+
+Endpoint de retorno após autenticação Gov.br. Vincula número ao user_id.
+
+- **Auth:** Pública (é o `redirect_uri` registrado no Gov.br)
+- **Query:** `token`, `code` (authorization code Gov.br), `state`
+- **Fluxo interno:**
+  1. Valida token no Redis (TTL 10min) → se expirado: `CAR-011`
+  2. Troca `code` por claims Gov.br (CPF, nome, nível)
+  3. Cria ou recupera usuário no banco
+  4. Salva `wpp:session:{number_hash}` → `user_id` no Redis (TTL 30 dias)
+  5. Persiste em `canal_vinculos` (tabela de auditoria)
+  6. Publica evento `canal.whatsapp.vinculado` no RabbitMQ
+- **Response:** `HTTP 302` → `/auth/wpp/sucesso` (página de confirmação para fechar o browser)
+- **Erros:** `CAR-011` (token expirado), `CAR-012` (Gov.br indisponível)
+
+---
+
+**POST /api/v1/whatsapp/webhook**
+
+Recebe mensagens e eventos da Meta (WhatsApp Business API).
+
+- **Auth:** Validação de assinatura HMAC-SHA256 via header `X-Hub-Signature-256`
+- **Body:** Payload padrão Meta Webhook
+- **Response 200:** `{}` — deve responder em < 20s (Meta considera timeout após isso)
+- Processamento assíncrono: publica em fila `canal.whatsapp.mensagem_recebida`
+
+**GET /api/v1/whatsapp/webhook**
+
+Verificação de challenge pelo Meta ao cadastrar o webhook.
+
+- **Auth:** Pública
+- **Query:** `hub.mode`, `hub.challenge`, `hub.verify_token`
+- **Response 200:** retorna `hub.challenge` como texto puro
+
+---
+
+**POST /api/v1/whatsapp/mensagem** *(uso interno)*
+
+Envia mensagem ativa para um número (workers de notificação).
+
+- **Auth:** API Key interna
+- **Body:**
+```json
+{
+  "whatsapp_number_hash": "sha256_do_numero",
+  "tipo": "texto",
+  "conteudo": "Seu processo foi aprovado!",
+  "link_opcional": "https://carla.gov.br/processos/uuid"
+}
+```
+- **Response 202:** mensagem enfileirada para envio
+
+---
+
+**DELETE /api/v1/whatsapp/vincular**
+
+Remove a vinculação do número WhatsApp (direito de exclusão — LGPD Art. 18, IV).
+
+- **Auth:** Bearer JWT (usuário autenticado no portal web)
+- **Response 200:** vinculação removida do Redis e de `canal_vinculos`
+
+---
+
+### 4.9 Webhooks e Notificações — `/api/v1`
 
 ---
 

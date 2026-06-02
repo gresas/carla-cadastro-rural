@@ -376,6 +376,31 @@ Service Mesh (Linkerd ou Istio) para mTLS automático.
 - **Caching avançado:** Cache geoespacial de consultas IBGE/INCRA
 - **Read replicas:** Queries de dashboard apontam para réplica PostgreSQL
 
+### Épico E2: Canal WhatsApp (Meses 4-6)
+
+O WhatsApp é o principal canal de comunicação do brasileiro rural. Integrar o CARla ao WhatsApp reduz a barreira de adoção — o usuário não precisa instalar nada nem aprender uma interface nova.
+
+**Fluxo de autenticação (Vinculação Gov.br):**
+O número de WhatsApp não suporta OAuth2 diretamente. O bot envia um link curto e temporário; o usuário abre no browser, autentica com Gov.br, e o número fica vinculado ao CPF por 30 dias. Nas próximas conversas o bot já reconhece quem é.
+
+**Funcionalidades do canal WhatsApp:**
+
+- F-W1: Webhook de recepção de mensagens (Meta Business API ou Z-API)
+- F-W2: Fluxo de vinculação Gov.br via link temporário (token Redis TTL 10min)
+- F-W3: Consulta de status do processo via WhatsApp
+- F-W4: Notificações proativas de pendência e aprovação/rejeição
+- F-W5: Assistente IA respondendo dúvidas CAR (reutiliza BC Assistência Inteligente)
+- F-W6: Escalonamento para o portal web para operações críticas (submissão, correção)
+- F-W7: Desvinculação pelo portal (direito LGPD)
+
+**O que NÃO será feito via WhatsApp:**
+- Submissão de processo (exige portal web por ser ato jurídico)
+- Upload de documentos (limitação do canal)
+- Aprovação/rejeição pelo analista
+
+**Decisão de implementação:**
+Para o MVP usar Z-API ou Evolution API (mais simples de homologar) com possibilidade de migrar para a Meta Business API oficial na Fase 3.
+
 ### Épico F: App Mobile (Meses 10-15)
 
 - React Native para iOS e Android

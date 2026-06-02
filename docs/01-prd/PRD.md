@@ -301,7 +301,59 @@ Do ponto de vista de impacto social, o CARla democratiza o acesso ao processo de
 
 ---
 
-### UC-010 — Relatório de Conformidade e Analytics
+### UC-010 — Atendimento via WhatsApp com Vinculação Gov.br
+
+**Ator principal:** Produtor Rural, Consultor Ambiental  
+**Pré-condições:** Usuário possui conta ativa no WhatsApp  
+**Fluxo principal:**
+1. Cidadão envia mensagem para o número oficial do CARla no WhatsApp
+2. Bot identifica que o número não está vinculado a uma conta Gov.br
+3. Bot envia link curto de vinculação com token temporário (TTL 10 min): `carla.gov.br/auth/wpp?token=XYZ`
+4. Cidadão clica no link, abre no browser do celular
+5. Sistema redireciona para Gov.br (OAuth2 Authorization Code + PKCE)
+6. Cidadão autentica com CPF e senha Gov.br
+7. Gov.br retorna callback com token e claims (CPF, nome, nível de confiabilidade)
+8. Sistema cria ou recupera o usuário, vincula o número WhatsApp ao `user_id`
+9. Browser exibe confirmação: "Número vinculado com sucesso. Volte ao WhatsApp."
+10. Bot no WhatsApp detecta a vinculação e continua o atendimento identificado
+
+**Fluxos alternativos:**
+- 3a: Usuário já vinculado → bot segue direto para o atendimento
+- 6a: Token expirado → bot envia novo link automaticamente
+- 8a: Gov.br indisponível → bot informa indisponibilidade e oferece acesso pelo portal web
+
+**Pós-condições:** Número WhatsApp vinculado ao user_id por 30 dias; usuário atendido com contexto personalizado
+
+---
+
+### UC-011 — Consulta de Status do Processo via WhatsApp
+
+**Ator principal:** Produtor Rural  
+**Pré-condições:** Número WhatsApp vinculado ao Gov.br  
+**Fluxo principal:**
+1. Cidadão envia "qual o status do meu processo?" no WhatsApp
+2. Bot identifica intenção de consulta de status
+3. Bot busca processos ativos do usuário
+4. Bot responde com resumo: status atual, etapa, pendências abertas e próximo passo
+
+**Pós-condições:** Cidadão informado sem precisar acessar o portal web
+
+---
+
+### UC-012 — Notificação Proativa de Pendência via WhatsApp
+
+**Ator principal:** Sistema (automático)  
+**Pré-condições:** Usuário com número WhatsApp vinculado e processo com nova pendência  
+**Fluxo principal:**
+1. Analista cria pendência ou sistema detecta inconsistência documental
+2. Worker de notificações verifica canais preferidos do usuário
+3. Sistema envia mensagem WhatsApp com: descrição da pendência, prazo e link direto para correção no portal
+
+**Pós-condições:** Cidadão notificado em tempo real no canal que já usa no dia a dia
+
+---
+
+### UC-013 — Relatório de Conformidade e Analytics
 
 **Ator principal:** Administrador, Supervisor  
 **Fluxo principal:**
@@ -329,6 +381,9 @@ Do ponto de vista de impacto social, o CARla democratiza o acesso ao processo de
 | RF-008 | Visualização de pendências | Lista de pendências com descrição clara e prazo | Must |
 | RF-009 | Resposta a pendências | Envio de documentos complementares para resolver pendências | Must |
 | RF-010 | Notificações | Notificações in-app e email para eventos do processo | Should |
+| RF-010a | Canal WhatsApp | Atendimento conversacional via WhatsApp Business API com autenticação vinculada | Should |
+| RF-010b | Vinculação WhatsApp-Gov.br | Fluxo de link temporário para autenticar número WhatsApp via OAuth2 Gov.br | Should |
+| RF-010c | Notificação WhatsApp proativa | Envio de alertas de pendência e status por WhatsApp para usuários vinculados | Should |
 
 ### Assistente Inteligente
 
@@ -341,6 +396,8 @@ Do ponto de vista de impacto social, o CARla democratiza o acesso ao processo de
 | RF-015 | Solicitação de documentos | Assistente pode iniciar fluxo de upload de documento específico | Could |
 | RF-016 | Escalonamento humano | Detectar quando não consegue responder e encaminhar para analista | Should |
 | RF-017 | Histórico de conversas | Usuário pode acessar conversas anteriores | Could |
+| RF-017a | Sessão WhatsApp contextual | Bot mantém contexto da conversa e do processo ativo durante a sessão | Should |
+| RF-017b | Escalona para portal | Bot direciona operações críticas (submissão, correção) para o portal web com link direto | Must |
 
 ### Motor de Validação
 

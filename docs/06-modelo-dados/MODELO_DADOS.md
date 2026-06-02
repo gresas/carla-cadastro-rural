@@ -434,6 +434,35 @@ CREATE TABLE outbox (
 );
 ```
 
+### Tabela: canal_vinculos (Vinculação WhatsApp ↔ Usuário)
+
+```sql
+CREATE TYPE canal_enum AS ENUM ('whatsapp', 'telegram', 'sms');
+
+CREATE TABLE canal_vinculos (
+    id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id              UUID NOT NULL REFERENCES users(id),
+    canal                canal_enum NOT NULL DEFAULT 'whatsapp',
+    -- número nunca armazenado em claro — apenas hash SHA-256
+    numero_hash          CHAR(64) NOT NULL,
+    -- metadados do canal (ex: display_name, região)
+    metadata             JSONB NOT NULL DEFAULT '{}',
+    ativo                BOOLEAN NOT NULL DEFAULT true,
+    vinculado_em         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    expires_at           TIMESTAMPTZ,                -- NULL = não expira no banco (Redis controla sessão)
+    revogado_em          TIMESTAMPTZ,
+    created_at           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT uq_canal_numero UNIQUE (canal, numero_hash)  -- um número por canal
+);
+
+COMMENT ON TABLE canal_vinculos IS
+  'Vinculação de canais externos (WhatsApp, etc.) a usuários autenticados via Gov.br. '
+  'Número armazenado apenas como hash SHA-256 (LGPD). Sessão ativa controlada no Redis.';
+COMMENT ON COLUMN canal_vinculos.numero_hash IS
+  'SHA256(numero_e164 || app_salt). Ex: SHA256("+5511999998888" || salt)';
+```
+
 ---
 
 ## 4. Índices
@@ -489,6 +518,10 @@ CREATE INDEX idx_kb_embedding ON knowledge_base
     USING ivfflat(embedding vector_cosine_ops)
     WITH (lists = 100);  -- sqrt(nrows) como regra geral
 CREATE INDEX idx_kb_fonte ON knowledge_base(fonte);
+
+-- canal_vinculos
+CREATE INDEX idx_canal_user ON canal_vinculos(user_id) WHERE ativo = true;
+CREATE UNIQUE INDEX idx_canal_numero_ativo ON canal_vinculos(canal, numero_hash) WHERE ativo = true;
 
 -- outbox
 CREATE INDEX idx_outbox_pendente ON outbox(created_at ASC) WHERE status = 'pendente';

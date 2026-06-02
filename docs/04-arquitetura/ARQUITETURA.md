@@ -88,9 +88,25 @@ Browser/Mobile
 Workers (Python Consumers RabbitMQ):
 ┌──────────────────┐  ┌──────────────────────┐  ┌────────────────────┐
 │ Document Worker  │  │ Notification Worker  │  │ Integration Worker │
-│ OCR assíncrono   │  │ Email/SMS/Push       │  │ SICAR/IBAMA sync   │
+│ OCR assíncrono   │  │ Email/SMS/Push/WPP   │  │ SICAR/IBAMA sync   │
 │ ClamAV scan      │  │                      │  │ Outbox relay       │
 └──────────────────┘  └──────────────────────┘  └────────────────────┘
+
+Canal WhatsApp:
+┌─────────────────────────────────────────────────────────────────────┐
+│  WhatsApp Service  (FastAPI :8007)                                  │
+│                                                                     │
+│  POST /webhook/whatsapp  ← recebe mensagens da Meta/Z-API           │
+│  GET  /auth/wpp/vincular ← callback de vinculação Gov.br            │
+│                                                                     │
+│  Tabela: canal_vinculos (whatsapp_number_hash, user_id, expires_at) │
+│  Redis:  wpp:token:{token} → whatsapp_number (TTL 10min)            │
+│          wpp:session:{number_hash} → user_id (TTL 30d)             │
+└─────────────────────────────────────────────────────────────────────┘
+     │ recebe webhook          │ publica eventos
+     │ da Meta/Z-API           ▼
+[EXT: WhatsApp              RabbitMQ: canal.whatsapp.*
+ Business API]              → BC Assistência Inteligente
 
 Infraestrutura:
 ┌─────────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
@@ -523,6 +539,7 @@ Cidadão    WebApp    Nginx     Auth     Process   AI       Document   PostgreSQ
 | Sistema | Protocolo | Fallback | Circuit Breaker | Cache TTL |
 |---|---|---|---|---|
 | Gov.br | OAuth2 OIDC | Modo manutenção (servidores) | Não aplicável (auth crítica) | JWT 1h (refresh 30d) |
+| WhatsApp Business API | HTTPS Webhook (Meta) | Z-API ou Evolution API como alternativa | 3 falhas/60s → 30s open | Sessão vinculada: Redis 30d |
 | SICAR | REST (consulta) | Dados em cache + flag "sem SICAR" | 5 falhas/60s → 30s open | 24 horas |
 | SIGEF | REST | Processo avança sem dados SIGEF | 3 falhas/30s → 60s open | 24 horas |
 | IBAMA | REST | Score de risco marcado como "não verificado" | 3 falhas/30s → 60s open | 6 horas |

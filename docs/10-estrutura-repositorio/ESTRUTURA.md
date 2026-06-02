@@ -185,6 +185,22 @@ carla/
 │   │       │   │       ├── ibama_adapter.py
 │   │       │   │       └── ibge_adapter.py
 │   │       │   │
+│   │       │   ├── whatsapp/         # Canal WhatsApp
+│   │       │   │   ├── domain/
+│   │       │   │   │   ├── entities.py       # SessãoWhatsApp, VinculaçãoCanal
+│   │       │   │   │   └── events.py         # NúmeroVinculado, MensagemRecebida
+│   │       │   │   ├── application/
+│   │       │   │   │   └── use_cases/
+│   │       │   │   │       ├── solicitar_vinculacao.py   # gera token Redis
+│   │       │   │   │       ├── confirmar_vinculacao.py   # callback Gov.br
+│   │       │   │   │       └── processar_mensagem.py     # roteia para AssistenteIA
+│   │       │   │   ├── infrastructure/
+│   │       │   │   │   ├── models.py          # canal_vinculos (SQLAlchemy)
+│   │       │   │   │   └── whatsapp_client.py # adapter: Meta API / Z-API / Evolution
+│   │       │   │   └── presentation/
+│   │       │   │       ├── router.py          # /api/v1/whatsapp/*
+│   │       │   │       └── schemas.py
+│   │       │   │
 │   │       │   └── analytics/        # BC: Analytics e Reporting
 │   │       │       ├── application/
 │   │       │       │   └── queries/
@@ -197,7 +213,8 @@ carla/
 │   │       └── workers/              # Consumers RabbitMQ assíncronos
 │   │           ├── __init__.py
 │   │           ├── documento_worker.py    # Consome documento.*: OCR, validação
-│   │           ├── notificacao_worker.py  # Consome *.notificacao: email, in-app
+│   │           ├── notificacao_worker.py  # Consome *.notificacao: email, in-app, wpp
+│   │           ├── whatsapp_worker.py     # Consome canal.whatsapp.*: processa msgs
 │   │           ├── integracao_worker.py   # Consome *.aprovado: SICAR sync
 │   │           └── outbox_worker.py       # Relay: tabela outbox → RabbitMQ
 │   │

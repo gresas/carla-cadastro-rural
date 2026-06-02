@@ -63,7 +63,13 @@ Exemplos: `ProcessoSubmetido`, `DocumentoValidado`, `PendênciaIdentificada`
 **Sistemas externos:** IBGE (municípios)  
 **Modelo:** Documento, LoteValidação, ResultadoOCR
 
-### BC4 — Assistência Inteligente
+### BC4 — Canal WhatsApp
+**Responsabilidade:** Recepção e envio de mensagens WhatsApp, vinculação de número ao Gov.br, roteamento para Assistência Inteligente  
+**Atores:** Produtor Rural, Consultor, Sistema de IA, WhatsApp Business API  
+**Sistemas externos:** WhatsApp Business API (Meta), Gov.br (para vinculação)  
+**Modelo:** SessãoWhatsApp, VinculaçãoCanal, MensagemEntrada, MensagemSaída
+
+### BC5 — Assistência Inteligente
 **Responsabilidade:** Chat com IA, classificação de intenção, geração de dossiês  
 **Atores:** Todos os usuários, Sistema de IA  
 **Sistemas externos:** LLM (OpenAI/Claude/Ollama)  
@@ -297,7 +303,60 @@ Worker → `[CruzarDadosEntreDocumentos]` → {LoteValidação}
 
 ---
 
-### BC4 — Assistência Inteligente
+### BC4 — Canal WhatsApp
+
+**Fluxo: Primeira Mensagem — Número Não Vinculado**
+
+```
+Cidadão → `[EnviarMensagemWhatsApp]` → {SessãoWhatsApp}
+  → [MensagemWhatsAppRecebida]
+  ⇒ Política: VerificarVinculaçãoDoNúmero
+    → Não vinculado: [SessãoNãoAutenticada]
+    ⇒ Política: GerarTokenVinculação (Redis TTL 10min)
+    ⇒ Política: EnviarLinkVinculação → [LinkVinculaçãoEnviado]
+
+Cidadão → `[AcessarLinkVinculação]` → {VinculaçãoCanal}
+  → [LinkVinculaçãoAcessado]
+  ⇒ Política: ValidarTokenNãoExpirado
+    → Expirado: [LinkVinculaçãoExpirado] → bot envia novo link
+    → Válido: [RedirecionarParaGovBr]
+
+[EXT: Gov.br] → `[RetornarCallbackAutenticação]` → {VinculaçãoCanal}
+  → [AutenticaçãoGovBrConfirmada]
+  ⇒ Política: VincularNúmeroAoUserId
+  → [NúmeroWhatsAppVinculado] (TTL 30 dias no Redis)
+  ⇒ Política: NotificarBotWhatsApp → [BotInformadoDaVinculação]
+  ⇒ Política: ContinuarAtendimento
+```
+
+**Fluxo: Mensagem de Usuário Já Vinculado**
+
+```
+Cidadão → `[EnviarMensagemWhatsApp]` → {SessãoWhatsApp}
+  → [MensagemWhatsAppRecebida]
+  ⇒ Política: VerificarVinculação → Vinculado: [SessãoAutenticada]
+  ⇒ Política: ClassificarIntenção
+    → duvida/consulta: [RoteadoParaAssistenteIA] → BC Assistência Inteligente
+    → operacao_critica (submeter, corrigir): [RedirecionadoParaPortalWeb]
+    ⇒ Política: EnviarLinkDiretoAoPortal → [LinkPortalEnviado]
+```
+
+**Fluxo: Notificação Proativa**
+
+```
+Sistema → `[EnviarNotificaçãoWhatsApp]` → {MensagemSaída}
+  (triggerado por: PendênciaIdentificada, ProcessoAprovado, ProcessoRejeitado)
+  → [NotificaçãoWhatsAppEnviada] ou [FalhaEnvioWhatsApp]
+  ⇒ Política (falha): FallbackParaEmail
+```
+
+⚠️ **Hotspot H-09:** Revinculação — se o usuário troca de número de WhatsApp, a vinculação anterior fica órfã. Precisamos de fluxo de desvinculação e revinculação no portal.
+
+⚠️ **Hotspot H-10:** LGPD — o número de WhatsApp é dado pessoal. Deve ser armazenado com criptografia e o usuário deve poder desvincular a qualquer momento.
+
+---
+
+### BC5 — Assistência Inteligente
 
 **Fluxo: Conversa e Resposta**
 
