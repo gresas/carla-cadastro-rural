@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Node.js / Docusaurus
+node_modules/
+.docusaurus/
+website/build/
+website/.cache/
+website/.env.local
+
+# Generated
+*.pdf
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
