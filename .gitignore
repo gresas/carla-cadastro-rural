@@ -32,5 +32,9 @@ Thumbs.db
 
 # IDE
 .idea/
-.vscode/
+# .vscode/ compartilhado com exceções — apenas configs pessoais são ignoradas
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
 *.swp

@@ -1,0 +1,32 @@
+{
+  "recommendations": [
+    // Python / Backend
+    "ms-python.python",
+    "ms-python.debugpy",
+    "ms-python.mypy-type-checker",
+    "charliermarsh.ruff",
+
+    // TypeScript / Frontend / Docusaurus
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+
+    // Markdown / MDX / Docusaurus
+    "unifiedjs.vscode-mdx",
+    "bierner.markdown-preview-github-styles",
+
+    // Docker / Infra
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers",
+
+    // Git
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+
+    // DX
+    "ms-vscode.live-server",
+    "ritwickdey.liveserver",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense"
+  ]
+}
