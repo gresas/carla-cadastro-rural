@@ -79,11 +79,15 @@ O processo CAR é o centro do negócio — é o que o CARla existe para facilita
 ### 💬 Canal WhatsApp
 
 **Tipo:** Supporting Domain  
-**Responsabilidade:** Recepção de mensagens via Meta/Z-API, fluxo de vinculação Gov.br, roteamento para Assistência Inteligente
+**Responsabilidade:** Recepção de mensagens via **Meta Cloud API (WhatsApp Business Platform oficial)**, fluxo de vinculação Gov.br, roteamento para Assistência Inteligente
 
 **Entidades:** `SessãoWhatsApp`, `VinculaçãoCanal`  
 **Armazenamento de sessão:** Redis (TTL 30 dias)  
 **Número:** armazenado apenas como hash SHA-256 (LGPD)
+
+:::warning Provider WhatsApp — use somente a API oficial
+Z-API, UltraMsg e similares são plataformas **não oficiais** que violam os Termos de Serviço do Meta. Para um sistema governamental, o uso de APIs não oficiais gera risco jurídico (ToS), operacional (banimento da conta sem aviso) e de imagem. Use exclusivamente a **Meta Cloud API (WhatsApp Business Platform)** — requer aprovação do Meta, número verificado e tem custo por conversa (~U$ 0,02–0,06 na América Latina). Ver [ADR-007](../arquitetura/decisoes/adr-007-whatsapp.md).
+:::
 
 ---
 

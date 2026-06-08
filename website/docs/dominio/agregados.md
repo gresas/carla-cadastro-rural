@@ -19,10 +19,10 @@ O `ProcessoCAR` é a **raiz do agregado** do Core Domain. Ele garante todas as i
 
 1. Processo não pode ser submetido sem matrícula do imóvel válida
 2. Status só avança seguindo a máquina de estados definida
-3. Apenas o requerente pode submeter o processo
-4. Apenas o analista responsável pode aprovar ou rejeitar
+3. Apenas o requerente (ou RT autorizado) pode submeter o processo
+4. Apenas o analista responsável pode aprovar, aprovar com PRA ou rejeitar
 5. Aprovação exige zero pendências abertas
-6. Número CAR só é atribuído após aprovação
+6. **Número de protocolo é gerado na submissão** — não na aprovação. O analista não cria o número CAR; ele analisa um cadastro que já possui número. A aprovação resulta na emissão do Certificado CAR.
 
 ### Estrutura
 
@@ -30,7 +30,8 @@ O `ProcessoCAR` é a **raiz do agregado** do Core Domain. Ele garante todas as i
 @dataclass
 class ProcessoCAR:
     id: UUID
-    numero_car: Optional[str]           # None até aprovação
+    numero_protocolo: Optional[str]     # Gerado pelo SICAR na submissão (formato UF-NNNNNNN-...)
+    numero_car_sicar: Optional[str]     # Confirmado pelo SICAR após análise concluída (pode ser o mesmo)
     status: StatusProcesso
     requerente_id: UUID
     imovel_id: UUID

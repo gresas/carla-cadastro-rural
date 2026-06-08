@@ -29,7 +29,7 @@ sequenceDiagram
     B->>R: Verifica vinculação do número
     R-->>B: Número não vinculado
     B->>R: Gera token temporário (TTL 10min)
-    B->>W: "Para continuar, acesse: carla.gov.br/auth/wpp?token=XYZ ⏱️ válido por 10 min"
+    B->>W: "Para continuar, acesse: carla.gov.br/auth/wpp?token=XYZ ⏱️ válido por 30 min"
 
     Note over W,G: João abre o link no browser do celular
     W->>G: Login com CPF + senha Gov.br
@@ -45,7 +45,7 @@ sequenceDiagram
 
 | Estado | O que o bot faz |
 |---|---|
-| Número **não vinculado** | Envia link de vinculação Gov.br (TTL 10min) |
+| Número **não vinculado** | Envia link de vinculação Gov.br (TTL 30min) |
 | Link **expirado** | Informa e envia novo link automaticamente |
 | Número **vinculado** | Atende normalmente com contexto do usuário |
 | Sessão **expirada** (30 dias) | Pede nova vinculação ao primeiro contato |
@@ -60,7 +60,7 @@ sequenceDiagram
 Bot: Olá! Para continuar, preciso confirmar quem você é.
      Acesse este link e faça login com sua conta Gov.br:
      👉 carla.gov.br/auth/wpp?token=ABC123
-     ⏳ O link é válido por 10 minutos.
+     ⏳ O link é válido por 30 minutos.
 ```
 
 ### Após vinculação
@@ -103,7 +103,7 @@ A submissão de um processo CAR é um ato jurídico formal. O cidadão precisa r
 ## Pontos de Atenção para Design
 
 :::tip Link temporário — UX crítico
-O link expira em 10 minutos. O bot deve:
+O link expira em 30 minutos (prazo estendido para acomodar conexão instável e dificuldade com senha Gov.br). O bot deve:
 1. Informar o prazo de forma clara ("válido por 10 minutos")
 2. Reenviar automaticamente se o usuário demorar
 3. Nunca deixar o usuário sem resposta por mais de 30 segundos
@@ -111,6 +111,20 @@ O link expira em 10 minutos. O bot deve:
 
 :::warning Acessibilidade no WhatsApp
 Mensagens longas são difíceis em telas pequenas. Limite o bot a 3–5 linhas por mensagem. Use emojis como marcadores visuais (✅, ⚠️, 📋) — com moderação.
+:::
+
+## Provider WhatsApp
+
+:::danger Use somente a Meta Cloud API oficial
+O CARla deve usar exclusivamente a **Meta Cloud API (WhatsApp Business Platform)**. APIs não oficiais (Z-API, UltraMsg, etc.) violam os ToS do Meta e podem ter a conta governamental banida sem aviso — interrompendo toda a comunicação com cidadãos de forma imediata e irreversível.
+
+**Requisitos da Meta Cloud API:**
+- Conta Meta Business verificada
+- Número de telefone dedicado e registrado
+- Aprovação do template de mensagens
+- Custo por conversa: ~U$ 0,02–0,06 por janela de 24h (América Latina)
+
+Ver decisão arquitetural completa em [ADR-007](../../arquitetura/decisoes/adr-007-whatsapp.md).
 :::
 
 ## Ver também

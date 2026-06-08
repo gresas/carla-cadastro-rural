@@ -18,7 +18,7 @@ A Lei Geral de Proteção de Dados Pessoais (Lei 13.709/2018) impõe obrigaçõe
 | CPF | Autenticação, vinculação ao imóvel | Obrigação legal (Lei 12.651) | 5 anos pós-inatividade | pgcrypto + hash SHA-256 |
 | E-mail | Notificações | Interesse legítimo | 5 anos | pgcrypto |
 | Nome completo | Identificação em documentos | Obrigação legal | 10 anos | Armazenado em claro |
-| Geometria do imóvel | Registro CAR | Obrigação legal | Indefinida (dado público) | RBAC — sem export individual público |
+| Geometria do imóvel | Registro CAR | Obrigação legal | Indefinida | RBAC estrito — o dado de imóvel rural é público nos termos da Lei 12.651, mas a geometria precisa de imóvel de pessoa física pode revelar informações patrimoniais sensíveis quando combinada com outros dados. Acesso individual só via autenticação; exports agregados e anonimizados. |
 | Número WhatsApp | Canal de atendimento | Consentimento | 30 dias (sessão) + revogação | Hash SHA-256 apenas |
 | Documentos pessoais | Comprovação de propriedade | Obrigação legal | 10 anos pós-conclusão | AES-256 no MinIO |
 | Conversas com IA | Atendimento | Consentimento | 90 dias → anonimização | PII masking para LLM externo |

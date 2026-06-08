@@ -20,7 +20,7 @@ graph TB
     AN[Analista Ambiental] -->|HTTPS| CL
     WP[WhatsApp] -->|Webhook| CL
     CL -->|OAuth2 OIDC| GB[Gov.br]
-    CL -->|REST| SI[SICAR]
+    CL -->|REST — requer convênio MAPA/IBAMA\nnão disponível no MVP| SI[SICAR]
     CL -->|REST| IB[IBAMA / DETER]
     CL -->|REST| SG[SIGEF / INCRA]
     CL -->|REST| MB[MapBiomas]

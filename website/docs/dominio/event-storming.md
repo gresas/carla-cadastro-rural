@@ -31,10 +31,11 @@ Engenheiros e PMs técnicos. Contexto de produto: [Casos de Uso](../produto/caso
 |---|---|---|
 | `ProcessoIniciado` | Cidadão → IniciarProcesso | CriarImóvelAssociado, IniciarAssistenteBV |
 | `GeometriaDefinida` | Cidadão → DefinirGeometria | ValidarGeometriaAssíncrono |
-| `ProcessoSubmetido` | Cidadão → SubmeterProcesso | NotificarAnalistaDisponível, GerarProtocolo |
+| `ProcessoSubmetido` | Cidadão → SubmeterProcesso | GerarNúmeroProtocoloSICAR, NotificarAnalistaDisponível |
 | `ProcessoEmAnálise` | Analista → AssumirProcesso | GerarDossiêAutomático |
 | `PendênciaIdentificada` | Analista → CriarPendência | NotificarCidadão (email + WhatsApp) |
-| `ProcessoAprovado` | Analista → AprovarProcesso | GerarNúmeroCAROficial, NotificarCidadão |
+| `ProcessoAprovado` | Analista → AprovarProcesso | EmitirCertificadoCAR, NotificarCidadão |
+| `ProcessoAprovadoComPRA` | Analista → AprovarComPRA | EmitirCertificadoCAR, NotificarCidadãoSobrePRAObrigatório |
 | `ProcessoRejeitado` | Analista → RejeitarProcesso | NotificarCidadão, IniciarPrazoRecurso |
 | `RecursoInterposto` | Cidadão → InterpорRecurso | EscalonarParaSupervisor |
 
@@ -50,6 +51,8 @@ stateDiagram-v2
     pendente --> em_correcao: CidadãoResponde
     em_correcao --> em_analise: CorreçãoValidada
     em_analise --> aprovado: AprovarProcesso
+    em_analise --> aprovado_com_pra: AprovarComPRA
+    aprovado_com_pra --> [*]
     em_analise --> rejeitado: RejeitarProcesso
     rejeitado --> recurso: InterpорRecurso
     recurso --> em_analise: RecursoAcatado
@@ -90,6 +93,7 @@ stateDiagram-v2
 | `ProcessoSubmetido` | Processos | `processo.submetido.v1` |
 | `PendênciaIdentificada` | Processos | `processo.pendencia_identificada.v1` |
 | `ProcessoAprovado` | Processos | `processo.aprovado.v1` |
+| `ProcessoAprovadoComPRA` | Processos | `processo.aprovado_com_pra.v1` |
 | `ProcessoRejeitado` | Processos | `processo.rejeitado.v1` |
 | `DocumentoRecebido` | Validação | `documento.recebido.v1` |
 | `DocumentoValidado` | Validação | `documento.validado.v1` |

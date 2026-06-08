@@ -26,8 +26,9 @@ Engenheiros, PMs e designers. A linguagem ubíqua garante que todo o time fala a
 | **Analista** | Servidor público que avalia e decide sobre o processo |
 | **Pendência** | Inconsistência ou documentação faltante que impede a aprovação |
 | **Submissão** | Ato formal de enviar o processo para análise; gera o número de protocolo |
-| **Protocolo** | Número temporário gerado na submissão, antes do número CAR oficial |
-| **Número CAR** | Identificador único oficial do registro. Formato: `UF-NNNNNNN-NNNNNNNNNNNNNN` |
+| **Protocolo** | Número gerado pelo SICAR no momento da submissão — é o identificador permanente do cadastro. Formato: `UF-NNNNNNN-NNNNNNNNNNNNNN`. Não é temporário: o número existe desde a submissão, independentemente do resultado da análise. |
+| **Número CAR** | O mesmo número de protocolo gerado na submissão. Não é criado pelo analista na aprovação — já existe desde o momento em que o produtor envia o cadastro ao SICAR. |
+| **Certificado CAR** | Documento oficial emitido pelo órgão ambiental estadual após análise concluída com resultado positivo. Comprova que o imóvel está regularmente cadastrado. Distinto do número de protocolo: o número existe desde a submissão; o Certificado só existe após a análise. |
 | **Completude** | Score 0–100 indicando percentual de preenchimento do processo |
 | **Score de Risco** | Pontuação 0–10 de risco ambiental baseada em dados externos (DETER, IBAMA) |
 | **Geometria** | Representação geoespacial (polígono/multipolígono) do imóvel em SIRGAS 2000 (SRID 4674) |
@@ -39,6 +40,9 @@ Engenheiros, PMs e designers. A linguagem ubíqua garante que todo o time fala a
 | **Bioma** | Região geográfica com características ecológicas que determina o percentual de RL |
 | **Embargo** | Restrição legal ao uso do imóvel por infração ambiental (IBAMA) |
 | **Vinculação WhatsApp** | Associação entre um número de WhatsApp e um usuário autenticado via Gov.br |
+| **Responsável Técnico (RT)** | Profissional habilitado (engenheiro florestal, agrônomo ou técnico ambiental registrado no CREA/CONFEA/CFBio) que assina digitalmente o processo CAR e tem responsabilidade técnica e legal pelos dados prestados. Obrigatório para imóveis acima de 4 módulos fiscais na maioria dos estados. |
+| **PRA** | Programa de Regularização Ambiental — programa de recuperação de APP e Reserva Legal, exigido para imóveis com déficit ambiental após o cadastro. Base legal: art. 59 da Lei 12.651/2012. O CAR é pré-requisito para adesão ao PRA. |
+| **Déficit Ambiental** | Situação em que a propriedade não atende os percentuais mínimos de APP ou Reserva Legal definidos pelo Código Florestal. Imóveis com déficit não são "rejeitados" — são aprovados com obrigação de aderir ao PRA. |
 | **Conversa** | Sessão de chat com o assistente inteligente, com contexto preservado |
 | **Base de Conhecimento** | Conjunto de documentos normativos indexados para o RAG do assistente IA |
 

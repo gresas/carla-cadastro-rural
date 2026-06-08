@@ -25,8 +25,11 @@ flowchart TD
     G --> H[Consultar mapa\ngeometria do imóvel]
     H --> I{Decisão}
 
-    I -- Aprovado --> J[Clica 'Aprovar'\nobservações opcionais]
-    J --> K[Número CAR gerado\nNotificação ao cidadão]
+    I -- Aprovado --> J[Clica 'Aprovar'\nobservações obrigatórias]
+    J --> K[Status: Aprovado\nCertificado CAR disponível para download\nNotificação ao cidadão]
+
+    I -- Aprovado com PRA --> J2[Clica 'Aprovar com PRA'\nDescreve obrigações de recuperação]
+    J2 --> K2[Status: Aprovado com PRA\nCertificado CAR + orientação PRA\nNotificação ao cidadão]
 
     I -- Pendência --> L[Cria pendência\ncom motivo + prazo]
     L --> M[Notificação ao cidadão\ne-mail + WhatsApp]
@@ -39,13 +42,17 @@ flowchart TD
 
 ---
 
+:::caution Aprovação — responsabilidade do servidor
+O dossiê gerado por IA é **apoio à decisão**, não substituto. Atos administrativos de aprovação ou rejeição precisam ter **motivação própria do servidor** para ter validade jurídica. O campo de "observações" deve ser tratado como obrigatório, não opcional — mesmo que seja breve. A IA resume; o analista decide e fundamenta.
+:::
+
 ## O que o Analista vê na Fila
 
 Cada processo na fila exibe:
 
 | Campo | O que significa |
 |---|---|
-| **Status** | `submetido`, `em_analise`, `pendente` |
+| **Status** | `submetido`, `em_analise`, `pendente`, `aprovado`, `aprovado_com_pra`, `rejeitado` |
 | **Score de completude** | 0–100% — quanto dos dados está preenchido |
 | **Score de risco** | 0–10 — baseado em alertas IBAMA/DETER |
 | **Tempo na fila** | Quanto tempo desde a submissão |
@@ -54,6 +61,10 @@ Cada processo na fila exibe:
 
 :::tip Ordenação padrão
 A fila é ordenada por: (1) prioridade urgente primeiro, (2) maior score de risco, (3) mais tempo na fila. O analista pode reordenar por qualquer coluna.
+:::
+
+:::note Score de risco e isonomia
+Qualquer critério de priorização algorítmica em serviço público precisa de **fundamentação legal explícita** (portaria, instrução normativa do órgão) para não ser questionado por CGU/TCU ou em ação judicial por isonomia. O score de risco é uma ferramenta de apoio ao analista — não deve ser o único critério de ordenação sem respaldo normativo.
 :::
 
 ---

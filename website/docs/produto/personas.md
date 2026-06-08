@@ -35,7 +35,7 @@ João quer regularizar o imóvel **sem contratar consultor** — ele precisa de 
 
 ---
 
-## P2 — Ana Costa | Consultora Ambiental
+## P2 — Ana Costa | Consultora Ambiental / Responsável Técnica
 
 **35 anos · Engenheira florestal · Brasília-DF · Carteira de 200+ clientes**
 
@@ -46,6 +46,15 @@ Ana gerencia processos CAR de médios e grandes proprietários rurais. Tem ótim
 | **Objetivo principal** | Submeter processos corretos de primeira — evitar idas e vindas |
 | **Letramento digital** | Alto — usa planilhas, sistemas GIS, APIs |
 | **Maior frustração** | "Não tenho visão consolidada dos meus clientes; descubro a pendência só quando o cliente liga" |
+| **Preocupação adicional** | Como Responsável Técnica registrada (CREA/CFBio), Ana assina digitalmente os processos e responde legalmente pelos dados prestados. Um dado incorreto não é apenas retrabalho — é risco de responsabilização profissional. |
+
+:::note Dois subtipos de Ana
+O perfil "consultora" engloba dois subtipos com responsabilidades distintas:
+- **Consultor sem RT**: atua apenas como representante do proprietário, sem assinar o processo. Não tem responsabilidade técnica legal.
+- **Responsável Técnico (RT)**: profissional habilitado que assina o processo. Co-responsável legal pelos dados. Obrigatório em imóveis acima de 4 módulos fiscais na maioria dos estados.
+
+O CARla deve diferenciar esses perfis no RBAC — o RT precisa de assinatura digital e log de auditoria específico.
+:::
 
 :::tip Job-to-be-done
 Ana quer **pré-validar documentos antes de submeter** e receber alertas automáticos de pendência sem precisar checar o SICAR um por um.

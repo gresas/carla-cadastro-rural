@@ -60,6 +60,23 @@ def validar_assinatura(body: bytes, signature: str, app_secret: str) -> bool:
 A Meta considera o webhook como falha se não receber resposta em 20s. Toda a lógica de negócio deve ser assíncrona (publicar em fila e retornar `{}` imediatamente).
 :::
 
+## Provider Recomendado — Meta Cloud API
+
+:::danger Não use APIs não oficiais
+O CARla deve usar a **Meta Cloud API (WhatsApp Business Platform oficial)**. Z-API, UltraMsg e similares violam os ToS do Meta — contas são banidas sem aviso, o que interromperia toda a comunicação com cidadãos.
+
+**Custo estimado (América Latina):**
+- Conversa iniciada pelo negócio (proativa): ~U$ 0,05–0,06 / conversa de 24h
+- Conversa iniciada pelo usuário: ~U$ 0,02–0,03 / conversa de 24h
+- Para 10.000 processos ativos/mês com ~3 interações cada: estimar ~U$ 600–900/mês
+
+**Configuração necessária:**
+1. Conta Meta Business verificada
+2. Número dedicado registrado no Meta
+3. Templates de mensagem aprovados pelo Meta (obrigatório para mensagens proativas)
+4. Credenciais: `WHATSAPP_PHONE_NUMBER_ID` e `WHATSAPP_ACCESS_TOKEN`
+:::
+
 ## Privacidade — Número como Hash
 
 O número de telefone **nunca é armazenado em claro**. Apenas o hash SHA-256:

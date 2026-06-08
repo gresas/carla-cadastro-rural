@@ -31,10 +31,17 @@ flowchart TD
     K -- Inválido --> M[Pendência automática\ncom instrução de correção]
     M --> J
 
-    L --> N[Etapa 3: Geometria\nshapefile ou desenho manual]
-    N --> O[Etapa 4: Revisão\ntodos os dados]
+    L --> N[Etapa 3: Geometria\nshapefile ou desenho manual no mapa]
+    N --> NA{Validação de geometria\nem tempo real}
+    NA -- Geometria fora do município --> NB[Alerta: 'Sua geometria está fora\ndo município declarado'\nUsuário ajusta]
+    NB --> NA
+    NA -- Self-intersection detectada --> NC[Alerta: 'Geometria com cruzamento\nde bordas — corrija no mapa'\nUsuário ajusta]
+    NC --> NA
+    NA -- Área diverge > 5% da declarada --> ND[Alerta: 'Área calculada diverge\nda declarada. Revise.']
+    ND --> NA
+    NA -- Validações OK --> O[Etapa 4: Revisão\ntodos os dados]
     O --> P[Clica 'Submeter']
-    P --> Q[Protocolo gerado\nStatus: Submetido]
+    P --> Q[Número de protocolo CAR gerado pelo SICAR\nStatus: Submetido]
     Q --> R[Notificação: e-mail + WhatsApp]
     R --> S([Aguarda análise])
 ```
@@ -73,12 +80,17 @@ sequenceDiagram
 | `submetido` | "Enviado — aguardando analista" | Aguardar |
 | `em_analise` | "Em análise" | Aguardar |
 | `pendente` | ⚠️ "Pendência — ação necessária" | Responder pendência |
-| `aprovado` | ✅ "Aprovado! Baixe seu comprovante" | Baixar certificado CAR |
+| `aprovado` | ✅ "Aprovado! Baixe seu Certificado CAR" | Baixar Certificado CAR oficial |
+| `aprovado_com_pra` | ✅⚠️ "CAR aprovado — mas sua propriedade precisa de regularização ambiental. Veja os próximos passos." | Acessar orientações sobre o PRA |
 | `rejeitado` | ❌ "Rejeitado — veja o motivo" | Opção de recurso |
 
 ---
 
 ## Pontos de Atenção para Design
+
+:::warning Geometria é o maior gargalo real do CAR
+A geometria incorreta é a principal causa de retrabalho e rejeição no CAR brasileiro. Validações em tempo real (município, área, self-intersection) reduzem erros antes da submissão. Sobreposição com outras propriedades, TIs e UCs é verificada **assincronamente** — não bloqueia a submissão mas gera alerta para o analista e notificação ao cidadão se confirmada.
+:::
 
 :::warning Upload em conexão ruim
 João pode ter 3G instável. O upload deve:
