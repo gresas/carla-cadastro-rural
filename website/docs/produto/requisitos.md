@@ -44,6 +44,7 @@ PMs e tech leads. Os RNFs de performance e segurança têm detalhes em [Arquitet
 | RF-017 | Histórico de conversas acessível pelo usuário | Could |
 | RF-017a | Sessão WhatsApp com contexto do processo preservado | Should |
 | RF-017b | Direcionamento para portal web em operações críticas | Must |
+| RF-017c | Transcrição de mensagens de voz recebidas pelo WhatsApp (Whisper local) | Should |
 
 ### Motor de Validação
 

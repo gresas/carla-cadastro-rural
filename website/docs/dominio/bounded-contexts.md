@@ -79,11 +79,24 @@ O processo CAR é o centro do negócio — é o que o CARla existe para facilita
 ### 💬 Canal WhatsApp
 
 **Tipo:** Supporting Domain  
-**Responsabilidade:** Recepção de mensagens via **Meta Cloud API (WhatsApp Business Platform oficial)**, fluxo de vinculação Gov.br, roteamento para Assistência Inteligente
+**Responsabilidade:** Recepção de mensagens (texto e áudio) via **Meta Cloud API (WhatsApp Business Platform oficial)**, transcrição de áudio com Whisper local, fluxo de vinculação Gov.br, roteamento para Assistência Inteligente
 
 **Entidades:** `SessãoWhatsApp`, `VinculaçãoCanal`  
 **Armazenamento de sessão:** Redis (TTL 30 dias)  
 **Número:** armazenado apenas como hash SHA-256 (LGPD)
+
+**Pipeline de mensagem de voz:**
+```
+Cidadão envia áudio (.ogg/Opus)
+   → WhatsApp Worker baixa o arquivo via Meta Cloud API
+   → Transcrição com Whisper local (on-premises — sem envio de voz à nuvem)
+   → Texto transcrito roteado para Assistência Inteligente
+   → Resposta em texto retorna ao cidadão com prefixo "🎙️ Ouvi você dizer: ..."
+```
+
+:::tip Por que Whisper local?
+Áudio de voz contém dados biométricos — enviar para serviços externos de STT na nuvem levanta questões LGPD. O Whisper (OpenAI, open-source) roda on-premises via Ollama ou container dedicado, mantendo o áudio dentro da infraestrutura do sistema. Ver [ADR-006](../arquitetura/decisoes/adr-006-ia.md) — mesmo princípio do Ollama para dados sensíveis.
+:::
 
 :::warning Provider WhatsApp — use somente a API oficial
 Z-API, UltraMsg e similares são plataformas **não oficiais** que violam os Termos de Serviço do Meta. Para um sistema governamental, o uso de APIs não oficiais gera risco jurídico (ToS), operacional (banimento da conta sem aviso) e de imagem. Use exclusivamente a **Meta Cloud API (WhatsApp Business Platform)** — requer aprovação do Meta, número verificado e tem custo por conversa (~U$ 0,02–0,06 na América Latina). Ver [ADR-007](../arquitetura/decisoes/adr-007-whatsapp.md).

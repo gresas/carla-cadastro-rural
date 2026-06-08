@@ -83,13 +83,43 @@ Bot: Para enviar documentos ou submeter seu processo,
 
 ---
 
+## Mensagens de Voz
+
+O cidadão rural frequentemente prefere enviar áudio a digitar. O CARla aceita mensagens de voz e as transcreve automaticamente antes de responder.
+
+```mermaid
+sequenceDiagram
+    participant J as João (WhatsApp)
+    participant B as Bot CARla
+    participant W as Whisper (local)
+    participant IA as Assistente IA
+
+    J->>B: 🎙️ Envia áudio: "quero saber do meu cadastro"
+    B->>B: Envia confirmação imediata
+    Note over B: "🎙️ Ouvi seu áudio, processando..."
+    B->>W: Arquivo .ogg para transcrição
+    W-->>B: "quero saber do meu cadastro"
+    B->>IA: Texto transcrito + contexto da sessão
+    IA-->>B: Resposta gerada
+    B->>J: "🎙️ Ouvi você dizer: 'quero saber do meu cadastro'\n\nSeu processo está em análise desde [data]..."
+```
+
+:::tip Whisper local — sem envio de voz à nuvem
+A transcrição usa **Whisper rodando on-premises** — o arquivo de áudio nunca sai da infraestrutura do sistema. Isso resolve a questão LGPD de dados biométricos de voz e evita custo adicional de API de STT.
+:::
+
+:::warning Latência esperada
+Transcrição + resposta do LLM: **5–8 segundos**. O bot envia uma mensagem de confirmação imediata ("🎙️ Ouvi seu áudio, processando...") para que o cidadão não interprete o silêncio como falha.
+:::
+
 ## O que é e o que NÃO é feito pelo WhatsApp
 
 | Funcionalidade | WhatsApp | Motivo |
 |---|---|---|
-| Tirar dúvidas sobre CAR | ✅ Sim | Canal de baixa barreira |
+| Tirar dúvidas sobre CAR (texto ou voz) | ✅ Sim | Canal de baixa barreira; voz transcrita automaticamente |
 | Consultar status do processo | ✅ Sim | Leitura, sem risco |
 | Receber notificações de pendência | ✅ Sim | Canal preferido do cidadão |
+| Enviar mensagem de voz | ✅ Sim | Transcrição via Whisper local antes de processar |
 | Fazer upload de documentos | ❌ Não | Limitação técnica do canal |
 | Submeter processo | ❌ Não | Ato jurídico — exige portal |
 | Corrigir pendência | ❌ Não | Exige upload ou edição |

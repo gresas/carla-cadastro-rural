@@ -59,7 +59,7 @@ Monolito modular FastAPI + Docker Compose. Sem RabbitMQ, sem Kubernetes — foco
 | E1: Fundação | 1–3 | Docker/K8s, CI/CD, observabilidade, Vault |
 | E2: Auth Gov.br | 2–4 | OAuth2 PKCE real, RBAC 5 roles, sessões seguras |
 | E3: Portal Cidadão | 3–8 | Stepper, upload, notificações, acompanhamento |
-| E4: Assistente IA | 4–9 | Chat contextual, RAG, escalonamento humano |
+| E4: Assistente IA | 4–9 | Chat contextual, RAG, escalonamento humano, **transcrição de mensagens de voz (Whisper local)** |
 | E5: Validação | 5–10 | OCR profissional, extração, cruzamento IBGE |
 | E6: Portal Analista | 7–11 | Fila, dossiê automático, aprovação, dashboard |
 | E7: Integrações | 8–12 | IBGE (municípios), stubs SIGEF/INCRA, **stub SICAR simulado** (integração real requer convênio — ver abaixo) |

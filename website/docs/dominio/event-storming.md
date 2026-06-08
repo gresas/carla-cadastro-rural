@@ -67,7 +67,9 @@ stateDiagram-v2
 
 | Evento | Dispara por | Políticas |
 |---|---|---|
-| `MensagemWhatsAppRecebida` | Cidadão → EnviarMensagem | VerificarVinculação |
+| `MensagemWhatsAppRecebida` | Cidadão → EnviarMensagem (texto) | VerificarVinculação |
+| `ÁudioWhatsAppRecebido` | Cidadão → EnviarÁudio | TranscreverComWhisper, VerificarVinculação |
+| `ÁudioTranscrito` | Worker → TranscreverÁudio | RoteadoComoMensagemTexto |
 | `SessãoNãoAutenticada` | Sistema → ChecarSessão | GerarTokenVinculação, EnviarLinkVinculação |
 | `NúmeroWhatsAppVinculado` | Gov.br → RetornarCallback | NotificarBotDaVinculação, ContinuarAtendimento |
 | `ConversaçãoRoteada` | Sistema → ClassificarMensagem | RoteadoParaAssistenteIA ou RedirecionadoAoPortal |
