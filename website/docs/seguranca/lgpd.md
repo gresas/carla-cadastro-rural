@@ -22,6 +22,7 @@ A Lei Geral de Proteção de Dados Pessoais (Lei 13.709/2018) impõe obrigaçõe
 | Número WhatsApp | Canal de atendimento | Consentimento | 30 dias (sessão) + revogação | Hash SHA-256 apenas |
 | Documentos pessoais | Comprovação de propriedade | Obrigação legal | 10 anos pós-conclusão | AES-256 no MinIO |
 | Conversas com IA | Atendimento | Consentimento | 90 dias → anonimização | PII masking para LLM externo |
+| Áudio de voz (mensagem WhatsApp) | Transcrição para atendimento | Consentimento (ao enviar áudio ao bot) | **Deletado imediatamente após transcrição** — não persistido | Processamento on-premises (Whisper local); arquivo `.ogg` nunca enviado a serviços externos |
 
 ## Direitos dos Titulares (Art. 18 LGPD)
 

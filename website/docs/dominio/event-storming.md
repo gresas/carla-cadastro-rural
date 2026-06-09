@@ -35,7 +35,7 @@ Engenheiros e PMs técnicos. Contexto de produto: [Casos de Uso](../produto/caso
 | `ProcessoEmAnálise` | Analista → AssumirProcesso | GerarDossiêAutomático |
 | `PendênciaIdentificada` | Analista → CriarPendência | NotificarCidadão (email + WhatsApp) |
 | `ProcessoAprovado` | Analista → AprovarProcesso | EmitirCertificadoCAR, NotificarCidadão |
-| `ProcessoAprovadoComPRA` | Analista → AprovarComPRA | EmitirCertificadoCAR, NotificarCidadãoSobrePRAObrigatório |
+| `ProcessoAprovadoComPRA` | Analista → AprovarComPRA | EmitirCertificadoCAR, NotificarCidadãoSobrePRAObrigatório, AgendarLembretePrazoAdesãoPRA |
 | `ProcessoRejeitado` | Analista → RejeitarProcesso | NotificarCidadão, IniciarPrazoRecurso |
 | `RecursoInterposto` | Cidadão → InterpорRecurso | EscalonarParaSupervisor |
 
@@ -101,6 +101,8 @@ stateDiagram-v2
 | `DocumentoValidado` | Validação | `documento.validado.v1` |
 | `NúmeroWhatsAppVinculado` | WhatsApp | `canal.whatsapp.vinculado.v1` |
 | `MensagemWhatsAppRecebida` | WhatsApp | `canal.whatsapp.mensagem.v1` |
+| `ÁudioWhatsAppRecebido` | WhatsApp | `canal.whatsapp.audio.v1` |
+| `ÁudioTranscrito` | WhatsApp | `canal.whatsapp.audio_transcrito.v1` |
 
 :::tip Versioning de eventos
 Todos os routing keys terminam em `.v1`. Quando o payload mudar de forma incompatível, crie `.v2` e mantenha ambos ativos por 1 ciclo de deploy.

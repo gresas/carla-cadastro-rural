@@ -26,7 +26,7 @@ flowchart TD
     H --> I{Decisão}
 
     I -- Aprovado --> J[Clica 'Aprovar'\nobservações obrigatórias]
-    J --> K[Status: Aprovado\nCertificado CAR disponível para download\nNotificação ao cidadão]
+    J --> K[Status: Aprovado\nComprovante de aprovação disponível\nNotificação ao cidadão]
 
     I -- Aprovado com PRA --> J2[Clica 'Aprovar com PRA'\nDescreve obrigações de recuperação]
     J2 --> K2[Status: Aprovado com PRA\nCertificado CAR + orientação PRA\nNotificação ao cidadão]
@@ -41,6 +41,10 @@ flowchart TD
 ```
 
 ---
+
+:::warning Certificado CAR — natureza jurídica
+O documento gerado pelo CARla na aprovação é um **comprovante interno de aprovação**, não o Certificado CAR oficial. O Certificado oficial emana do SICAR e é o único com plena validade jurídica para transações rurais (crédito, comercialização). Até a integração SICAR estar ativa (Fase 3), o cidadão deve ser orientado a acessar o SICAR diretamente para obter o documento oficial.
+:::
 
 :::caution Aprovação — responsabilidade do servidor
 O dossiê gerado por IA é **apoio à decisão**, não substituto. Atos administrativos de aprovação ou rejeição precisam ter **motivação própria do servidor** para ter validade jurídica. O campo de "observações" deve ser tratado como obrigatório, não opcional — mesmo que seja breve. A IA resume; o analista decide e fundamenta.

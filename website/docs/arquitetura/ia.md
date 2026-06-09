@@ -80,6 +80,33 @@ Query do usuário
 | Perguntas frequentes | Cache Redis | Custo zero |
 | Geração de dossiê | Claude (premium) | Qualidade exige modelo maior |
 
+## STT — Transcrição de Voz (Whisper)
+
+O canal WhatsApp aceita mensagens de áudio, que são transcritas localmente antes de serem processadas pelo assistente IA.
+
+| Parâmetro | Valor |
+|---|---|
+| **Modelo** | `whisper-small` — melhor balanço latência/qualidade para PT-BR |
+| **Runtime** | Container `faster-whisper` (não Ollama — Ollama é runtime de LLM, não de STT) |
+| **Idioma** | `language="pt"` forçado — evita erros de detecção automática em sotaques regionais |
+| **Formato de entrada** | `.ogg/Opus` (formato padrão do WhatsApp) |
+| **Retenção** | Arquivo deletado imediatamente após transcrição — não persistido |
+
+**Requisitos de hardware:**
+
+| Configuração | Latência estimada (áudio 30s) | Adequado para |
+|---|---|---|
+| 4 vCPU + 4 GB RAM (CPU only) | ~8–12 segundos | MVP / piloto (volume baixo) |
+| GPU com 4 GB VRAM (CUDA) | ~2–3 segundos | Produção (volume médio/alto) |
+
+:::caution Não use Ollama para o Whisper
+Ollama é um runtime para modelos de linguagem (LLMs). Ele **não suporta** modelos de Speech-to-Text como o Whisper. Usar `ollama pull whisper` vai falhar. O runtime correto é `faster-whisper` (Python) ou `whisper.cpp` (C++), rodando em container separado.
+:::
+
+:::tip Fallback para transcrição com baixa confiança
+Quando o score de confiança da transcrição for baixo (< 0.6), o bot deve mostrar o texto transcrito ao usuário e pedir confirmação: *"🎙️ Entendi: '[texto]'. É isso mesmo?"* — evita responder algo sem relação com a pergunta real.
+:::
+
 ## Ver também
 
 - [ADR-006 — Estratégia de IA](./decisoes/adr-006-ia.md)

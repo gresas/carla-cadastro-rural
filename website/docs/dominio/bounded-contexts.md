@@ -41,7 +41,7 @@ graph TB
 ### 🔐 IAM — Identidade e Acesso
 
 **Tipo:** Supporting Domain  
-**Responsabilidade:** Autenticação via Gov.br, JWT, RBAC (5 roles), gestão de sessões e vinculação de canais externos (WhatsApp)
+**Responsabilidade:** Autenticação via Gov.br, JWT, RBAC (6 roles), gestão de sessões e vinculação de canais externos (WhatsApp)
 
 **Entidades principais:** `Usuário`, `Sessão`, `CanalVinculo`  
 **Sistemas externos:** Gov.br (OIDC)
@@ -58,7 +58,7 @@ IAM é **Conformist** de Gov.br — segue o modelo de identidade do governo sem 
 **Responsabilidade:** Ciclo de vida completo do processo CAR, máquina de estados, pendências, histórico imutável
 
 **Agregados principais:** `ProcessoCAR`, `ImóvelRural`  
-**Eventos de domínio:** `ProcessoIniciado`, `ProcessoSubmetido`, `PendênciaIdentificada`, `ProcessoAprovado`, `ProcessoRejeitado`
+**Eventos de domínio:** `ProcessoIniciado`, `ProcessoSubmetido`, `PendênciaIdentificada`, `ProcessoAprovado`, `ProcessoAprovadoComPRA`, `ProcessoRejeitado`
 
 :::tip Por que é o Core Domain?
 O processo CAR é o centro do negócio — é o que o CARla existe para facilitar. Toda a complexidade de negócio reside aqui. Os outros BCs são suporte.
@@ -89,13 +89,13 @@ O processo CAR é o centro do negócio — é o que o CARla existe para facilita
 ```
 Cidadão envia áudio (.ogg/Opus)
    → WhatsApp Worker baixa o arquivo via Meta Cloud API
-   → Transcrição com Whisper local (on-premises — sem envio de voz à nuvem)
+   → Transcrição com Whisper local via container dedicado (faster-whisper ou whisper.cpp)
    → Texto transcrito roteado para Assistência Inteligente
    → Resposta em texto retorna ao cidadão com prefixo "🎙️ Ouvi você dizer: ..."
 ```
 
 :::tip Por que Whisper local?
-Áudio de voz contém dados biométricos — enviar para serviços externos de STT na nuvem levanta questões LGPD. O Whisper (OpenAI, open-source) roda on-premises via Ollama ou container dedicado, mantendo o áudio dentro da infraestrutura do sistema. Ver [ADR-006](../arquitetura/decisoes/adr-006-ia.md) — mesmo princípio do Ollama para dados sensíveis.
+Áudio de voz contém dados biométricos — enviar para serviços externos de STT na nuvem levanta questões LGPD. O Whisper (OpenAI, open-source) roda on-premises via **container dedicado** (`faster-whisper` ou `whisper.cpp`) — **não via Ollama**, que é um runtime exclusivo para LLMs de texto e não suporta modelos de Speech-to-Text. O áudio nunca sai da infraestrutura. Ver requisitos de hardware em [Estratégia de IA](../arquitetura/ia.md#stt--transcrição-de-voz).
 :::
 
 :::warning Provider WhatsApp — use somente a API oficial

@@ -50,10 +50,14 @@ O estado `aprovado_com_pra` no CARla significa:
 
 | Funcionalidade | CARla |
 |---|---|
-| Identificar que o imóvel tem déficit | ✅ Via cálculo de área de APP/RL nos dados do processo |
+| Identificar que o imóvel tem déficit | ⚠️ Com base nas **áreas declaradas pelo requerente/RT** no processo. Cálculo geoespacial automatizado (cruzamento com topografia e cobertura vegetal via MapBiomas/MDE) é funcionalidade de Fase 3 — não está disponível no MVP. |
 | Notificar cidadão sobre obrigação de PRA | ✅ Na notificação de aprovação com PRA |
 | Orientar sobre o processo de adesão ao PRA | ✅ Assistente IA com RAG sobre o PRA estadual |
 | Gerir o PRA (prazos, planos de recuperação, monitoramento) | ❌ Fora do escopo — sistema separado do órgão estadual |
+
+:::note Prazo de adesão ao PRA
+Ao aprovar com PRA, o analista deve registrar o **prazo para adesão** (definido pela normativa estadual — geralmente 1 ano a partir da aprovação). O CARla agenda uma notificação automática ao cidadão quando o prazo estiver a 30 dias do vencimento. Mesmo sem gerir o PRA, o lembrete é parte do atendimento e evita que o produtor perca o prazo por falta de informação.
+:::
 
 :::caution Escopo do CARla
 O CARla não substitui o sistema de gestão do PRA. Ele apenas identifica a necessidade, notifica o cidadão e orienta os próximos passos. A adesão e o acompanhamento do PRA ocorrem nos sistemas do órgão ambiental estadual.

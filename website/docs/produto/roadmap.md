@@ -83,7 +83,6 @@ O SICAR não possui API REST pública disponível. Acesso programático para con
 | C: IA Avançada | Análise geoespacial, scoring preditivo, fine-tuning |
 | D: Analytics e BI | Dashboards estaduais, dados abertos anonimizados |
 | E: Escalabilidade | Multi-tenancy, processamento em lote, CDN |
-| E2: Canal WhatsApp | WhatsApp Business API + vinculação Gov.br |
 | F: App Mobile | React Native, câmera OCR, push, offline |
 
 **Meta:** 10.000 processos/mês em ≥ 1 estado; tempo de análise ≤ 15 dias úteis.
