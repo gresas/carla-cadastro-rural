@@ -44,6 +44,7 @@ const sidebars: SidebarsConfig = {
         'dominio/bounded-contexts',
         'dominio/event-storming',
         'dominio/agregados',
+        'dominio/pra',
       ],
     },
     {
@@ -68,6 +69,7 @@ const sidebars: SidebarsConfig = {
             'arquitetura/decisoes/adr-004-rabbitmq',
             'arquitetura/decisoes/adr-005-govbr',
             'arquitetura/decisoes/adr-006-ia',
+            'arquitetura/decisoes/adr-007-whatsapp',
           ],
         },
       ],

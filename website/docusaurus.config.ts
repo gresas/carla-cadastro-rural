@@ -87,7 +87,7 @@ const config: Config = {
             { label: 'APIs REST', to: '/docs/apis/principios' },
             { label: 'Segurança & LGPD', to: '/docs/seguranca/lgpd' },
             { label: 'Testes', to: '/docs/testes/estrategia' },
-            { label: 'Decisões (ADRs)', to: '/docs/arquitetura/decisoes/index' },
+            { label: 'Decisões (ADRs)', to: '/docs/arquitetura/decisoes/' },
           ],
         },
         { label: 'Contribuindo', to: '/docs/contribuindo/setup', position: 'right' },
@@ -123,7 +123,7 @@ const config: Config = {
           items: [
             { label: 'Arquitetura Geral', to: '/docs/arquitetura/visao-geral' },
             { label: 'APIs REST', to: '/docs/apis/principios' },
-            { label: 'ADRs', to: '/docs/arquitetura/decisoes/index' },
+            { label: 'ADRs', to: '/docs/arquitetura/decisoes/' },
           ],
         },
         {

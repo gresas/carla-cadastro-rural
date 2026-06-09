@@ -95,7 +95,7 @@ Cidadão envia áudio (.ogg/Opus)
 ```
 
 :::tip Por que Whisper local?
-Áudio de voz contém dados biométricos — enviar para serviços externos de STT na nuvem levanta questões LGPD. O Whisper (OpenAI, open-source) roda on-premises via **container dedicado** (`faster-whisper` ou `whisper.cpp`) — **não via Ollama**, que é um runtime exclusivo para LLMs de texto e não suporta modelos de Speech-to-Text. O áudio nunca sai da infraestrutura. Ver requisitos de hardware em [Estratégia de IA](../arquitetura/ia.md#stt--transcrição-de-voz).
+Áudio de voz contém dados biométricos — enviar para serviços externos de STT na nuvem levanta questões LGPD. O Whisper (OpenAI, open-source) roda on-premises via **container dedicado** (`faster-whisper` ou `whisper.cpp`) — **não via Ollama**, que é um runtime exclusivo para LLMs de texto e não suporta modelos de Speech-to-Text. O áudio nunca sai da infraestrutura. Ver requisitos de hardware em [Estratégia de IA](../arquitetura/ia.md#stt--transcrição-de-voz-whisper).
 :::
 
 :::warning Provider WhatsApp — use somente a API oficial
