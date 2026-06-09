@@ -19,6 +19,18 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: '🏛️ Domínio (DDD)',
+      link: { type: 'doc', id: 'dominio/glossario' },
+      items: [
+        'dominio/glossario',
+        'dominio/bounded-contexts',
+        'dominio/event-storming',
+        'dominio/agregados',
+        'dominio/pra',
+      ],
+    },
+    {
+      type: 'category',
       label: '🎨 Design & UX',
       link: { type: 'doc', id: 'design/principios' },
       items: [
@@ -33,18 +45,6 @@ const sidebars: SidebarsConfig = {
             'design/fluxos/whatsapp',
           ],
         },
-      ],
-    },
-    {
-      type: 'category',
-      label: '🏛️ Domínio (DDD)',
-      link: { type: 'doc', id: 'dominio/glossario' },
-      items: [
-        'dominio/glossario',
-        'dominio/bounded-contexts',
-        'dominio/event-storming',
-        'dominio/agregados',
-        'dominio/pra',
       ],
     },
     {
