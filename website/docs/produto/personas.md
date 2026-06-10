@@ -35,29 +35,25 @@ João quer regularizar o imóvel **sem contratar consultor** — ele precisa de 
 
 ---
 
-## P2 — Ana Costa | Consultora Ambiental / Responsável Técnica
+## P2 — Ana Costa | Responsável Técnica (RT)
 
-**35 anos · Engenheira florestal · Brasília-DF · Carteira de 200+ clientes**
+**35 anos · Engenheira florestal · Brasília-DF · Registro CREA ativo**
 
-Ana gerencia processos CAR de médios e grandes proprietários rurais. Tem ótimo domínio tecnológico e precisa de eficiência — tempo é dinheiro para ela.
+Ana é contratada pontualmente por produtores rurais com imóveis acima de 4 módulos fiscais, onde a legislação exige assinatura de profissional habilitado. Ela assina digitalmente o processo e co-responde legalmente pelos dados prestados.
 
 | Dimensão | Detalhe |
 |---|---|
-| **Objetivo principal** | Submeter processos corretos de primeira — evitar idas e vindas |
-| **Letramento digital** | Alto — usa planilhas, sistemas GIS, APIs |
-| **Maior frustração** | "Não tenho visão consolidada dos meus clientes; descubro a pendência só quando o cliente liga" |
-| **Preocupação adicional** | Como Responsável Técnica registrada (CREA/CFBio), Ana assina digitalmente os processos e responde legalmente pelos dados prestados. Um dado incorreto não é apenas retrabalho — é risco de responsabilização profissional. |
+| **Objetivo principal** | Assinar processos tecnicamente corretos — um dado errado é risco de responsabilização no CREA |
+| **Letramento digital** | Alto — usa planilhas, sistemas GIS |
+| **Maior frustração** | "Descubro problemas no processo só depois que o produtor já ficou sem resposta por semanas" |
+| **Diferencial do papel** | Como RT, Ana co-assina o processo e tem acesso específico aos processos autorizados pelo proprietário |
 
-:::note Dois subtipos de Ana
-O perfil "consultora" engloba dois subtipos com responsabilidades distintas:
-- **Consultor sem RT**: atua apenas como representante do proprietário, sem assinar o processo. Não tem responsabilidade técnica legal.
-- **Responsável Técnico (RT)**: profissional habilitado que assina o processo. Co-responsável legal pelos dados. Obrigatório em imóveis acima de 4 módulos fiscais na maioria dos estados.
-
-O CARla deve diferenciar esses perfis no RBAC — o RT precisa de assinatura digital e log de auditoria específico.
+:::note Responsável Técnico no RBAC
+O CARla diferencia o RT dos demais usuários: toda submissão assinada por RT gera registro de assinatura em `historico_processos` com o `ator_id` do RT e indicação de responsabilidade técnica — necessário para eventual fiscalização do conselho profissional (CREA/CONFEA/CFBio).
 :::
 
 :::tip Job-to-be-done
-Ana quer **pré-validar documentos antes de submeter** e receber alertas automáticos de pendência sem precisar checar o SICAR um por um.
+Ana quer **pré-validar documentos antes de submeter** e ser notificada automaticamente de pendências nos processos que assina.
 :::
 
 ---
@@ -99,7 +95,7 @@ Maria mantém o sistema no ar, gerencia usuários e resolve incidentes. Não que
 ```mermaid
 graph LR
     J[João — Produtor] -->|submete processo| C[CARla]
-    A[Ana — Consultora] -->|gerencia processos| C
+    A[Ana — RT] -->|co-assina processo autorizado| C
     C -->|fila organizada| K[Carlos — Analista]
     K -->|aprova / rejeita| C
     C -->|notifica| J
@@ -110,5 +106,5 @@ graph LR
 ## Ver também
 
 - [Casos de Uso](./casos-de-uso.md) — o que cada persona consegue fazer
-- [Fluxo do Cidadão](../design/fluxos/cidadao.md) — jornada do João e da Ana
+- [Fluxo do Cidadão](../design/fluxos/cidadao.md) — jornada do João
 - [Fluxo do Analista](../design/fluxos/analista.md) — jornada do Carlos

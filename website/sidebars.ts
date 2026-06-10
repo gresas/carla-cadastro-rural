@@ -25,6 +25,7 @@ const sidebars: SidebarsConfig = {
         'dominio/event-storming',
         'dominio/agregados',
         'dominio/pra',
+        'dominio/plataformas-estaduais',
       ],
     },
     {

@@ -71,7 +71,7 @@ O CPF não é incluído no token por segurança. Para obter o CPF, o serviço co
 | Role | Descrição |
 |---|---|
 | `produtor_rural` | Acessa apenas seus próprios processos |
-| `consultor_ambiental` | Acessa processos com autorização do proprietário |
+| `responsavel_tecnico` | Acessa processos com autorização do proprietário; co-assina com responsabilidade legal |
 | `analista_ambiental` | Vê e analisa todos os processos |
 | `supervisor_ambiental` | Tudo do analista + recursos + relatórios |
 | `admin` | Acesso total ao sistema |

@@ -25,20 +25,20 @@ Engenheiros back-end e revisores de segurança. Para o fluxo OAuth2, veja [API �
 
 ## RBAC — Matriz de Permissões
 
-| Operação | Produtor | Consultor | Resp. Técnico (RT) | Analista | Supervisor | Admin |
-|---|---|---|---|---|---|---|
-| Criar processo | ✓ | ✓* | ✓* | — | — | ✓ |
-| Submeter processo (assinar) | ✓ | ✓* | ✓* (assina como RT) | — | — | ✓ |
-| Ver próprio processo | ✓ | ✓* | ✓* | ✓ | ✓ | ✓ |
-| Ver processos da carteira | — | ✓* | ✓* | — | — | ✓ |
-| Ver processo de terceiro | — | — | — | ✓ | ✓ | ✓ |
-| Aprovar / Aprovar com PRA | — | — | — | ✓ | ✓ | ✓ |
-| Rejeitar processo | — | — | — | ✓ | ✓ | ✓ |
-| Criar pendência | — | — | — | ✓ | ✓ | ✓ |
-| Acessar audit logs | — | — | — | — | ✓ | ✓ |
-| Configurar sistema | — | — | — | — | — | ✓ |
+| Operação | Produtor | Resp. Técnico (RT) | Analista | Supervisor | Admin |
+|---|---|---|---|---|---|
+| Criar processo | ✓ | ✓* | — | — | ✓ |
+| Submeter processo (assinar) | ✓ | ✓* (assina como RT) | — | — | ✓ |
+| Ver próprio processo | ✓ | ✓* | ✓ | ✓ | ✓ |
+| Ver processos autorizados | — | ✓* | — | — | ✓ |
+| Ver processo de terceiro | — | — | ✓ | ✓ | ✓ |
+| Aprovar / Aprovar com PRA | — | — | ✓ | ✓ | ✓ |
+| Rejeitar processo | — | — | ✓ | ✓ | ✓ |
+| Criar pendência | — | — | ✓ | ✓ | ✓ |
+| Acessar audit logs | — | — | — | ✓ | ✓ |
+| Configurar sistema | — | — | — | — | ✓ |
 
-\* Consultor e RT acessam apenas processos com autorização explícita do proprietário.
+\* RT acessa apenas processos com autorização explícita do proprietário.
 
 :::note Responsável Técnico — obrigações adicionais
 O RT deve ter registro CREA/CONFEA/CFBio verificado no cadastro. Toda submissão por RT gera registro de assinatura em `historico_processos` com `ator_id` do RT e indicação de responsabilidade técnica. Isso é necessário para eventual fiscalização do conselho profissional.

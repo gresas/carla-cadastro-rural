@@ -62,12 +62,12 @@ Monolito modular FastAPI + Docker Compose. Sem RabbitMQ, sem Kubernetes — foco
 | E4: Assistente IA | 4–9 | Chat contextual, RAG, escalonamento humano, **transcrição de mensagens de voz (Whisper local)** |
 | E5: Validação | 5–10 | OCR profissional, extração, cruzamento IBGE |
 | E6: Portal Analista | 7–11 | Fila, dossiê automático, aprovação, dashboard |
-| E7: Integrações | 8–12 | IBGE (municípios), stubs SIGEF/INCRA, **stub SICAR simulado** (integração real requer convênio — ver abaixo) |
+| E7: Integrações | 8–12 | IBGE (municípios), SIGEF/INCRA, **integração SICAR direta** (modelo apps estaduais), ferramenta Leaflet + satélite para geometria |
 
 **Meta:** 100 processos reais, NPS ≥ 60, uptime ≥ 99%.
 
-:::warning Integração SICAR — pré-requisito institucional
-O SICAR não possui API REST pública disponível. Acesso programático para consulta e submissão de dados requer **convênio formal com MAPA/IBAMA**. Esse processo é institucional, não técnico, e pode levar meses. Na Fase 2, o CARla opera com stub SICAR — o processo é gerenciado internamente e a sincronização com o SICAR ocorre manualmente ou via exportação. A integração real é pré-requisito para a Fase 3.
+:::note Integração SICAR — modelo de acesso direto
+Existem precedentes de sistemas que acessam o SICAR diretamente para efetuar o cadastro, acompanhar o processo e retificar arquivos CAR — sem depender de API REST pública. O CARla adota o mesmo modelo de integração. Além disso, alguns estados têm plataformas próprias (veja [Plataformas Estaduais](../dominio/plataformas-estaduais.md)).
 :::
 
 ---
@@ -79,7 +79,7 @@ O SICAR não possui API REST pública disponível. Acesso programático para con
 | Épico | Descrição |
 |---|---|
 | A: Microsserviços | Strangler Fig — extrair serviços do monolito gradualmente |
-| B: Integrações completas | **Pré-requisito: convênio MAPA/IBAMA para API SICAR** — depois: SIGEF, IBAMA, MapBiomas, PRODES/DETER |
+| B: Integrações completas | SIGEF, IBAMA, MapBiomas, PRODES/DETER; adaptadores para plataformas estaduais |
 | C: IA Avançada | Análise geoespacial, scoring preditivo, fine-tuning |
 | D: Analytics e BI | Dashboards estaduais, dados abertos anonimizados |
 | E: Escalabilidade | Multi-tenancy, processamento em lote, CDN |

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Fluxo do Cidadão
-description: Jornada completa do produtor rural e do consultor — do primeiro acesso à aprovação do CAR.
+description: Jornada completa do produtor rural — do primeiro acesso à aprovação do CAR.
 tags: [design, ux, fluxo, cidadão]
 ---
 
@@ -31,7 +31,7 @@ flowchart TD
     K -- Inválido --> M[Pendência automática\ncom instrução de correção]
     M --> J
 
-    L --> N[Etapa 3: Geometria\nshapefile ou desenho manual no mapa]
+    L --> N[Etapa 3: Geometria\nLeaflet + satélite: toca vértices sobre foto aérea\nou importa KML/SHP]
     N --> NA{Validação de geometria\nem tempo real}
     NA -- Geometria fora do município --> NB[Alerta: 'Sua geometria está fora\ndo município declarado'\nUsuário ajusta]
     NB --> NA
@@ -87,6 +87,10 @@ sequenceDiagram
 ---
 
 ## Pontos de Atenção para Design
+
+:::note Por que satélite, não GPS?
+GPS de smartphone tem precisão de 10–30m, o que representa erro inaceitável em propriedades pequenas (1–5 ha). O produtor traça os vértices sobre a imagem aérea da sua própria terra — cercas, estradas e cursos d'água visíveis na foto servem de referência precisa. Leaflet com tile layer de satélite (ex: Esri World Imagery) funciona em mobile via touch nativo.
+:::
 
 :::warning Geometria é o maior gargalo real do CAR
 A geometria incorreta é a principal causa de retrabalho e rejeição no CAR brasileiro. Validações em tempo real (município, área, self-intersection) reduzem erros antes da submissão. Sobreposição com outras propriedades, TIs e UCs é verificada **assincronamente** — não bloqueia a submissão mas gera alerta para o analista e notificação ao cidadão se confirmada.

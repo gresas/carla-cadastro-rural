@@ -57,6 +57,14 @@ PMs e tech leads. Os RNFs de performance e segurança têm detalhes em [Arquitet
 | RF-022 | Geração automática de pendência quando inconsistência detectada | Must |
 | RF-023 | Retry de OCR após reenvio de documento com melhor qualidade | Should |
 
+### Ferramenta de Geometria
+
+| ID | Requisito | Prioridade |
+|---|---|---|
+| RF-031 | Exibir mapa Leaflet com camada de imagem de satélite (tile layer) centrado no município declarado na Etapa 1 | Must |
+| RF-032 | Permitir marcação de vértices por toque/clique sobre a imagem de satélite, com cálculo de área em tempo real | Must |
+| RF-033 | Aceitar upload de KML ou SHP como alternativa ao desenho manual | Should |
+
 ### Portal do Analista
 
 | ID | Requisito | Prioridade |

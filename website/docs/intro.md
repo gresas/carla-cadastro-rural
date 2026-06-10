@@ -6,7 +6,7 @@ description: Visão geral do projeto CARla — assistente inteligente para o Cad
 
 # O que é o CARla?
 
-O **CARla** é uma camada de inteligência posicionada sobre o SICAR (Sistema de Cadastro Ambiental Rural) — não o substitui, **potencializa**.
+O **CARla** é um sistema web que integra diretamente com o SICAR (Sistema de Cadastro Ambiental Rural) para simplificar o registro do CAR — com IA, validação documental, geometria por satélite e atendimento via WhatsApp.
 
 :::info Para quem é esta página
 Para qualquer pessoa que chegou aqui pela primeira vez. Escolha depois a seção da sua área.
@@ -26,15 +26,20 @@ Apesar da importância, o processo hoje é marcado por:
 ## O que o CARla faz
 
 ```
-Cidadão → CARla → SICAR
+Produtor Rural → CARla (web + WhatsApp) → SICAR (integração direta)
 ```
 
-O CARla se posiciona **entre** o cidadão e o SICAR, oferecendo:
+O CARla faz o que o produtor rural não consegue fazer sozinho no SICAR:
 
 - **Assistente IA conversacional** — responde dúvidas em linguagem simples, 24h
+- **Geometria por satélite** — o produtor traça o polígono do imóvel sobre foto aérea real (Leaflet + tile de satélite), sem GPS impreciso
 - **Validação documental automática** — OCR, extração de dados e verificação de consistência
 - **Canal WhatsApp** — atendimento no canal que o brasileiro já usa, com autenticação segura via Gov.br
 - **Portal do Analista** — fila priorizada, dossiê automático por IA, aprovação em um clique
+
+:::note Realidade multi-plataforma
+Alguns estados têm plataformas próprias de registro do CAR; os demais usam o SICAR federal. O CARla se integra com o SICAR federal e endereça essa diversidade — veja [Plataformas Estaduais](./dominio/plataformas-estaduais.md).
+:::
 
 ## Por onde começar
 

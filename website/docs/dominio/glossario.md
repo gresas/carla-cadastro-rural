@@ -21,7 +21,7 @@ Engenheiros, PMs e designers. A linguagem ubíqua garante que todo o time fala a
 | **SICAR** | Sistema de Cadastro Ambiental Rural — sistema federal que centraliza todos os registros CAR do Brasil |
 | **Processo CAR** | Fluxo de trabalho completo desde abertura até aprovação ou rejeição do registro |
 | **Imóvel Rural** | Entidade geoespacial representando a propriedade a ser registrada, com geometria em SIRGAS 2000 |
-| **Requerente** | Pessoa (produtor ou consultor) que solicita o registro CAR |
+| **Requerente** | Produtor rural ou possuidor do imóvel que solicita o registro CAR |
 | **Proprietário** | Titular legal do imóvel, identificado pelo CPF/CNPJ na matrícula |
 | **Analista** | Servidor público que avalia e decide sobre o processo |
 | **Pendência** | Inconsistência ou documentação faltante que impede a aprovação |

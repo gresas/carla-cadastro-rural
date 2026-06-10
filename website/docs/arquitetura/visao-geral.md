@@ -16,11 +16,10 @@ Engenheiros e arquitetos. Para decisões técnicas justificadas, veja os [ADRs](
 ```mermaid
 graph TB
     PR[Produtor Rural] -->|HTTPS| CL[CARla]
-    CO[Consultor Ambiental] -->|HTTPS| CL
     AN[Analista Ambiental] -->|HTTPS| CL
     WP[WhatsApp] -->|Webhook| CL
     CL -->|OAuth2 OIDC| GB[Gov.br]
-    CL -->|REST — requer convênio MAPA/IBAMA\nnão disponível no MVP| SI[SICAR]
+    CL -->|Integração direta\n(modelo apps estaduais)| SI[SICAR]
     CL -->|REST| IB[IBAMA / DETER]
     CL -->|REST| SG[SIGEF / INCRA]
     CL -->|REST| MB[MapBiomas]
@@ -34,7 +33,7 @@ graph TB
 ```mermaid
 graph TB
     subgraph CARla
-        WEB["Web App\nReact 18 + Vite\n:3000"]
+        WEB["Web App\nReact 18 + Vite + Leaflet\n:3000"]
         NGX["Nginx\nAPI Gateway\n:443"]
         AUTH["Auth Service\nFastAPI :8001"]
         PROC["Process Service\nFastAPI :8002"]

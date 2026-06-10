@@ -75,7 +75,7 @@ GET /api/v1/processos?page_size=20&cursor=eyJpZCI6IjU1MGU4...
 | Role | Geral | Upload | Assistente |
 |---|---|---|---|
 | Produtor Rural | 60 req/min | 5 req/min | 20 req/min |
-| Consultor | 120 req/min | 15 req/min | 20 req/min |
+| Responsável Técnico (RT) | 120 req/min | 15 req/min | 20 req/min |
 | Analista | 200 req/min | 30 req/min | 20 req/min |
 | Admin | sem limite | sem limite | sem limite |
 

@@ -13,17 +13,21 @@ Times de produto, gestores e stakeholders. Para entender a implementação técn
 
 ## Visão do Produto
 
-O **CARla** é uma camada inteligente de atendimento posicionada sobre o SICAR — não o substitui, potencializa. A plataforma oferece assistência conversacional por IA, validação documental automatizada e ferramentas de produtividade para analistas de órgãos ambientais.
+O **CARla** é um sistema web que integra diretamente com o SICAR para simplificar o registro do CAR. A plataforma oferece assistência conversacional por IA, ferramenta de geometria por satélite, validação documental automatizada e ferramentas de produtividade para analistas de órgãos ambientais.
 
 Do ponto de vista de impacto social, o CARla democratiza o acesso ao processo de regularização ambiental, reduzindo a dependência de intermediários pagos, acelerando a análise e contribuindo para os compromissos brasileiros de proteção da vegetação nativa e conformidade com o Código Florestal.
 
 ## Posicionamento
 
 ```
-Cidadão ──→ [ CARla ] ──→ SICAR (sistema oficial)
+Produtor Rural ──→ [ CARla ] ──→ SICAR (integração direta)
 ```
 
-O CARla **não é** um substituto ao SICAR. É uma camada de serviço que resolve os problemas de experiência e eficiência sem exigir mudanças no sistema legado do governo.
+O CARla **não é** um substituto ao SICAR. Usa o mesmo modelo de integração direta de outros sistemas que acessam o SICAR para efetivar o cadastro — resolvendo os problemas de experiência e eficiência sem exigir mudanças no sistema do governo.
+
+:::note Realidade multi-plataforma
+Alguns estados têm plataformas próprias de registro CAR; os demais usam o SICAR federal. Veja [Plataformas Estaduais](../dominio/plataformas-estaduais.md) para detalhes sobre como o CARla endereça essa diversidade.
+:::
 
 ## Objetivos de Negócio
 

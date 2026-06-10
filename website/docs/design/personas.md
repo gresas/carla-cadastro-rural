@@ -39,26 +39,26 @@ Esta página foca no **contexto de uso real** — onde, como e com que dispositi
 
 ---
 
-## Ana Costa — Consultora Ambiental
+## Ana Costa — Responsável Técnica (RT)
 
-**Contexto de uso:** Escritório, notebook 1080p, Chrome, múltiplas abas abertas
+**Contexto de uso:** Escritório ou campo, notebook ou tablet, acesso pontual por processo autorizado
 
 ### Jobs-to-be-done
-1. "Quero pré-validar o documento antes de submeter para evitar pendência"
-2. "Quero ver o status de todos os meus clientes em uma tela"
-3. "Quero ser avisada quando uma pendência aparecer, sem precisar monitorar"
+1. "Quero pré-validar os documentos do processo antes de assinar e submeter"
+2. "Quero ser notificada automaticamente de pendências nos processos que assino"
+3. "Quero verificar a geometria do imóvel antes de co-assinar"
 
 ### Padrões de Interação
-- Power user — usa atalhos de teclado, prefere densidade de informação
-- Faz comparações entre processos
-- Valoriza exportação de dados (CSV, relatórios)
+- Acessa o CARla somente para os processos em que foi autorizada pelo produtor
+- Foco em conferência técnica antes da assinatura digital
+- Valoriza rastreabilidade do que foi alterado e por quem
 
 ### Necessidades de Design
 | Necessidade | Decisão de design |
 |---|---|
-| Visão consolidada | Dashboard com filtros e busca por cliente |
-| Notificação proativa | E-mail imediato + badge no portal |
-| Eficiência de operação | Ações em lote, atalhos de teclado |
+| Acesso restrito ao escopo autorizado | Exibe só processos com autorização do proprietário |
+| Confirmação antes de assinar | Modal de revisão com checklist antes da submissão como RT |
+| Notificação proativa de pendências | E-mail imediato + WhatsApp nos processos que assina |
 
 ---
 

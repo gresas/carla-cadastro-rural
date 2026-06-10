@@ -15,17 +15,17 @@ PMs e analistas de negócio. Para detalhes de implementação, veja os [endpoint
 
 | ID | Caso de Uso | Ator Principal | Canal |
 |---|---|---|---|
-| UC-001 | Iniciar registro CAR com assistência IA | Produtor / Consultor | Portal Web |
-| UC-002 | Upload e validação automática de documentos | Produtor / Consultor | Portal Web |
+| UC-001 | Iniciar registro CAR com assistência IA | Produtor | Portal Web |
+| UC-002 | Upload e validação automática de documentos | Produtor | Portal Web |
 | UC-003 | Consulta conversacional de dúvidas | Qualquer usuário | Portal Web / WhatsApp |
-| UC-004 | Acompanhamento de status do processo | Produtor / Consultor | Portal Web / WhatsApp |
+| UC-004 | Acompanhamento de status do processo | Produtor | Portal Web / WhatsApp |
 | UC-005 | Triagem automática de processos | Analista | Portal Analista |
 | UC-006 | Geração automática de dossiê | Analista / Sistema | Portal Analista |
 | UC-007 | Notificação de pendências ao cidadão | Sistema | Email / WhatsApp |
 | UC-008 | Aprovação ou rejeição pelo analista | Analista | Portal Analista |
-| UC-009 | Correção de inconsistências guiada por IA | Produtor / Consultor | Portal Web |
-| UC-010 | Vinculação WhatsApp via Gov.br | Produtor / Consultor | WhatsApp + Browser |
-| UC-011 | Consulta de status via WhatsApp | Produtor / Consultor | WhatsApp |
+| UC-009 | Correção de inconsistências guiada por IA | Produtor | Portal Web |
+| UC-010 | Vinculação WhatsApp via Gov.br | Produtor | WhatsApp + Browser |
+| UC-011 | Consulta de status via WhatsApp | Produtor | WhatsApp |
 | UC-012 | Notificação proativa via WhatsApp | Sistema | WhatsApp |
 | UC-013 | Relatório de conformidade e analytics | Admin / Supervisor | Portal Admin |
 
