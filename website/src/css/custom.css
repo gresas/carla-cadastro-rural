@@ -168,7 +168,14 @@
 table {
   display: block;
   overflow-x: auto;
-  white-space: nowrap;
+  width: 100%;
+}
+
+table th,
+table td {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 80px;
 }
 
 table th {
