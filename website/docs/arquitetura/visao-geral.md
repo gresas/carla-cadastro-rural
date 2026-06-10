@@ -19,7 +19,7 @@ graph TB
     AN[Analista Ambiental] -->|HTTPS| CL
     WP[WhatsApp] -->|Webhook| CL
     CL -->|OAuth2 OIDC| GB[Gov.br]
-    CL -->|Integração direta\n(modelo apps estaduais)| SI[SICAR]
+    CL -->|Integração direta| SI[SICAR]
     CL -->|REST| IB[IBAMA / DETER]
     CL -->|REST| SG[SIGEF / INCRA]
     CL -->|REST| MB[MapBiomas]
