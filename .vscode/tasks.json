@@ -1,0 +1,86 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // ─── Docusaurus ────────────────────────────────────────────────────────
+    {
+      "label": "docs: start",
+      "type": "npm",
+      "script": "start",
+      "path": "website/",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": { "regexp": "." },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting the development server",
+          "endsPattern": "Compiled successfully"
+        }
+      },
+      "presentation": {
+        "group": "docs",
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "docs: build",
+      "type": "npm",
+      "script": "build",
+      "path": "website/",
+      "group": "build",
+      "presentation": {
+        "group": "docs",
+        "reveal": "always"
+      }
+    },
+
+    // ─── Backend ───────────────────────────────────────────────────────────
+    {
+      "label": "backend: install",
+      "type": "shell",
+      "command": "uv sync",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "presentation": { "group": "backend", "reveal": "always" }
+    },
+    {
+      "label": "backend: migrate",
+      "type": "shell",
+      "command": "uv run alembic upgrade head",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "presentation": { "group": "backend", "reveal": "always" }
+    },
+    {
+      "label": "backend: lint",
+      "type": "shell",
+      "command": "uv run ruff check src/ && uv run mypy src/",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": { "kind": "test", "isDefault": false },
+      "presentation": { "group": "backend", "reveal": "always" }
+    },
+
+    // ─── Docker ────────────────────────────────────────────────────────────
+    {
+      "label": "infra: up",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "group": "infra", "reveal": "always" }
+    },
+    {
+      "label": "infra: down",
+      "type": "shell",
+      "command": "docker compose down",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "group": "infra", "reveal": "always" }
+    },
+    {
+      "label": "infra: logs",
+      "type": "shell",
+      "command": "docker compose logs -f",
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "presentation": { "group": "infra", "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

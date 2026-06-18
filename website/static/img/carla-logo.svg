@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" fill="none">
+  <!-- Folha estilizada -->
+  <path d="M8 32 C8 20 18 8 30 8 C30 20 20 32 8 32Z" fill="#2E7D32"/>
+  <path d="M8 32 C8 20 14 12 22 10 C22 22 16 30 8 32Z" fill="#1B5E20" opacity="0.6"/>
+  <!-- Texto CARla -->
+  <text x="40" y="28" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="22" fill="#1B5E20">CARla</text>
+</svg>

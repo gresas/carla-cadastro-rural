@@ -1,0 +1,189 @@
+/* CARla — Design System */
+
+:root {
+  /* Brand: verde floresta */
+  --ifm-color-primary: #2E7D32;
+  --ifm-color-primary-dark: #256427;
+  --ifm-color-primary-darker: #1B5E20;
+  --ifm-color-primary-darkest: #1a4a1e;
+  --ifm-color-primary-light: #388E3C;
+  --ifm-color-primary-lighter: #43A047;
+  --ifm-color-primary-lightest: #66BB6A;
+
+  /* Typography */
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.65;
+
+  /* Code */
+  --ifm-code-font-size: 90%;
+  --docusaurus-highlighted-code-line-bg: rgba(46, 125, 50, 0.1);
+
+  /* Admonitions */
+  --ifm-color-info-contrast-background: #e3f2fd;
+  --ifm-color-tip-contrast-background: #e8f5e9;
+  --ifm-color-warning-contrast-background: #fff8e1;
+  --ifm-color-danger-contrast-background: #fce4ec;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #66BB6A;
+  --ifm-color-primary-dark: #4CAF50;
+  --ifm-color-primary-darker: #43A047;
+  --ifm-color-primary-darkest: #388E3C;
+  --ifm-color-primary-light: #81C784;
+  --ifm-color-primary-lighter: #A5D6A7;
+  --ifm-color-primary-lightest: #C8E6C9;
+  --docusaurus-highlighted-code-line-bg: rgba(102, 187, 106, 0.15);
+}
+
+/* ── Homepage ─────────────────────────────────────────────────────────── */
+
+.hero--primary {
+  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 60%, #388E3C 100%);
+}
+
+.hero__title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+}
+
+/* ── Audience Cards ───────────────────────────────────────────────────── */
+
+.audience-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+@media (max-width: 768px) {
+  .audience-cards {
+    grid-template-columns: 1fr;
+  }
+  .hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+.audience-card {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--ifm-background-surface-color);
+}
+
+.audience-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 8px 24px rgba(46, 125, 50, 0.15);
+  text-decoration: none;
+  color: inherit;
+}
+
+.audience-card__icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+.audience-card__role {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.35rem;
+}
+
+.audience-card__title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-heading-color);
+}
+
+.audience-card__desc {
+  font-size: 0.9rem;
+  color: var(--ifm-color-secondary-darkest);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.audience-card__links {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.audience-card__tag {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-color-secondary-darkest);
+}
+
+/* ── Navbar ───────────────────────────────────────────────────────────── */
+
+.navbar {
+  border-bottom: 2px solid var(--ifm-color-primary-lighter);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.navbar__brand {
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+
+.menu__link--active {
+  font-weight: 600;
+}
+
+/* ── Admonitions personalizados ───────────────────────────────────────── */
+
+.admonition.alert--info .admonition-heading h5::before {
+  content: '👥 ';
+}
+
+/* ── Tabelas ─────────────────────────────────────────────────────────── */
+
+table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+}
+
+table th,
+table td {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 80px;
+}
+
+table th {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* ── Código ──────────────────────────────────────────────────────────── */
+
+code {
+  border-radius: 4px;
+}
