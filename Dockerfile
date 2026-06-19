@@ -4,8 +4,8 @@ WORKDIR /app/website
 COPY website/package.json website/package-lock.json ./
 RUN npm ci
 COPY website/ .
-# GitHub Pages usa baseUrl '/carlos-geo/'; k3s serve da raiz
-RUN sed -i "s|baseUrl: '/carlos-geo/'|baseUrl: '/'|" docusaurus.config.ts
+# GitHub Pages usa baseUrl '/carla-cadastro-rural/'; k3s serve da raiz
+RUN sed -i "s|baseUrl: '/carla-cadastro-rural/'|baseUrl: '/'|" docusaurus.config.ts
 RUN npm run build
 
 # ── Runtime ──────────────────────────────────────────────────────────────────
