@@ -28,6 +28,7 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [
+    require.resolve('./plugins/recently-updated'),
     [
       require.resolve('@easyops-cn/docusaurus-search-local'),
       {
