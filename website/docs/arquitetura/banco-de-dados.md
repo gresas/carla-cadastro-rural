@@ -30,7 +30,7 @@ Engenheiros back-end e DBAs. Para a decisão de escolher PostgreSQL, veja [ADR-0
 | `documentos` | Metadados dos arquivos + resultado do OCR em JSONB |
 | `pendencias` | Pendências por processo |
 | `historico_processos` | Auditoria imutável — particionado por mês |
-| `canal_vinculos` | Vinculação WhatsApp — número como hash SHA-256 |
+| `canal_vinculos` | Vinculação de canal de mensageria (futuro/opcional) — identificador como hash SHA-256 |
 | `knowledge_base` | Chunks de documentos normativos + embedding (pgvector) |
 | `outbox` | Fila de eventos de domínio a publicar no RabbitMQ |
 | `audit_logs` | Audit log genérico — particionado por mês |

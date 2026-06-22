@@ -15,13 +15,16 @@ Engenheiros back-end. Para o mapa geral, veja [Visão Geral](./visao-geral.md).
 
 | Serviço | Porta | BC | Responsabilidade |
 |---|---|---|---|
-| Auth Service | 8001 | IAM | OAuth2 Gov.br, JWT, RBAC |
+| Auth Service | 8001 | IAM | OAuth2 Gov.br, JWT, RBAC, sessão web persistente |
 | Process Service | 8002 | Processos CAR | CRUD, máquina de estados, pendências |
 | Document Service | 8003 | Validação Documental | Upload, armazenamento, trigger de OCR |
 | AI Assistant | 8004 | Assistência Inteligente | Chat, RAG, geração de dossiê |
 | Analytics Service | 8005 | Analytics | Relatórios, KPIs, exportações |
 | Integration Service | 8006 | Integrações Externas | ACL: SICAR, SIGEF, IBAMA |
-| WhatsApp Service | 8007 | Canal WhatsApp | Webhook Meta, vinculação Gov.br |
+
+:::note Adapter de Mensageria (futuro/opcional)
+A integração com apps de mensageria (WhatsApp, Telegram etc.) será implementada como um serviço desacoplado na porta 8007, quando necessário. Ele recebe webhooks externos, traduz para o protocolo interno e repassa para o mesmo backend dos demais serviços. Ver [ADR-008](./decisoes/adr-008-canal-web-proprio.md) e [UC-013](../produto/casos-de-uso.md).
+:::
 
 ## Estrutura Interna (padrão por serviço)
 
@@ -51,7 +54,6 @@ src/carla/modules/{nome}/
 | Process Service | 2 | 500m | 512Mi | CPU > 70% |
 | AI Assistant | 2 | 500m | 512Mi | Conexões > 100 |
 | Document Worker | 2 | 1000m | 1Gi | Profundidade da fila |
-| WhatsApp Service | 2 | 200m | 256Mi | CPU > 70% |
 
 :::tip MVP Hackathon
 Para o hackathon, todos os módulos rodam como um **monolito modular** em um único processo FastAPI. A separação em serviços acontece na Fase 3 via Strangler Fig Pattern.

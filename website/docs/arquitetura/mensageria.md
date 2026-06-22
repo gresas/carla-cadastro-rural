@@ -16,15 +16,19 @@ Engenheiros back-end. Decisão de usar RabbitMQ: [ADR-004](./decisoes/adr-004-ra
 ```
 Exchange: car.events (type: topic)
 │
-├── processo.*     → fila: processos.analista
-├── processo.*     → fila: processos.notificacao
-├── documento.*    → fila: documentos.ocr
-├── canal.whatsapp.* → fila: whatsapp.mensagens
-├── *.aprovado     → fila: integracao.sicar
-└── #              → fila: analytics.metricas
+├── processo.*       → fila: processos.analista
+├── processo.*       → fila: processos.notificacao
+├── documento.*      → fila: documentos.ocr
+├── canal.web.*      → fila: canal.web.mensagens      ← canal core (interface web própria)
+├── *.regular        → fila: integracao.sicar
+└── #                → fila: analytics.metricas
 
 Dead Letter Exchange: car.dlx
 └── car.dlq.{nome_da_fila}  (após 3 tentativas)
+
+Adapters futuros (desacoplados do core):
+└── canal.mensageria.* → fila: adapter.whatsapp / adapter.telegram
+    (serviços externos consomem esta fila; o core não depende deles)
 ```
 
 ## Retry Policy

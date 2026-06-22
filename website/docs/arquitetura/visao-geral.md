@@ -15,15 +15,15 @@ Engenheiros e arquitetos. Para decisões técnicas justificadas, veja os [ADRs](
 
 ```mermaid
 graph TB
-    PR[Produtor Rural] -->|HTTPS| CL[CARla]
+    PR[Produtor Rural] -->|"HTTPS (car.gov.br → chat web)"| CL[Carla]
     AN[Analista Ambiental] -->|HTTPS| CL
-    WP[WhatsApp] -->|Webhook| CL
     CL -->|OAuth2 OIDC| GB[Gov.br]
     CL -->|Integração direta| SI[SICAR]
     CL -->|REST| IB[IBAMA / DETER]
     CL -->|REST| SG[SIGEF / INCRA]
     CL -->|REST| MB[MapBiomas]
     CL -->|LLM API| LM[Claude / GPT-4o / Ollama]
+    MA[Adapter Mensageria\nfuturo/opcional] -->|Webhook| CL
 ```
 
 ---
@@ -39,11 +39,12 @@ graph TB
         PROC["Process Service\nFastAPI :8002"]
         DOC["Document Service\nFastAPI :8003"]
         AI["AI Assistant\nFastAPI :8004"]
-        WPP["WhatsApp Service\nFastAPI :8007"]
         ANA["Analytics Service\nFastAPI :8005"]
         DW["Document Worker"]
         NW["Notification Worker"]
-        WW["WhatsApp Worker"]
+    end
+    subgraph "Adapters (futuro/opcional)"
+        WPP["Mensageria Adapter\n(WhatsApp/Telegram)\nFastAPI :8007"]
     end
 
     subgraph Infra
@@ -58,19 +59,16 @@ graph TB
     NGX --> PROC
     NGX --> DOC
     NGX --> AI
-    NGX --> WPP
     NGX --> ANA
     PROC --> PG
     PROC --> RMQ
     DOC --> MN
     DOC --> RMQ
     AI --> PG
-    WPP --> RD
-    WPP --> RMQ
     DW --> RMQ
     DW --> MN
     NW --> RMQ
-    WW --> RMQ
+    WPP --> RMQ
 ```
 
 ---

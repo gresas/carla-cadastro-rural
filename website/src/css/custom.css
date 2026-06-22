@@ -187,3 +187,67 @@ table th {
 code {
   border-radius: 4px;
 }
+
+/* ── Badge "Novo" — docs recentemente atualizados ────────────────────── */
+
+/* Sidebar badge — combinator > evita propagação para itens filhos da seção */
+.sidebar-item--new > .menu__link::before,
+.sidebar-item--new > .menu__list-item-collapsible > .menu__link::before {
+  content: 'Novo';
+  display: inline-block;
+  margin-right: 0.45em;
+  padding: 0.1em 0.45em;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  border-radius: 999px;
+  background: #2e7d32;
+  color: #fff;
+  vertical-align: middle;
+}
+
+[data-theme='dark'] .sidebar-item--new > .menu__link::before,
+[data-theme='dark'] .sidebar-item--new > .menu__list-item-collapsible > .menu__link::before {
+  background: #388e3c;
+}
+
+/* Banner no topo da página */
+.doc-recently-updated-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 8px;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  font-size: 0.9rem;
+}
+
+[data-theme='dark'] .doc-recently-updated-banner {
+  background: #1b2e1c;
+  border-color: #2e7d32;
+}
+
+.doc-recently-updated-banner__badge {
+  display: inline-block;
+  padding: 0.15em 0.55em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: #2e7d32;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.doc-recently-updated-banner__text {
+  color: #1b5e20;
+}
+
+[data-theme='dark'] .doc-recently-updated-banner__text {
+  color: #a5d6a7;
+}

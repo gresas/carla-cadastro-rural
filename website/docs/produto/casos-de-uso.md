@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 title: Casos de Uso
-description: Os 13 casos de uso do CARla — do registro guiado por IA ao atendimento via WhatsApp.
+description: Os casos de uso da Carla — do registro guiado por IA ao acompanhamento de status pelo cidadão.
 tags: [produto, casos-de-uso, gherkin]
 ---
 
@@ -15,54 +15,55 @@ PMs e analistas de negócio. Para detalhes de implementação, veja os [endpoint
 
 | ID | Caso de Uso | Ator Principal | Canal |
 |---|---|---|---|
-| UC-001 | Iniciar registro CAR com assistência IA | Produtor | Portal Web |
-| UC-002 | Upload e validação automática de documentos | Produtor | Portal Web |
-| UC-003 | Consulta conversacional de dúvidas | Qualquer usuário | Portal Web / WhatsApp |
-| UC-004 | Acompanhamento de status do processo | Produtor | Portal Web / WhatsApp |
+| UC-001 | Iniciar registro CAR com assistência da Carla | Produtor | Interface Web |
+| UC-002 | Upload e validação automática de documentos | Produtor | Interface Web |
+| UC-003 | Consulta conversacional de dúvidas | Qualquer usuário | Interface Web |
+| UC-004 | Acompanhamento de status do processo | Produtor | Interface Web |
 | UC-005 | Triagem automática de processos | Analista | Portal Analista |
 | UC-006 | Geração automática de dossiê | Analista / Sistema | Portal Analista |
-| UC-007 | Notificação de pendências ao cidadão | Sistema | Email / WhatsApp |
-| UC-008 | Aprovação ou rejeição pelo analista | Analista | Portal Analista |
-| UC-009 | Correção de inconsistências guiada por IA | Produtor | Portal Web |
-| UC-010 | Vinculação WhatsApp via Gov.br | Produtor | WhatsApp + Browser |
-| UC-011 | Consulta de status via WhatsApp | Produtor | WhatsApp |
-| UC-012 | Notificação proativa via WhatsApp | Sistema | WhatsApp |
-| UC-013 | Relatório de conformidade e analytics | Admin / Supervisor | Portal Admin |
+| UC-007 | Notificação de pendências ao cidadão | Sistema | Email / Interface Web |
+| UC-008 | Análise e decisão pelo analista | Analista | Portal Analista |
+| UC-009 | Correção de inconsistências guiada pela Carla | Produtor | Interface Web |
+| UC-010 | Abertura da Carla via car.gov.br | Produtor | Interface Web |
+| UC-011 | Primeira mensagem — identificação e login Gov.br | Produtor | Interface Web |
+| UC-012 | Retomada de conversa — resumo de etapa e mensagens do analista | Produtor | Interface Web |
+| UC-013 | *(Futuro)* Integração com apps de mensageria via webhook | Sistema | WhatsApp / Telegram |
+| UC-014 | Relatório de conformidade e analytics | Admin / Supervisor | Portal Admin |
 
 ---
 
-## UC-001 — Iniciar Registro CAR com Assistência IA
+## UC-001 — Iniciar Registro CAR com Assistência da Carla
 
 **Fluxo principal:**
-1. Usuário acessa "Novo Processo" no portal
-2. Assistente IA inicia conversa de boas-vindas e solicita dados básicos
-3. Usuário preenche nome do imóvel, município e estado
-4. Sistema valida o município via código IBGE
-5. Processo criado no status `rascunho`; assistente orienta próximas etapas
+1. Usuário acessa a Carla via `car.gov.br` e está autenticado com Gov.br (nível prata)
+2. A Carla inicia o fluxo de criação do CAR confirmando o tipo de imóvel (rural comum)
+3. Usuário percorre as 6 etapas guiadas: Cadastrante → Imóvel → Domínio → Documentação → Geo → Informações (PRA)
+4. Cada etapa é fechada com confirmação em bloco — a Carla nunca pede dado já coletado
+5. Processo criado no status `Em Andamento`; ao concluir, passa para `Cadastrado`
 
 ```gherkin
 Cenário: Cidadão inicia processo com sucesso
-  Dado que João está autenticado com nível "prata"
-  Quando acessar "Novo Processo" e preencher dados básicos
-  Então processo no status "rascunho" deve ser criado
-  E assistente deve apresentar lista de documentos necessários
+  Dado que João está autenticado com Gov.br nível "prata"
+  Quando confirmar que o imóvel é um imóvel rural comum
+  Então a Carla inicia a Etapa 1 (Cadastrante)
+  E apresenta os dados do Gov.br pré-preenchidos para confirmação
 
-Cenário: Município não encontrado
-  Quando informar município inexistente
-  Então deve ver sugestões de municípios similares
-  E processo não deve ser criado
+Cenário: Tipo de imóvel não elegível (povos tradicionais / assentamentos)
+  Quando João indicar que não tem certeza sobre o tipo de imóvel
+  Então a Carla explica que imóveis de povos tradicionais e assentamentos da reforma agrária seguem outro fluxo
+  E orienta contato com entidade específica
 ```
 
 ---
 
-## UC-002 — Upload e Validação Automática
+## UC-002 — Upload e Validação Automática de Documentos
 
 **Fluxo principal:**
-1. Usuário faz upload de documento (PDF/JPG, até 50MB)
+1. Usuário envia imagem ou PDF de documento durante a Etapa 4 (Documentação) da Carla
 2. Sistema armazena e retorna confirmação imediata (status `aguardando`)
 3. Worker OCR processa assincronamente (< 60s)
-4. Dados extraídos são comparados com dados declarados
-5. Usuário recebe notificação com resultado (✓ válido / ✗ inválido + motivo)
+4. Dados extraídos são comparados com dados declarados nas etapas anteriores
+5. Usuário recebe resultado na conversa (válido / inconsistente + motivo)
 
 :::tip Tipos aceitos
 PDF, JPG, PNG, TIFF. Máximo 50MB por arquivo. Ver [API de Documentos](../apis/documentos.md).
@@ -70,16 +71,16 @@ PDF, JPG, PNG, TIFF. Máximo 50MB por arquivo. Ver [API de Documentos](../apis/d
 
 ```gherkin
 Cenário: Documento válido processado com sucesso
-  Dado que João tem processo no status "em_preenchimento"
-  Quando fizer upload de CCIR em PDF válido
+  Dado que João está na Etapa 4 (Documentação) da Carla
+  Quando enviar CCIR em PDF válido
   Então status do documento muda para "aguardando_ocr"
   E em até 60 segundos muda para "validado"
-  E dados extraídos são exibidos para conferência
+  E dados extraídos são exibidos para conferência em bloco
 
 Cenário: Área declarada diverge do documento
-  Quando o OCR identificar área com diferença > 5% em relação ao declarado
+  Quando o OCR identificar área com diferença > 5% em relação ao declarado na Etapa 2
   Então documento recebe status "inconsistente"
-  E assistente IA indica o campo divergente e orienta correção
+  E a Carla indica o campo divergente e orienta correção
 ```
 
 ---
@@ -87,11 +88,11 @@ Cenário: Área declarada diverge do documento
 ## UC-003 — Consulta Conversacional de Dúvidas
 
 **Fluxo principal:**
-1. Usuário digita dúvida no chat (portal ou WhatsApp)
+1. Usuário digita dúvida no chat da Carla (interface web)
 2. Sistema busca chunks relevantes na base de conhecimento (RAG com pgvector)
 3. LLM gera resposta embasada nos normativos indexados, com indicação de fonte
 4. Resposta exibida em streaming; usuário pode fazer perguntas de acompanhamento
-5. Se confiança do RAG for baixa, sistema indica canal de atendimento humano
+5. Se confiança do RAG for baixa, a Carla oferece encaminhar a pergunta ao analista ambiental
 
 :::tip Cache semântico
 Perguntas frequentes (≥ 95% de similaridade) retornam resposta em cache (Redis TTL 1h) sem chamar o LLM.
@@ -99,15 +100,15 @@ Perguntas frequentes (≥ 95% de similaridade) retornam resposta em cache (Redis
 
 ```gherkin
 Cenário: Dúvida com resposta na base de conhecimento
-  Dado que Maria está autenticada no portal
+  Dado que Maria está na interface da Carla
   Quando perguntar "Qual a área mínima de Reserva Legal para pequenas propriedades?"
   Então deve receber resposta com citação do Código Florestal
   E deve ver a fonte: "Lei 12.651/2012, Art. 12"
 
-Cenário: Dúvida fora do escopo do CARla
-  Quando perguntar sobre tema não relacionado ao CAR
-  Então assistente informa que só pode ajudar com questões do CAR
-  E sugere canais oficiais do IBAMA/órgão estadual
+Cenário: Dúvida técnica sem resposta segura
+  Quando Maria perguntar algo fora do escopo ou que exige análise técnica específica
+  Então a Carla oferece encaminhar a pergunta ao analista ambiental
+  E pergunta se Maria confirma o encaminhamento
 ```
 
 ---
@@ -115,25 +116,26 @@ Cenário: Dúvida fora do escopo do CARla
 ## UC-004 — Acompanhamento de Status do Processo
 
 **Fluxo principal:**
-1. Usuário acessa "Meus Processos" no portal ou envia mensagem ao bot do WhatsApp
-2. Sistema retorna lista de processos com status atual e data da última atualização
+1. Usuário acessa a Carla ou a seção "Meus Processos" na interface web
+2. A Carla exibe status atual usando a terminologia oficial do SICAR
 3. Ao selecionar um processo, exibe timeline completo de eventos
-4. Se houver pendência aberta, exibe o motivo e o prazo para correção
-5. Se aprovado, exibe comprovante e orientações sobre o Certificado CAR oficial no SICAR
+4. Se houver pendência (`Pendente de Regularização`), exibe a mensagem do analista e o prazo
+5. Se estiver `Regular`, exibe o Recibo de Inscrição do Imóvel Rural no CAR
 
 ```gherkin
-Cenário: Processo com pendência aberta
-  Dado que João tem processo no status "pendente"
-  Quando acessar "Meus Processos"
-  Então deve ver status "pendente" com motivo e prazo
-  E botão "Responder Pendência" deve estar visível
+Cenário: Processo Pendente de Regularização
+  Dado que o cadastro de João está "Pendente de Regularização"
+  Quando acessar o status na Carla
+  Então deve ver a mensagem do analista com o motivo da pendência
+  E botão "Responder agora" deve estar visível
+  E deve ver opção "Saber mais sobre o PRA"
 
-Cenário: Processo aprovado com PRA
-  Dado que processo de João foi aprovado com PRA
-  Quando acessar detalhes do processo
-  Então deve ver status "aprovado_com_pra"
-  E deve ver orientação sobre obrigação de adesão ao PRA
-  E deve ver prazo para adesão e link para o órgão ambiental estadual
+Cenário: Processo Regular
+  Dado que o processo de João foi aprovado pelo analista
+  Quando acessar o status na Carla
+  Então deve ver status "Regular" com a data
+  E deve ver o Recibo de Inscrição do Imóvel Rural no CAR
+  E deve poder baixar o recibo
 ```
 
 ---
@@ -144,15 +146,15 @@ Cenário: Processo aprovado com PRA
 1. Analista acessa fila de processos no portal analista
 2. Sistema exibe processos ordenados por: (1) prioridade urgente, (2) score de risco, (3) tempo na fila
 3. Analista pode filtrar por município, estado, tipo de imóvel ou score
-4. Analista seleciona processo e clica "Assumir" — status muda para `em_analise`
+4. Analista seleciona processo e clica "Assumir" — status interno muda para `Em Análise`
 5. Sistema registra o analista responsável e hora de início
 
 ```gherkin
 Cenário: Analista assume processo de alta prioridade
   Dado que existem 15 processos na fila com diferentes scores de risco
-  Quando o analista Ana acessar a fila
+  Quando a analista Ana acessar a fila
   Então processos com score de risco > 7 devem aparecer no topo
-  E ao clicar "Assumir", status muda para "em_analise"
+  E ao clicar "Assumir", status muda para "Em Análise"
   E processo some da fila disponível de outros analistas
 
 Cenário: Filtro por município
@@ -173,7 +175,7 @@ Cenário: Filtro por município
 5. Analista revisa dossiê antes de tomar decisão
 
 :::caution Dossiê é apoio, não substituto
-O dossiê gerado por IA é suporte à decisão. A motivação do ato administrativo (aprovação/rejeição) deve ser do próprio servidor. Ver [Fluxo do Analista](../design/fluxos/analista.md).
+O dossiê gerado por IA é suporte à decisão. A motivação do ato administrativo deve ser do próprio servidor. Ver [Fluxo do Analista](../design/fluxos/analista.md).
 :::
 
 ```gherkin
@@ -196,188 +198,183 @@ Cenário: Falha na geração do dossiê
 **Fluxo principal:**
 1. Analista cria pendência com motivo e prazo (padrão: 15 dias úteis)
 2. Sistema gera notificação em linguagem acessível a partir do template selecionado
-3. Notificação enviada por email e WhatsApp (se número vinculado)
-4. Cidadão recebe mensagem com: o que precisa corrigir, prazo e link direto ao processo
-5. Sistema registra envio e atualiza status do processo para `pendente`
+3. Notificação enviada por email; na Carla, aparece como mensagem não lida com destaque
+4. Cidadão recebe: o que precisa corrigir, prazo e botão direto para responder
+5. Sistema registra envio e atualiza status do cadastro para `Pendente de Regularização`
 
 ```gherkin
-Cenário: Notificação enviada por ambos os canais
-  Dado que João tem email e WhatsApp vinculados
-  Quando analista criar pendência "Planta de localização ausente"
-  Então João deve receber email com detalhes da pendência
-  E deve receber mensagem WhatsApp com link direto ao processo
-  E prazo de 15 dias úteis deve aparecer em ambos os canais
+Cenário: Notificação de pendência recebida na Carla
+  Dado que João tem processo e o analista criou pendência "Planta de localização ausente"
+  Quando João acessar a Carla
+  Então deve ver banner "Tenho uma novidade importante"
+  E a Carla deve exibir a mensagem do analista com motivo e prazo
+  E botão "Responder agora" deve estar visível
 
-Cenário: Usuário sem WhatsApp vinculado
-  Dado que João não vinculou WhatsApp
+Cenário: Email de notificação enviado
   Quando analista criar pendência
-  Então João recebe apenas email
-  E sistema registra tentativa de WhatsApp como "não enviado — número não vinculado"
+  Então João recebe email com detalhes da pendência
+  E link direto para a Carla para responder
 ```
 
 ---
 
-## UC-008 — Aprovação ou Rejeição pelo Analista
+## UC-008 — Análise e Decisão pelo Analista
 
 **Fluxo principal:**
 1. Analista revisa dossiê e documentos do processo (UC-006)
-2. Analista clica em "Aprovar", "Aprovar com PRA" ou "Rejeitar"
+2. Analista clica em "Encaminhar como Regular", "Encaminhar com pendência (PRA)" ou "Criar pendência"
 3. Para qualquer decisão, campo de observações é obrigatório
-4. Sistema registra decisão, gera comprovante interno e notifica o cidadão
-5. Status do processo muda para `aprovado`, `aprovado_com_pra` ou `rejeitado`
+4. Sistema registra decisão e notifica o cidadão via Carla e email
+5. Status do cadastro reflete a terminologia oficial do SICAR
 
-:::warning Certificado CAR oficial
-O comprovante gerado pelo CARla é interno. O Certificado CAR com validade jurídica plena é emitido pelo SICAR. Até a integração SICAR (Fase 3), orientar o cidadão a acessar o SICAR diretamente.
+:::warning Recibo de Inscrição
+O Recibo de Inscrição do Imóvel Rural no CAR é o comprovante oficial emitido pelo SICAR após a análise.
 :::
 
 ```gherkin
-Cenário: Aprovação direta
+Cenário: Cadastro encaminhado como Regular
   Dado que Ana revisou o processo e está dentro das conformidades
-  Quando clicar "Aprovar" e preencher observações
-  Então status muda para "aprovado"
-  E cidadão recebe notificação com comprovante interno
+  Quando clicar "Encaminhar como Regular" e preencher observações
+  Então status do cadastro muda para "Regular"
+  E cidadão recebe notificação na Carla com Recibo de Inscrição disponível para download
   E registro de auditoria é criado com ID do analista e timestamp
 
-Cenário: Aprovação com PRA
+Cenário: Pendência de regularização ambiental identificada
   Dado que o processo tem déficit de Reserva Legal declarado
-  Quando Ana clicar "Aprovar com PRA" e descrever a obrigação de recuperação
-  Então status muda para "aprovado_com_pra"
-  E cidadão recebe notificação com orientação sobre adesão ao PRA
-  E sistema agenda lembrete automático 30 dias antes do prazo de adesão
-
-Cenário: Rejeição com motivo
-  Quando Ana clicar "Rejeitar" com motivo obrigatório preenchido
-  Então status muda para "rejeitado"
-  E cidadão recebe notificação com motivo e prazo de recurso
+  Quando Ana criar pendência com motivo e prazo
+  Então status muda para "Pendente de Regularização"
+  E cidadão recebe notificação na Carla com a mensagem do analista
+  E aba "Regularização Ambiental" é liberada no Demonstrativo da Situação do CAR
 ```
 
 ---
 
-## UC-009 — Correção de Inconsistências Guiada por IA
+## UC-009 — Correção de Inconsistências Guiada pela Carla
 
 **Fluxo principal:**
-1. Cidadão acessa processo com pendência e lê o motivo
-2. Assistente IA explica a inconsistência em linguagem acessível e orienta o que corrigir
+1. Cidadão acessa processo com status `Pendente de Regularização` na Carla
+2. A Carla exibe a mensagem do analista em linguagem acessível e orienta o que corrigir
 3. Cidadão faz as correções (reedita dados ou faz novo upload de documento)
 4. Sistema revalida automaticamente os documentos corrigidos
-5. Processo retorna para fila do analista com status `em_correcao` → `em_analise`
+5. Processo retorna para fila do analista
 
 ```gherkin
 Cenário: Cidadão corrige dado divergente
-  Dado que João recebeu pendência "Área total diverge do CCIR em 8%"
-  Quando acessar a pendência no portal
-  Então assistente deve explicar qual campo está divergente e como corrigir
+  Dado que João tem cadastro "Pendente de Regularização" com motivo "Área total diverge do CCIR em 8%"
+  Quando acessar a mensagem na Carla
+  Então a Carla deve explicar qual campo está divergente e como corrigir
   E João deve poder editar a área declarada ou fazer novo upload do CCIR
 
 Cenário: Documento resubmetido dentro do prazo
-  Quando João fizer upload de documento corrigido dentro do prazo
-  Então status muda para "em_correcao"
+  Quando João enviar documento corrigido dentro do prazo
+  Então a Carla confirma o recebimento
   E analista recebe notificação de que correção foi submetida
-  E processo volta para fila de análise
 
 Cenário: Prazo de correção vencido sem resposta
   Dado que prazo da pendência venceu sem ação do cidadão
-  Então sistema marca pendência como "vencida"
-  E notifica analista responsável para decisão (arquivar ou estender prazo)
+  Então a Carla envia lembrete ao cidadão
+  E analista é notificado para decisão sobre o processo
 ```
 
 ---
 
-## UC-010 — Vinculação WhatsApp via Gov.br
-
-Este caso de uso resolve o desafio de autenticar um usuário do WhatsApp sem que o canal suporte OAuth2 diretamente.
-
-**Fluxo:**
-1. Usuário envia mensagem ao número oficial do CARla no WhatsApp
-2. Bot detecta número não vinculado e envia link temporário (30 min): `carla.gov.br/auth/wpp?token=XYZ`
-3. Usuário clica, abre no browser, autentica com Gov.br
-4. Sistema vincula número WhatsApp ao CPF autenticado (válido por 30 dias)
-5. Bot retoma atendimento já identificado
-
-```gherkin
-Cenário: Primeira mensagem de número não vinculado
-  Dado que o número "+5511999998888" não está vinculado
-  Quando enviar qualquer mensagem ao CARla
-  Então bot envia link de vinculação com TTL de 30 minutos
-
-Cenário: Token de vinculação expirado
-  Dado que o usuário não acessou o link em 30 minutos
-  Quando tentar acessar o link expirado
-  Então deve ver mensagem de expiração
-  E bot envia novo link automaticamente
-```
-
-:::caution Operações críticas permanecem no portal web
-Submissão de processos e upload de documentos **não são feitos pelo WhatsApp** — exigem o portal web por serem atos jurídicos formais.
-:::
-
----
-
-## UC-011 — Consulta de Status via WhatsApp
+## UC-010 — Abertura da Carla via car.gov.br
 
 **Fluxo principal:**
-1. Usuário vinculado envia mensagem perguntando sobre o status do processo
-2. Bot identifica CPF vinculado ao número e recupera processo(s) ativo(s)
-3. Bot responde com status atual em linguagem natural, com emoji de status
-4. Se houver pendência, exibe motivo resumido e prazo
-5. Se houver mais de um processo, lista todos e aguarda o usuário escolher
+1. Cidadão acessa `car.gov.br` e clica no banner ou botão "Fale com a Carla"
+2. Nova aba é aberta com a interface de chat da Carla
+3. A Carla se apresenta e exibe as três coisas que pode fazer (criação do CAR, dúvidas, acompanhamento)
+4. Se o cidadão não estiver logado, exibe o botão "Entrar com Gov.br"
+5. Se o cidadão já estiver logado, segue para UC-011 ou UC-012 conforme o contexto
 
 ```gherkin
-Cenário: Consulta de processo único
-  Dado que João está vinculado e tem um processo ativo
-  Quando enviar "Qual o status do meu CAR?"
-  Então bot responde com: número de protocolo, status atual e data da última atualização
+Cenário: Primeiro acesso sem login (Cenário A)
+  Dado que o cidadão não está autenticado com Gov.br
+  Quando abrir a Carla via car.gov.br
+  Então a Carla se apresenta e exibe o botão "Entrar com Gov.br"
+  E lista as três capacidades (criação do CAR, dúvidas, acompanhamento)
 
-Cenário: Processo com pendência ativa
-  Dado que o processo de João está "pendente"
-  Quando consultar o status
-  Então bot deve informar o motivo resumido da pendência e o prazo restante
-  E deve enviar link direto para o portal para responder a pendência
-
-Cenário: Usuário com múltiplos processos
-  Dado que Maria tem dois processos ativos
-  Quando perguntar sobre o status
-  Então bot lista os dois processos com seus protocolos e status
-  E pergunta qual deles Maria quer mais detalhes
+Cenário: Acesso com login ativo redirecionado para contexto
+  Dado que o cidadão já está autenticado com Gov.br
+  Quando abrir a Carla via car.gov.br
+  Então a Carla verifica se há CAR em andamento ou mensagens do analista
+  E segue para UC-012 (retomada) ou UC-011 (primeiro contato)
 ```
 
 ---
 
-## UC-012 — Notificação Proativa via WhatsApp
+## UC-011 — Primeira Mensagem — Identificação e Login Gov.br
 
 **Fluxo principal:**
-1. Sistema detecta evento relevante (pendência criada, aprovação, lembrete de prazo)
-2. Sistema verifica se o cidadão tem WhatsApp vinculado e sessão ativa
-3. Mensagem proativa enviada via Meta Cloud API com Template Message aprovado
-4. Cidadão recebe notificação sem precisar iniciar conversa
-
-:::note Template Messages
-Notificações proativas no WhatsApp exigem Template Messages pré-aprovados pelo Meta. Mensagens livres só são permitidas dentro de janela de 24h após o usuário enviar a última mensagem.
-:::
+1. Cidadão recém-autenticado chega à Carla (ou conclui login via Gov.br)
+2. A Carla o saúda pelo nome e verifica se há CAR iniciado
+3. Se não houver CAR iniciado (Cenário B): oferece iniciar o cadastro ou tirar dúvidas
+4. A Carla já usa nome e CPF do Gov.br para pré-preencher a Etapa 1, se o cidadão iniciar
 
 ```gherkin
-Cenário: Notificação de aprovação
-  Dado que processo de João foi aprovado
-  E João tem WhatsApp vinculado
-  Quando sistema processar evento "ProcessoAprovado"
-  Então João deve receber mensagem WhatsApp com: número de protocolo, status "✅ Aprovado" e link ao portal
+Cenário: Logado, sem nenhum CAR iniciado (Cenário B)
+  Dado que João acaba de se autenticar com Gov.br e não tem nenhum CAR iniciado
+  Quando a Carla carregar sua sessão
+  Então deve ser saudado pelo nome e informado que não há cadastros iniciados
+  E deve ver botões "Iniciar meu CAR" e "Tenho dúvidas antes"
 
-Cenário: Lembrete de prazo PRA
-  Dado que prazo de adesão ao PRA vence em 30 dias
-  Quando job agendado executar
-  Então cidadão recebe mensagem alertando sobre o prazo
-  E orientação de como aderir ao PRA junto ao órgão estadual
-
-Cenário: Número não vinculado
-  Dado que o cidadão não tem WhatsApp vinculado
-  Quando sistema tentar enviar notificação proativa
-  Então notificação é enviada apenas por email
-  E registro de "WhatsApp não enviado" é criado para auditoria
+Cenário: Cidadão opta por iniciar o CAR
+  Quando João clicar "Iniciar meu CAR"
+  Então a Carla inicia o fluxo de criação (UC-001)
+  E pré-preenche os dados da Etapa 1 com as informações do Gov.br
 ```
 
 ---
 
-## UC-013 — Relatório de Conformidade e Analytics
+## UC-012 — Retomada de Conversa
+
+**Fluxo principal:**
+1. Cidadão retorna à Carla e está autenticado com Gov.br
+2. A Carla verifica o estado da última sessão
+3. Se houver mensagens não lidas do analista com retorno pendente (Cenário D): destaca imediatamente
+4. Se houver CAR em andamento sem pendências (Cenário C): oferece continuar de onde parou
+5. Carla resume etapa atual, mensagens não lidas e próximas ações
+
+```gherkin
+Cenário: Retomada com CAR em andamento, sem pendências (Cenário C)
+  Dado que João tem um CAR na etapa "Geo" sem mensagens novas do analista
+  Quando abrir a Carla
+  Então deve ser saudado e ver o resumo: imóvel + etapa atual
+  E deve ver botões "Continuar cadastro" e "Ver status completo"
+
+Cenário: Retomada com mensagens não lidas do analista (Cenário D)
+  Dado que João tem mensagens do analista sobre o CAR que precisam de retorno
+  Quando abrir a Carla
+  Então a Carla deve destacar "Tenho uma novidade importante"
+  E exibir a quantidade de mensagens e o nome do imóvel
+  E oferecer "Ver mensagens" antes de qualquer outro fluxo
+```
+
+---
+
+## UC-013 — *(Futuro)* Integração com Apps de Mensageria via Webhook
+
+:::note Escopo futuro
+Este caso de uso descreve uma integração prevista para versões posteriores ao MVP. A Carla não depende de WhatsApp ou Telegram para funcionar — a interface web própria é o canal core. A integração com mensageria será implementada como adapter desacoplado, sem alterar o core da plataforma. Ver [ADR-008](../arquitetura/decisoes/adr-008-canal-web-proprio.md).
+:::
+
+**Fluxo planejado:**
+1. Cidadão envia mensagem ao número/bot oficial da Carla no WhatsApp ou Telegram
+2. Webhook adapter recebe a mensagem e identifica o cidadão via CPF vinculado ao Gov.br
+3. Adapter repassa a mensagem para o mesmo backend de conversas do canal web
+4. Cidadão pode consultar status e receber notificações; operações formais (criação de CAR, envio de documentos) exigem a interface web
+
+```gherkin
+Cenário: Consulta de status via app de mensageria
+  Dado que Maria tem CAR em andamento e está vinculada via Gov.br
+  Quando enviar mensagem ao bot da Carla pelo WhatsApp
+  Então deve receber o status atual do seu CAR com terminologia oficial do SICAR
+  E link para a interface web para retomar o cadastro se necessário
+```
+
+---
+
+## UC-014 — Relatório de Conformidade e Analytics
 
 **Fluxo principal:**
 1. Admin ou supervisor acessa o portal administrativo
@@ -390,8 +387,8 @@ Cenário: Número não vinculado
 Cenário: Dashboard mensal por estado
   Dado que supervisor estadual está autenticado
   Quando acessar "Analytics" e selecionar o mês atual
-  Então deve ver: total de processos submetidos, aprovados, rejeitados e pendentes
-  E tempo médio de análise e NPS do período
+  Então deve ver: total de processos submetidos, regulares, pendentes de regularização e em andamento
+  E tempo médio de análise e taxa de retificação do período
 
 Cenário: Exportação de dados
   Quando clicar "Exportar CSV"
@@ -409,6 +406,8 @@ Cenário: Acesso negado a analista comum
 ## Ver também
 
 - [Requisitos Funcionais](./requisitos.md) — RFs derivados destes UCs
-- [Fluxo do Cidadão](../design/fluxos/cidadao.md) — jornada visual
+- [Sequência de Mensagens da Carla](../design/fluxos/mensagens-simuladas.md) — scripts completos de conversa
+- [Fluxo de Abertura da Carla](../design/fluxos/abertura-carla.md) — jornada de entrada pelo car.gov.br
+- [Fluxo do Cidadão](../design/fluxos/cidadao.md) — jornada visual das 6 etapas do CAR
 - [Fluxo do Analista](../design/fluxos/analista.md) — jornada do analista
-- [API WhatsApp](../apis/whatsapp.md) — implementação técnica do canal
+- [ADR-008: Canal Web Próprio](../arquitetura/decisoes/adr-008-canal-web-proprio.md) — decisão arquitetural do canal

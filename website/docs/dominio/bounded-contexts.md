@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: Bounded Contexts
-description: Os seis contextos delimitados do CARla e como eles se relacionam.
+description: Os seis contextos delimitados da Carla e como eles se relacionam.
 tags: [engenharia, ddd, bounded-contexts, arquitetura]
 ---
 
@@ -18,18 +18,20 @@ graph TB
     IAM["🔐 IAM\nIdentidade e Acesso\n(Supporting)"]
     PROC["🌿 Processos CAR\n[CORE DOMAIN]"]
     VAL["📄 Validação Documental\n(Supporting)"]
-    WPP["💬 Canal WhatsApp\n(Supporting)"]
+    CANAL["💬 Canal de Conversa Web\n(Supporting)"]
     AI["🤖 Assistência Inteligente\n(Supporting)"]
     INT["🔌 Integrações Externas\n(Generic)"]
     ANA["📊 Analytics\n(Generic)"]
+    ADAPTER["🔌 Adapter Mensageria\n(futuro/opcional)"]
 
     IAM -- "Conformist ←" --> PROC
     PROC -- "Customer →" --> VAL
     PROC -- "Customer →" --> AI
-    PROC -- "Customer →" --> WPP
+    PROC -- "Customer →" --> CANAL
     PROC -- "Open Host ←" --> INT
     PROC -- "Customer →" --> ANA
-    WPP -- "ACL →" --> AI
+    CANAL -- "ACL →" --> AI
+    ADAPTER -. "adapter futuro" .-> CANAL
     AI -- "ACL →" --> EXT["LLMs Externos\n(OpenAI/Claude/Ollama)"]
     INT -- "ACL →" --> SYS["SICAR / SIGEF\nIBAMA / Gov.br"]
 ```
@@ -41,9 +43,9 @@ graph TB
 ### 🔐 IAM — Identidade e Acesso
 
 **Tipo:** Supporting Domain  
-**Responsabilidade:** Autenticação via Gov.br, JWT, RBAC (6 roles), gestão de sessões e vinculação de canais externos (WhatsApp)
+**Responsabilidade:** Autenticação via Gov.br, JWT, RBAC (6 roles), gestão de sessões web persistentes vinculadas ao `user_id` do Gov.br
 
-**Entidades principais:** `Usuário`, `Sessão`, `CanalVinculo`  
+**Entidades principais:** `Usuário`, `SessãoWeb`, `CanalVinculo` (futuro: para adapter de mensageria)  
 **Sistemas externos:** Gov.br (OIDC)
 
 :::note Relação com Processos
@@ -58,10 +60,10 @@ IAM é **Conformist** de Gov.br — segue o modelo de identidade do governo sem 
 **Responsabilidade:** Ciclo de vida completo do processo CAR, máquina de estados, pendências, histórico imutável
 
 **Agregados principais:** `ProcessoCAR`, `ImóvelRural`  
-**Eventos de domínio:** `ProcessoIniciado`, `ProcessoSubmetido`, `PendênciaIdentificada`, `ProcessoAprovado`, `ProcessoAprovadoComPRA`, `ProcessoRejeitado`
+**Eventos de domínio:** `ProcessoIniciado`, `ProcessoSubmetido`, `PendênciaIdentificada`, `ProcessoRegular`, `ProcessoPendenteDeRegularização`
 
 :::tip Por que é o Core Domain?
-O processo CAR é o centro do negócio — é o que o CARla existe para facilitar. Toda a complexidade de negócio reside aqui. Os outros BCs são suporte.
+O processo CAR é o centro do negócio — é o que a Carla existe para facilitar. Toda a complexidade de negócio reside aqui. Os outros BCs são suporte.
 :::
 
 ---
@@ -76,30 +78,17 @@ O processo CAR é o centro do negócio — é o que o CARla existe para facilita
 
 ---
 
-### 💬 Canal WhatsApp
+### 💬 Canal de Conversa Web
 
 **Tipo:** Supporting Domain  
-**Responsabilidade:** Recepção de mensagens (texto e áudio) via **Meta Cloud API (WhatsApp Business Platform oficial)**, transcrição de áudio com Whisper local, fluxo de vinculação Gov.br, roteamento para Assistência Inteligente
+**Responsabilidade:** Recepção e envio de mensagens da interface de chat web da Carla, gestão de sessão de conversa por `user_id`, roteamento de mensagens para Assistência Inteligente, notificações in-app (mensagens do analista, status do CAR)
 
-**Entidades:** `SessãoWhatsApp`, `VinculaçãoCanal`  
-**Armazenamento de sessão:** Redis (TTL 30 dias)  
-**Número:** armazenado apenas como hash SHA-256 (LGPD)
+**Entidades:** `SessãoConversa`, `MensagemConversa`  
+**Armazenamento de sessão:** Redis + PostgreSQL (histórico persistente)  
+**Canal principal:** Interface web própria (sem dependência de terceiros)
 
-**Pipeline de mensagem de voz:**
-```
-Cidadão envia áudio (.ogg/Opus)
-   → WhatsApp Worker baixa o arquivo via Meta Cloud API
-   → Transcrição com Whisper local via container dedicado (faster-whisper ou whisper.cpp)
-   → Texto transcrito roteado para Assistência Inteligente
-   → Resposta em texto retorna ao cidadão com prefixo "🎙️ Ouvi você dizer: ..."
-```
-
-:::tip Por que Whisper local?
-Áudio de voz contém dados biométricos — enviar para serviços externos de STT na nuvem levanta questões LGPD. O Whisper (OpenAI, open-source) roda on-premises via **container dedicado** (`faster-whisper` ou `whisper.cpp`) — **não via Ollama**, que é um runtime exclusivo para LLMs de texto e não suporta modelos de Speech-to-Text. O áudio nunca sai da infraestrutura. Ver requisitos de hardware em [Estratégia de IA](../arquitetura/ia.md#stt--transcrição-de-voz-whisper).
-:::
-
-:::warning Provider WhatsApp — use somente a API oficial
-Z-API, UltraMsg e similares são plataformas **não oficiais** que violam os Termos de Serviço do Meta. Para um sistema governamental, o uso de APIs não oficiais gera risco jurídico (ToS), operacional (banimento da conta sem aviso) e de imagem. Use exclusivamente a **Meta Cloud API (WhatsApp Business Platform)** — requer aprovação do Meta, número verificado e tem custo por conversa (~U$ 0,02–0,06 na América Latina). Ver [ADR-007](../arquitetura/decisoes/adr-007-whatsapp.md).
+:::note Adapter de Mensageria (futuro/opcional)
+Apps de mensageria (WhatsApp, Telegram etc.) poderão ser integrados futuramente como um **adapter externo desacoplado** — um serviço separado que traduz mensagens para o protocolo deste BC e repassa. O BC "Canal de Conversa Web" não depende do adapter para funcionar. Ver [ADR-008](../arquitetura/decisoes/adr-008-canal-web-proprio.md).
 :::
 
 ---
@@ -139,12 +128,14 @@ Contextos se comunicam via **eventos de domínio** (RabbitMQ) ou **Anti-Corrupti
 |---|---|
 | Processos → Validação | Evento `DocumentoAnexado` → Worker de Validação |
 | Processos → Assistente | HTTP (quando usuário inicia chat com contexto do processo) |
-| Processos → WhatsApp | Evento `PendênciaIdentificada` → Worker de Notificação |
+| Processos → Canal de Conversa | Evento `PendênciaIdentificada` → Worker de Notificação |
 | Processos → Integrações | Evento `ProcessoSubmetido` → Worker de Integração |
-| WhatsApp → Assistente | HTTP interno (roteamento de mensagem) |
+| Canal de Conversa → Assistente | HTTP interno (roteamento de mensagem) |
+| Adapter Mensageria → Canal de Conversa | HTTP (traduz e repassa mensagem externa) |
 
 ## Ver também
 
 - [Event Storming](./event-storming.md) — eventos e comandos por BC
 - [Arquitetura — Containers](../arquitetura/servicos.md) — implementação de cada BC como serviço
 - [ADR-003 — EDA](../arquitetura/decisoes/adr-003-eda.md) — por que eventos em vez de chamadas síncronas
+- [ADR-008 — Canal Web Próprio](../arquitetura/decisoes/adr-008-canal-web-proprio.md) — decisão de canal

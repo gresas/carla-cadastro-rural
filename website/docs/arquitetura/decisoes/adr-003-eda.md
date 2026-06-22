@@ -11,7 +11,7 @@ tags: [adr, eda, eventos, outbox, rabbitmq]
 
 ## Contexto
 
-O sistema tem workflows longos (processo CAR pode demorar dias), operações assíncronas (OCR, LLM, integrações externas) e múltiplos consumidores para o mesmo evento (notificação email + WhatsApp + analytics).
+O sistema tem workflows longos (processo CAR pode demorar dias), operações assíncronas (OCR, LLM, integrações externas) e múltiplos consumidores para o mesmo evento (notificação email + Carla + analytics).
 
 ## Decisão
 

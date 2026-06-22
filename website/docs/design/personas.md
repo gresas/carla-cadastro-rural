@@ -25,7 +25,7 @@ Esta página foca no **contexto de uso real** — onde, como e com que dispositi
 3. "Quero saber se meu processo avançou sem precisar entrar em portal"
 
 ### Padrões de Interação
-- Prefere mensagens curtas, no estilo WhatsApp
+- Prefere mensagens curtas, em texto simples (chat)
 - Não lê textos longos — usa scroll rápido
 - Confia em tutoriais com foto/vídeo mais que em texto
 
@@ -35,7 +35,7 @@ Esta página foca no **contexto de uso real** — onde, como e com que dispositi
 | Letramento digital baixo | Labels visíveis (sem só ícones), linguagem simples |
 | Conectividade instável | Cache de rascunho local, upload com retry automático |
 | Tela pequena | Stepper vertical, botões fullwidth, sem modais complexos |
-| Notificação no canal certo | WhatsApp como canal prioritário |
+| Notificação no canal certo | Carla (car.gov.br) como canal principal |
 
 ---
 
@@ -58,7 +58,7 @@ Esta página foca no **contexto de uso real** — onde, como e com que dispositi
 |---|---|
 | Acesso restrito ao escopo autorizado | Exibe só processos com autorização do proprietário |
 | Confirmação antes de assinar | Modal de revisão com checklist antes da submissão como RT |
-| Notificação proativa de pendências | E-mail imediato + WhatsApp nos processos que assina |
+| Notificação proativa de pendências | E-mail imediato + notificação na Carla (car.gov.br) nos processos que assina |
 
 ---
 
@@ -92,20 +92,20 @@ Esta página foca no **contexto de uso real** — onde, como e com que dispositi
 journey
     title Jornada do Produtor Rural (João)
     section Descoberta
-      Ouve falar do CARla: 3: João
-      Acessa pelo WhatsApp: 4: João
+      Ouve falar da Carla: 3: João
+      Acessa car.gov.br e abre a Carla: 4: João
     section Onboarding
-      Vincula conta Gov.br via link: 3: João, CARla
-      Cria processo no portal: 2: João
+      Faz login com Gov.br: 3: João, CARla
+      Inicia processo pelo chat: 2: João
     section Preenchimento
       Tira dúvida com assistente IA: 5: João, CARla
       Faz upload da matrícula: 3: João
       Documento validado automaticamente: 5: CARla
     section Submissão
       Submete processo: 4: João
-      Recebe confirmação no WhatsApp: 5: João, CARla
+      Recebe confirmação na Carla: 5: João, CARla
     section Acompanhamento
-      Recebe notificação de pendência no WPP: 4: João, CARla
+      Recebe notificação de pendência na Carla: 4: João, CARla
       Corrige e reenvia: 3: João
       Processo aprovado: 5: João
 ```

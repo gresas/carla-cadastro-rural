@@ -29,50 +29,44 @@ Engenheiros e PMs técnicos. Contexto de produto: [Casos de Uso](../produto/caso
 
 | Evento | Dispara por | Políticas |
 |---|---|---|
-| `ProcessoIniciado` | Cidadão → IniciarProcesso | CriarImóvelAssociado, IniciarAssistenteBV |
+| `ProcessoIniciado` | Cidadão → IniciarProcesso | CriarImóvelAssociado, IniciarAssistente |
 | `GeometriaDefinida` | Cidadão → DefinirGeometria | ValidarGeometriaAssíncrono |
-| `ProcessoSubmetido` | Cidadão → SubmeterProcesso | GerarNúmeroProtocoloSICAR, NotificarAnalistaDisponível |
+| `ProcessoSubmetido` | Cidadão → SubmeterProcesso | GerarRecibodeInscrição, NotificarAnalistaDisponível |
 | `ProcessoEmAnálise` | Analista → AssumirProcesso | GerarDossiêAutomático |
-| `PendênciaIdentificada` | Analista → CriarPendência | NotificarCidadão (email + WhatsApp) |
-| `ProcessoAprovado` | Analista → AprovarProcesso | EmitirCertificadoCAR, NotificarCidadão |
-| `ProcessoAprovadoComPRA` | Analista → AprovarComPRA | EmitirCertificadoCAR, NotificarCidadãoSobrePRAObrigatório, AgendarLembretePrazoAdesãoPRA |
-| `ProcessoRejeitado` | Analista → RejeitarProcesso | NotificarCidadão, IniciarPrazoRecurso |
-| `RecursoInterposto` | Cidadão → InterpорRecurso | EscalonarParaSupervisor |
+| `PendênciaIdentificada` | Analista → CriarPendência | NotificarCidadão (email + Canal Web) |
+| `ProcessoRegular` | Analista → EncaminharComoRegular | DisponibilizarRecibodeInscrição, NotificarCidadão |
+| `ProcessoPendenteDeRegularização` | Analista → EncaminharComPendência | NotificarCidadãoSobrePendência, LiberarAbaRegularizaçãoAmbiental |
 
-### Máquina de Estados
+### Máquina de Estados (Terminologia oficial SICAR)
 
 ```mermaid
 stateDiagram-v2
-    [*] --> rascunho: IniciarProcesso
-    rascunho --> em_preenchimento: PreencherDados
-    em_preenchimento --> submetido: SubmeterProcesso
-    submetido --> em_analise: AnalistaAssume
-    em_analise --> pendente: CriarPendência
-    pendente --> em_correcao: CidadãoResponde
-    em_correcao --> em_analise: CorreçãoValidada
-    em_analise --> aprovado: AprovarProcesso
-    em_analise --> aprovado_com_pra: AprovarComPRA
-    aprovado_com_pra --> [*]
-    em_analise --> rejeitado: RejeitarProcesso
-    rejeitado --> recurso: InterpорRecurso
-    recurso --> em_analise: RecursoAcatado
-    recurso --> rejeitado: RecursoNegado
-    aprovado --> [*]
-    rejeitado --> [*]
+    [*] --> EmAndamento: IniciarProcesso
+    EmAndamento --> Cadastrado: PreencherTodasEtapas
+    Cadastrado --> GravadoEnviado: SubmeterProcesso
+    GravadoEnviado --> EmAnálise: AnalistaAssume
+    EmAnálise --> PendenteDeRegularização: CriarPendência
+    PendenteDeRegularização --> EmAnálise: CidadãoResponde
+    EmAnálise --> Regular: EncaminharComoRegular
+    Regular --> [*]
+    PendenteDeRegularização --> [*]: AderirAoPRA
 ```
 
 ---
 
-## BC: Canal WhatsApp
+## BC: Canal de Conversa Web
 
 | Evento | Dispara por | Políticas |
 |---|---|---|
-| `MensagemWhatsAppRecebida` | Cidadão → EnviarMensagem (texto) | VerificarVinculação |
-| `ÁudioWhatsAppRecebido` | Cidadão → EnviarÁudio | TranscreverComWhisper, VerificarVinculação |
-| `ÁudioTranscrito` | Worker → TranscreverÁudio | RoteadoComoMensagemTexto |
-| `SessãoNãoAutenticada` | Sistema → ChecarSessão | GerarTokenVinculação, EnviarLinkVinculação |
-| `NúmeroWhatsAppVinculado` | Gov.br → RetornarCallback | NotificarBotDaVinculação, ContinuarAtendimento |
-| `ConversaçãoRoteada` | Sistema → ClassificarMensagem | RoteadoParaAssistenteIA ou RedirecionadoAoPortal |
+| `MensagemWebRecebida{canal: web}` | Cidadão → EnviarMensagem | ClassificarIntenção, RoteadoParaAssistenteIA |
+| `SessãoIniciada` | Cidadão → AbrirCarla | VerificarContextoAtivo (mensagens não lidas, etapa do CAR) |
+| `SessãoRetomada` | Cidadão → RetornarÀCarla | ExibirResumoEtapa, ExibirMensagensNãoLidas |
+| `MensagemAnalistaDelivered` | Sistema → NotificarCidadão | MarcarComoNãoLida, PriorizarNaReta |
+| `ConversaçãoRoteada` | Sistema → ClassificarMensagem | RoteadoParaAssistenteIA ou RedirecionadoParaEtapaCAR |
+
+:::note Adapter de Mensageria (futuro/opcional)
+Quando o adapter de mensageria for implementado, ele gerará o mesmo evento `MensagemRecebida{canal: whatsapp | telegram}` — o BC de Canal de Conversa os processa da mesma forma, apenas com metadados de canal diferentes. O domínio é agnóstico ao canal de origem.
+:::
 
 ---
 
@@ -94,15 +88,17 @@ stateDiagram-v2
 | `ProcessoIniciado` | Processos | `processo.iniciado.v1` |
 | `ProcessoSubmetido` | Processos | `processo.submetido.v1` |
 | `PendênciaIdentificada` | Processos | `processo.pendencia_identificada.v1` |
-| `ProcessoAprovado` | Processos | `processo.aprovado.v1` |
-| `ProcessoAprovadoComPRA` | Processos | `processo.aprovado_com_pra.v1` |
-| `ProcessoRejeitado` | Processos | `processo.rejeitado.v1` |
+| `ProcessoRegular` | Processos | `processo.regular.v1` |
+| `ProcessoPendenteDeRegularização` | Processos | `processo.pendente_regularizacao.v1` |
 | `DocumentoRecebido` | Validação | `documento.recebido.v1` |
 | `DocumentoValidado` | Validação | `documento.validado.v1` |
-| `NúmeroWhatsAppVinculado` | WhatsApp | `canal.whatsapp.vinculado.v1` |
-| `MensagemWhatsAppRecebida` | WhatsApp | `canal.whatsapp.mensagem.v1` |
-| `ÁudioWhatsAppRecebido` | WhatsApp | `canal.whatsapp.audio.v1` |
-| `ÁudioTranscrito` | WhatsApp | `canal.whatsapp.audio_transcrito.v1` |
+| `MensagemWebRecebida` | Canal Web | `canal.web.mensagem.v1` |
+| `SessãoIniciada` | Canal Web | `canal.web.sessao_iniciada.v1` |
+| `MensagemAnalistaDelivered` | Canal Web | `canal.web.notificacao_analista.v1` |
+
+> **Adapter futuro (routing keys reservadas):**  
+> `canal.mensageria.mensagem.v1` — mensagem recebida de app de mensageria externo  
+> `canal.mensageria.vinculado.v1` — número vinculado ao user_id Gov.br
 
 :::tip Versioning de eventos
 Todos os routing keys terminam em `.v1`. Quando o payload mudar de forma incompatível, crie `.v2` e mantenha ambos ativos por 1 ciclo de deploy.

@@ -20,8 +20,8 @@ João herdou a terra do pai. Usa smartphone Android básico, tem dificuldade com
 | Dimensão | Detalhe |
 |---|---|
 | **Objetivo principal** | Regularizar a propriedade para acessar crédito rural (exigência do banco) |
-| **Letramento digital** | Baixo — usa WhatsApp, pouco além |
-| **Canais preferidos** | WhatsApp, telefone, atendimento presencial |
+| **Letramento digital** | Baixo — usa apps de mensageria no celular, pouco além |
+| **Canais preferidos** | Celular (chat, voz), atendimento presencial |
 | **Maior frustração** | "Não entendo o que estão pedindo e não tenho com quem tirar dúvida" |
 
 :::tip Job-to-be-done
@@ -29,9 +29,9 @@ João quer regularizar o imóvel **sem contratar consultor** — ele precisa de 
 :::
 
 **Critérios de satisfação:**
-- Conseguir iniciar e completar o processo sem ajuda presencial
+- Conseguir iniciar e completar o processo sem ajuda presencial, via `car.gov.br`
 - Receber notificação de pendência explicando o que falta em linguagem clara
-- Acompanhar o status do WhatsApp, sem precisar entrar em portal
+- Acompanhar o status pela Carla (abre no celular, sem instalar app)
 
 ---
 

@@ -19,7 +19,7 @@ chore(deps): atualizar fastapi para 0.116
 
 **Branches:**
 ```
-feat/CAR-123-vinculacao-whatsapp
+feat/CAR-123-abertura-carla
 fix/CAR-456-timeout-govbr
 chore/atualizar-dependencias
 ```

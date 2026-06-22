@@ -33,18 +33,38 @@ O SICAR federal permanece como **repositório central** dos registros — qualqu
 
 ---
 
-## Posicionamento do CARla
+## Exemplo Mapeado: Acre
 
-O CARla integra diretamente com o **SICAR federal** — o repositório central que todos os estados alimentam. Para estados com plataformas próprias:
+O fluxo de cadastro do CAR no Acre foi mapeado como referência para a implementação das 6 etapas guiadas da Carla. O Acre usa o SICAR federal como plataforma de cadastro, com as seguintes etapas:
 
-1. O CARla identifica o estado do imóvel a partir do município informado na Etapa 1
+| Etapa | Dados principais |
+|---|---|
+| **1. Cadastrante** | CPF, data de nascimento, nome completo, nome da mãe, representante legal |
+| **2. Imóvel** | Nome do imóvel, município, CEP, zona (rural/urbana), acesso, correspondência |
+| **3. Domínio** | Proprietário(s)/possuidor(es) — PF ou PJ — com documentos comprobatórios |
+| **4. Documentação** | Tipo (Propriedade ou Posse), área (ha), matrícula/CCIR/SNCR/NIRF, Reserva Legal averbada |
+| **5. Geo** | Demarcação do polígono do imóvel (a Carla sugere com base nos dados já informados) |
+| **6. Informações (PRA)** | 12 perguntas sobre situação ambiental: adesão ao PRA, déficit de RL, TAC, PRAD, RPPN, CRF, multas etc. |
+
+Este mapeamento é a base do fluxo conversacional da Carla e dos scripts de mensagem documentados em [Sequência de Mensagens](../design/fluxos/mensagens-simuladas.md).
+
+---
+
+## Posicionamento da Carla
+
+A Carla integra diretamente com o **SICAR federal** — o repositório central que todos os estados alimentam. Para estados com plataformas próprias:
+
+1. A Carla identifica o estado do imóvel a partir do município informado na Etapa 2
 2. Orienta o produtor sobre o fluxo correto para aquele estado
 3. Em uma evolução futura, adaptadores estaduais podem ser desenvolvidos conforme demanda
+
+A Carla é um **canal alternativo** — o produtor pode continuar usando o SICAR ou a plataforma estadual diretamente, se preferir.
 
 ---
 
 ## Ver também
 
-- [Glossário — SICAR](./glossario.md)
+- [Glossário — SICAR, Recibo de Inscrição](./glossario.md)
+- [Sequência de Mensagens — Etapas de Criação do CAR](../design/fluxos/mensagens-simuladas.md)
 - [Visão do Produto](../produto/visao.md)
 - [Roadmap — Fase 3](../produto/roadmap.md)

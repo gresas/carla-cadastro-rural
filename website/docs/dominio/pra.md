@@ -13,9 +13,25 @@ Engenheiros, PMs e analistas. O PRA define um estado de processo que o CARla pre
 
 ## O que é o PRA
 
-O **Programa de Regularização Ambiental** é o instrumento pelo qual proprietários rurais com déficit de Área de Preservação Permanente (APP) ou Reserva Legal (RL) se comprometem a recuperar as áreas degradadas.
+O **Programa de Regularização Ambiental** é o instrumento pelo qual proprietários rurais com déficit de Área de Preservação Permanente (APP) ou Reserva Legal (RL) se comprometem a recuperar as áreas degradadas dentro de um prazo estabelecido em Termo de Compromisso firmado com o órgão ambiental.
 
-**Base legal:** art. 59 da Lei 12.651/2012 (Código Florestal).
+**Base legal:**
+- **Lei nº 12.651/2012** (Código Florestal), art. 59 — institui o PRA nos estados e Distrito Federal
+- **Decreto nº 7.830/2012** — regulamenta o SICAR, define a natureza declaratória do CAR e estabelece os instrumentos do PRA
+
+### Instrumentos do PRA (Decreto 7.830/2012)
+
+| Instrumento | Descrição |
+|---|---|
+| **Termo de Compromisso** | Documento firmado entre o proprietário e o órgão ambiental estadual, estabelecendo o prazo e o plano de regularização |
+| **PRAD** | Projeto de Recuperação de Áreas Degradadas — plano técnico detalhado de recomposição vegetal |
+| **CRA** | Cota de Reserva Ambiental — permite compensar déficit de Reserva Legal em outra propriedade |
+
+### Natureza declaratória do CAR
+
+O CAR tem **natureza declaratória** — o cidadão declara os dados, o órgão analisa. A análise resulta em:
+- **Regular** — dados declarados consistentes e limites atendidos
+- **Pendente de Regularização** — déficit identificado; notificação única é enviada ao proprietário (art. 7º do Decreto 7.830/2012); prazo para adesão ao PRA começa a partir da notificação
 
 ## Quando é exigido
 
@@ -31,20 +47,20 @@ O PRA é obrigatório quando a propriedade tem **déficit ambiental** — ou sej
 Imóveis que tinham intervenção em APP ou RL antes de 22/07/2008 podem ter área de recuperação reduzida conforme módulos fiscais — a regra varia por bioma e tamanho do imóvel. O assistente IA deve ser capaz de orientar o cidadão sobre essa regra.
 :::
 
-## Relação com o CAR no CARla
+## Relação com o CAR na Carla
 
 ```
-CAR (submissão) → Análise → Resultado
-                               ├── Aprovado        → Certificado CAR
-                               ├── Aprovado com PRA → Certificado CAR + obrigação de adesão ao PRA
-                               └── Rejeitado        → Motivo + prazo de recurso
+CAR (submissão) → Em Análise → Resultado SICAR
+                                  ├── Regular                    → Recibo de Inscrição
+                                  └── Pendente de Regularização  → Recibo + aba Regularização Ambiental + prazo PRA
 ```
 
-O estado `aprovado_com_pra` no CARla significa:
+O status `Pendente de Regularização` significa:
 
-- O imóvel está **regularmente cadastrado** no CAR
+- O imóvel está **regularmente inscrito** no CAR (Recibo de Inscrição emitido)
 - O proprietário **deve aderir ao PRA** junto ao órgão ambiental estadual
-- O Certificado CAR é emitido, mas inclui a observação sobre a obrigação de regularização
+- A **aba Regularização Ambiental** é liberada no Demonstrativo da Situação do CAR
+- A Carla notifica o cidadão e orienta os próximos passos
 
 ## O que o CARla faz (e não faz)
 
@@ -63,29 +79,34 @@ Ao aprovar com PRA, o analista deve registrar o **prazo para adesão** (definido
 O CARla não substitui o sistema de gestão do PRA. Ele apenas identifica a necessidade, notifica o cidadão e orienta os próximos passos. A adesão e o acompanhamento do PRA ocorrem nos sistemas do órgão ambiental estadual.
 :::
 
-## Mensagem ao Cidadão — Aprovado com PRA
+## Mensagem ao Cidadão — Pendente de Regularização
 
 ```
-✅ Seu CAR foi aprovado!
-Número de protocolo: MA-1234567-12345678901234
+⚠️ Seu CAR foi analisado e está Pendente de Regularização.
 
-⚠️ Atenção: sua propriedade precisa de regularização ambiental.
-A análise identificou que sua área de Reserva Legal está
+O analista identificou que sua propriedade possui déficit de Reserva Legal
 abaixo do mínimo exigido pelo Código Florestal.
+
+Seu Recibo de Inscrição do Imóvel Rural no CAR está disponível:
+Recibo: MA-1234567-12345678901234
 
 Próximo passo obrigatório: aderir ao Programa de Regularização
 Ambiental (PRA) junto à SEMA-MA.
 
 O que fazer agora:
-1. Acesse o portal da SEMA-MA
-2. Informe seu número de protocolo CAR
-3. Solicite a adesão ao PRA
+1. Acesse a aba "Regularização Ambiental" no Demonstrativo da Situação do CAR
+2. Leia a mensagem completa do analista
+3. Formalize a adesão ao PRA junto à SEMA-MA
 
-Dúvidas? Pergunte ao assistente do CARla.
+Dúvidas? Pergunte à Carla.
+
+[ 📬 Ver mensagem completa ] [ 🌿 Saber mais sobre o PRA ]
 ```
 
 ## Ver também
 
-- [Glossário — PRA, Déficit Ambiental](./glossario.md)
-- [Event Storming — ProcessoAprovadoComPRA](./event-storming.md)
-- [Fluxo do Analista — Aprovado com PRA](../design/fluxos/analista.md)
+- [Fundamentação Legal](./fundamentacao-legal.md) — Lei 12.651/2012 e Decreto 7.830/2012
+- [Glossário — PRA, Termo de Compromisso, CRA, PRAD](./glossario.md)
+- [Event Storming — ProcessoPendenteDeRegularização](./event-storming.md)
+- [Fluxo do Analista — Pendência de Regularização](../design/fluxos/analista.md)
+- [Sequência de Mensagens — Seção de Dúvidas sobre PRA](../design/fluxos/mensagens-simuladas.md)

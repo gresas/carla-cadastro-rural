@@ -32,7 +32,7 @@ O usuário nunca deve ficar sem saber o que está acontecendo. Cada ação deve 
 | Upload iniciado | Barra de progresso + "Enviando..." |
 | Upload concluído | "Recebido! Estamos verificando o documento." |
 | Validação concluída | ✓ "Documento válido" ou ✗ "Problema encontrado — veja o que fazer" |
-| Pendência criada | Notificação in-app + e-mail/WhatsApp com link direto |
+| Pendência criada | Notificação in-app + e-mail com link direto para a Carla |
 
 ### 3. Erros são oportunidades de orientação
 

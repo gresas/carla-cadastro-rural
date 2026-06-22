@@ -1,13 +1,17 @@
 ---
 sidebar_position: 8
-title: "ADR-007: Provider WhatsApp"
-description: Por que escolhemos a Meta Cloud API em vez de Z-API ou Twilio para o canal WhatsApp.
-tags: [adr, whatsapp, meta, integração]
+title: "ADR-007: Provider WhatsApp (Superada)"
+description: Decisão superada — integração WhatsApp deixou de ser canal core. Ver ADR-008.
+tags: [adr, whatsapp, meta, integração, superada]
 ---
+
+:::caution Decisão Superada
+Esta decisão foi superada pela [ADR-008: Canal Web Próprio](./adr-008-canal-web-proprio.md). O WhatsApp deixou de ser o canal principal da Carla — a interface web própria é o canal core. Integração com mensageria (WhatsApp, Telegram etc.) pode ser implementada futuramente como adapter desacoplado.
+:::
 
 # ADR-007: Meta Cloud API como Provider WhatsApp
 
-**Status:** Aceito | **Data:** 2026-06-01
+**Status:** Superada | **Data original:** 2026-06-01 | **Superada em:** 2026-06-22
 
 ## Contexto
 

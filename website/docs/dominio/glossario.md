@@ -39,9 +39,16 @@ Engenheiros, PMs e designers. A linguagem ubíqua garante que todo o time fala a
 | **Módulo Fiscal** | Unidade de medida agrária municipal — define a categoria do imóvel |
 | **Bioma** | Região geográfica com características ecológicas que determina o percentual de RL |
 | **Embargo** | Restrição legal ao uso do imóvel por infração ambiental (IBAMA) |
-| **Vinculação WhatsApp** | Associação entre um número de WhatsApp e um usuário autenticado via Gov.br |
+| **Recibo de Inscrição do Imóvel Rural no CAR** | Documento oficial gerado pelo SICAR após a análise do cadastro com resultado positivo. Comprova que o imóvel está regularmente inscrito no CAR. É o substituto do antigo "Certificado CAR" — o nome oficial é Recibo de Inscrição. |
+| **Central do Proprietário/Possuidor** | Área do SICAR dedicada ao cidadão (proprietário ou possuidor do imóvel) para acompanhamento do status do cadastro, visualização de mensagens do analista e acesso ao Demonstrativo da Situação do CAR. |
+| **Demonstrativo da Situação do CAR** | Documento gerado pelo SICAR que consolida a situação atual do cadastro do imóvel: status, pendências identificadas, situação de APP e Reserva Legal, e aba de Regularização Ambiental quando aplicável. |
+| **Aba Regularização Ambiental** | Seção do Demonstrativo da Situação do CAR liberada quando o imóvel é identificado com passivo ambiental. É por esta aba que o proprietário formaliza a adesão ao PRA e acompanha o Termo de Compromisso. |
+| **Termo de Compromisso** | Instrumento do PRA pelo qual o proprietário rural formaliza junto ao órgão ambiental o compromisso de regularizar o passivo ambiental dentro de um prazo estabelecido. Base legal: Decreto 7.830/2012. |
+| **PRAD** | Projeto de Recuperação de Áreas Degradadas — plano técnico de recomposição de vegetação nativa, exigido em alguns casos como instrumento do PRA. |
+| **CRA** | Cota de Reserva Ambiental — título representativo de vegetação nativa preservada além do mínimo exigido, que pode ser usado para compensação de déficit de Reserva Legal em outra propriedade. Base legal: art. 44 da Lei 12.651/2012. |
 | **Responsável Técnico (RT)** | Profissional habilitado (engenheiro florestal, agrônomo ou técnico ambiental registrado no CREA/CONFEA/CFBio) que assina digitalmente o processo CAR e tem responsabilidade técnica e legal pelos dados prestados. Obrigatório para imóveis acima de 4 módulos fiscais na maioria dos estados. |
-| **PRA** | Programa de Regularização Ambiental — programa de recuperação de APP e Reserva Legal, exigido para imóveis com déficit ambiental após o cadastro. Base legal: art. 59 da Lei 12.651/2012. O CAR é pré-requisito para adesão ao PRA. |
+| **Status do cadastro (SICAR)** | Sequência oficial de status no SICAR: `Em Andamento` → `Cadastrado` → `Gravado/Enviado` → `Em Análise` → `Regular` ou `Pendente de Regularização`. Não usar termos genéricos como "aprovado" ou "rejeitado". |
+| **PRA** | Programa de Regularização Ambiental — programa de recuperação de APP e Reserva Legal, exigido para imóveis com déficit ambiental após o cadastro. Base legal: art. 59 da Lei 12.651/2012 e arts. 6º e 7º do Decreto 7.830/2012. O CAR é pré-requisito para adesão ao PRA. |
 | **Déficit Ambiental** | Situação em que a propriedade não atende os percentuais mínimos de APP ou Reserva Legal definidos pelo Código Florestal. Imóveis com déficit não são "rejeitados" — são aprovados com obrigação de aderir ao PRA. |
 | **Conversa** | Sessão de chat com o assistente inteligente, com contexto preservado |
 | **Base de Conhecimento** | Conjunto de documentos normativos indexados para o RAG do assistente IA |

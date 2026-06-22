@@ -21,9 +21,10 @@ PMs e gestores. As métricas técnicas têm alertas configurados em [Observabili
 | Taxa de retenção pós-pendência | ≥ 60% | ≥ 75% |
 
 ### Qualidade dos Dados
-| Métrica | Situação Atual (est.) | Meta |
+| Métrica | Situação Atual | Meta |
 |---|---|---|
-| Taxa de aprovação na 1ª tentativa | ~40% | ≥ 70% |
+| **Taxa de retificação** (KPI norte) | **77% (2026, SICAR/MMA)** | **< 40%** |
+| Taxa de aprovação na 1ª tentativa | ~23% (inverso da retificação) | ≥ 60% |
 | Redução de pendências por doc. incompleta | — | −50% |
 | Precisão do OCR (extração de campos) | — | ≥ 90% |
 
