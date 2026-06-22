@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 title: Requisitos
-description: Requisitos funcionais e não-funcionais do CARla organizados por módulo.
+description: Requisitos funcionais e não-funcionais da Carla organizados por módulo.
 tags: [produto, requisitos, rf, rnf]
 ---
 
@@ -13,69 +13,69 @@ PMs e tech leads. Os RNFs de performance e segurança têm detalhes em [Arquitet
 
 ## Requisitos Funcionais
 
-### Portal do Cidadão
+### Interface de Chat (Canal Web)
 
 | ID | Requisito | Prioridade |
 |---|---|---|
 | RF-001 | Autenticação via Gov.br (OAuth2/OIDC, níveis bronze/prata/ouro) | Must |
-| RF-002 | Perfil do usuário com dados básicos e central de privacidade LGPD | Must |
-| RF-003 | Criar processo CAR com dados básicos do imóvel | Must |
-| RF-004 | Formulário em etapas (stepper) com progresso visual | Must |
-| RF-005 | Upload de documentos (PDF/JPG/PNG/TIFF, até 50MB) | Must |
-| RF-006 | Dashboard com lista de processos e status em tempo real | Must |
-| RF-007 | Linha do tempo do processo (histórico imutável) | Should |
-| RF-008 | Visualização de pendências com prazo e instrução de resolução | Must |
-| RF-009 | Resposta a pendências com envio de documentos complementares | Must |
-| RF-010 | Notificações in-app e e-mail | Should |
-| RF-010a | Canal WhatsApp com autenticação vinculada ao Gov.br | Should |
-| RF-010b | Fluxo de vinculação WhatsApp via link temporário | Should |
-| RF-010c | Notificação proativa de pendências via WhatsApp | Should |
+| RF-002 | Sessão web persistente vinculada ao `user_id` do Gov.br | Must |
+| RF-003 | Ao retornar, a Carla resume etapa atual, mensagens não lidas do analista e próximas ações | Must |
+| RF-004 | Histórico de conversa acessível pelo usuário em sessões futuras | Should |
+| RF-005 | Perfil do usuário com dados básicos e central de privacidade LGPD | Must |
+| RF-006 | Sem dependência de APIs de mensageria proprietárias (WhatsApp, Telegram) no canal core | Must |
+| RF-007 | Integração com apps de mensageria implementável futuramente como adapter desacoplado | Could |
 
-### Assistente Inteligente
+### Fluxo de Criação do CAR (6 etapas)
 
 | ID | Requisito | Prioridade |
 |---|---|---|
-| RF-011 | Chat conversacional com streaming de respostas (SSE) | Must |
-| RF-012 | Base de conhecimento RAG (normativos CAR, manuais SICAR) | Must |
-| RF-013 | Classificação de intenção (dúvida, status, documento) | Should |
-| RF-014 | Contexto do processo ativo nas respostas | Should |
-| RF-015 | Solicitação de documento com link direto ao upload | Could |
-| RF-016 | Escalonamento para analista humano quando necessário | Should |
-| RF-017 | Histórico de conversas acessível pelo usuário | Could |
-| RF-017a | Sessão WhatsApp com contexto do processo preservado | Should |
-| RF-017b | Direcionamento para portal web em operações críticas | Must |
-| RF-017c | Transcrição de mensagens de voz recebidas pelo WhatsApp (Whisper local) | Should |
+| RF-010 | Criar processo CAR guiado pelas 6 etapas: Cadastrante → Imóvel → Domínio → Documentação → Geo → Informações | Must |
+| RF-011 | Reaproveitamento de dados entre etapas: dado já coletado nunca é solicitado novamente | Must |
+| RF-012 | Confirmação em bloco ao final de cada etapa (não campo a campo) | Must |
+| RF-013 | Progresso salvo automaticamente — usuário pode parar e retomar em qualquer etapa | Must |
+| RF-014 | Etapa Geo com sugestão de demarcação de polígonos pré-carregada com base nos dados já informados (área, município) — o usuário ajusta e confirma; não é necessário desenhar do zero | Must |
+| RF-015 | Aceitar upload de KML ou SHP como alternativa ao ajuste manual de polígono | Should |
 
-### Motor de Validação
+### Assistente Conversacional (Carla)
 
 | ID | Requisito | Prioridade |
 |---|---|---|
-| RF-018 | OCR de documentos (PDF e imagens) | Must |
-| RF-019 | Extração de campos estruturados por tipo de documento | Must |
-| RF-020 | Validação de consistência entre campos extraídos e declarados | Must |
-| RF-021 | Cruzamento com bases externas (IBGE) | Should |
-| RF-022 | Geração automática de pendência quando inconsistência detectada | Must |
-| RF-023 | Retry de OCR após reenvio de documento com melhor qualidade | Should |
+| RF-020 | Chat conversacional com streaming de respostas (SSE) | Must |
+| RF-021 | Base de conhecimento RAG (normativos CAR, manuais SICAR) | Must |
+| RF-022 | Classificação de intenção (dúvida, status, documento, retomada de etapa) | Should |
+| RF-023 | Contexto do processo ativo nas respostas | Should |
+| RF-024 | Escalonamento para analista humano quando necessário — Carla encaminha a pergunta | Should |
 
-### Ferramenta de Geometria
+### Upload e Validação Documental
 
 | ID | Requisito | Prioridade |
 |---|---|---|
-| RF-031 | Exibir mapa Leaflet com camada de imagem de satélite (tile layer) centrado no município declarado na Etapa 1 | Must |
-| RF-032 | Permitir marcação de vértices por toque/clique sobre a imagem de satélite, com cálculo de área em tempo real | Must |
-| RF-033 | Aceitar upload de KML ou SHP como alternativa ao desenho manual | Should |
+| RF-030 | Upload de documentos (PDF/JPG/PNG/TIFF, até 50MB) via interface de chat | Must |
+| RF-031 | OCR de documentos assíncrono (< 60s) | Must |
+| RF-032 | Extração de campos estruturados por tipo de documento | Must |
+| RF-033 | Validação de consistência entre dados extraídos e dados declarados nas etapas anteriores | Must |
+| RF-034 | Geração automática de pendência quando inconsistência detectada | Must |
+
+### Acompanhamento de Status
+
+| ID | Requisito | Prioridade |
+|---|---|---|
+| RF-040 | Status do CAR exibido com a terminologia oficial do SICAR (Em Andamento → Cadastrado → Gravado/Enviado → Em Análise → Regular / Pendente de Regularização) | Must |
+| RF-041 | Notificação in-app e e-mail quando analista criar pendência | Must |
+| RF-042 | Recibo de Inscrição do Imóvel Rural no CAR disponível para download quando status for "Regular" | Must |
+| RF-043 | Demonstrativo da Situação do CAR com aba Regularização Ambiental quando aplicável | Should |
 
 ### Portal do Analista
 
 | ID | Requisito | Prioridade |
 |---|---|---|
-| RF-024 | Fila de processos com filtros e ordenação por prioridade/risco | Must |
-| RF-025 | Tela unificada com dados, documentos validados e histórico | Must |
-| RF-026 | Geração automática de dossiê PDF por IA | Should |
-| RF-027 | Aprovar ou rejeitar processo com motivo obrigatório | Must |
-| RF-028 | Criar pendência manual com descrição e prazo | Must |
-| RF-029 | Dashboard de produtividade por analista | Should |
-| RF-030 | Canal de comunicação com cidadão vinculado ao processo | Could |
+| RF-050 | Fila de processos com filtros e ordenação por prioridade/risco | Must |
+| RF-051 | Tela unificada com dados, documentos validados e histórico | Must |
+| RF-052 | Geração automática de dossiê PDF por IA | Should |
+| RF-053 | Encaminhar processo como Regular ou criar pendência de regularização, com motivo obrigatório | Must |
+| RF-054 | Criar pendência manual com descrição e prazo | Must |
+| RF-055 | Dashboard de produtividade por analista | Should |
+| RF-056 | Canal de comunicação com cidadão vinculado ao processo | Could |
 
 ---
 
@@ -90,11 +90,12 @@ PMs e tech leads. Os RNFs de performance e segurança têm detalhes em [Arquitet
 | RNF-005 | Disponibilidade | SLA do sistema | ≥ 99,5% |
 | RNF-006 | Disponibilidade | RTO (Recovery Time Objective) | < 4h |
 | RNF-007 | Disponibilidade | RPO (Recovery Point Objective) | < 1h |
+| RNF-008 | Portabilidade | Open source, sem dependências de fornecedores proprietários no core | Must |
 | RNF-010 | Segurança | Autenticação | OAuth2/OIDC + JWT RS256 |
 | RNF-013 | Conformidade | LGPD | 100% conforme |
 | RNF-014 | Acessibilidade | Padrão | WCAG 2.1 nível AA |
 | RNF-017 | Manutenibilidade | Cobertura de testes | ≥ 80% |
 
 :::caution LGPD — requisito inegociável
-Todos os dados pessoais (CPF, e-mail, geometria do imóvel) devem ser tratados conforme a Lei 13.709/2018. Ver [LGPD](../seguranca/lgpd.md).
+Todos os dados pessoais (CPF, e-mail, geometria do imóvel, histórico de conversa) devem ser tratados conforme a Lei 13.709/2018. Ver [LGPD](../seguranca/lgpd.md).
 :::

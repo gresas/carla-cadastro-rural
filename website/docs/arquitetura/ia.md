@@ -82,14 +82,14 @@ Query do usuário
 
 ## STT — Transcrição de Voz (Whisper)
 
-O canal WhatsApp aceita mensagens de áudio, que são transcritas localmente antes de serem processadas pelo assistente IA.
+O adapter de mensageria (futuro/opcional) pode receber mensagens de áudio, que são transcritas localmente antes de serem processadas pelo assistente IA. A interface web da Carla também poderá suportar entrada de voz via browser (Web Speech API), se habilitado.
 
 | Parâmetro | Valor |
 |---|---|
 | **Modelo** | `whisper-small` — melhor balanço latência/qualidade para PT-BR |
 | **Runtime** | Container `faster-whisper` (não Ollama — Ollama é runtime de LLM, não de STT) |
 | **Idioma** | `language="pt"` forçado — evita erros de detecção automática em sotaques regionais |
-| **Formato de entrada** | `.ogg/Opus` (formato padrão do WhatsApp) |
+| **Formato de entrada** | `.ogg/Opus` (adapter mensageria) ou `.webm/wav` (browser) |
 | **Retenção** | Arquivo deletado imediatamente após transcrição — não persistido |
 
 **Requisitos de hardware:**

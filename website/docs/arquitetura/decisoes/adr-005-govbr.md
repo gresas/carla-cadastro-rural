@@ -22,7 +22,9 @@ O CARla é uma plataforma pública brasileira. Cidadãos precisam de autenticaç
 - Tokens internos: JWT RS256 com rotação de chaves via Vault
 - Anti-Corruption Layer: `GovBrAdapter` isola o protocolo do domínio
 
-**Fluxo WhatsApp:** Link temporário (TTL 10min) → Gov.br no browser → número vinculado ao user_id no Redis (30 dias).
+**Papel central:** Gov.br é o mecanismo de autenticação da interface web da Carla e a âncora de identidade para persistência do histórico de conversa por cidadão. O `user_id` do Gov.br é o identificador único que vincula sessão, histórico de conversa, processos CAR e dados do cidadão.
+
+**Fluxo web:** Cidadão acessa car.gov.br → clica "Entrar com Gov.br" → OAuth2 PKCE → retorna à Carla autenticado → sessão persistida por `user_id` (renovável).
 
 ## Consequências
 

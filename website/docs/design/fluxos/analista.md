@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: Fluxo do Analista
-description: Jornada do analista ambiental — da fila de processos à aprovação ou rejeição.
+description: Jornada do analista ambiental — da fila de processos à decisão usando a terminologia oficial do SICAR.
 tags: [design, ux, fluxo, analista]
 ---
 
@@ -25,30 +25,26 @@ flowchart TD
     G --> H[Consultar mapa\ngeometria do imóvel]
     H --> I{Decisão}
 
-    I -- Aprovado --> J[Clica 'Aprovar'\nobservações obrigatórias]
-    J --> K[Status: Aprovado\nComprovante de aprovação disponível\nNotificação ao cidadão]
+    I -- Regular --> J["Encaminha como Regular\nobservações obrigatórias"]
+    J --> K["Status: Regular\nRecibo de Inscrição disponível\nNotificação ao cidadão na Carla + email"]
 
-    I -- Aprovado com PRA --> J2[Clica 'Aprovar com PRA'\nDescreve obrigações de recuperação]
-    J2 --> K2[Status: Aprovado com PRA\nCertificado CAR + orientação PRA\nNotificação ao cidadão]
-
-    I -- Pendência --> L[Cria pendência\ncom motivo + prazo]
-    L --> M[Notificação ao cidadão\ne-mail + WhatsApp]
-    M --> N[Aguarda correção]
+    I -- Pendência --> L["Cria pendência de Regularização\ncom motivo + prazo"]
+    L --> M["Status: Pendente de Regularização\nNotificação ao cidadão na Carla + email\naba Regularização Ambiental liberada"]
+    M --> N[Aguarda resposta do cidadão]
     N --> F
-
-    I -- Rejeitado --> O[Clica 'Rejeitar'\nmotivo obrigatório]
-    O --> P[Notificação ao cidadão\nPrazo de recurso: 30 dias]
 ```
 
 ---
 
-:::warning Certificado CAR — natureza jurídica
-O documento gerado pelo CARla na aprovação é um **comprovante interno de aprovação**, não o Certificado CAR oficial. O Certificado oficial emana do SICAR e é o único com plena validade jurídica para transações rurais (crédito, comercialização). Até a integração SICAR estar ativa (Fase 3), o cidadão deve ser orientado a acessar o SICAR diretamente para obter o documento oficial.
+:::warning Recibo de Inscrição do Imóvel Rural no CAR
+Ao encaminhar um cadastro como Regular, o sistema disponibiliza o **Recibo de Inscrição do Imóvel Rural no CAR** — comprovante oficial gerado pelo SICAR. Este é o documento com validade jurídica para transações rurais (crédito, comercialização). O comprovante interno do CARla complementa, mas não substitui o Recibo de Inscrição.
 :::
 
-:::caution Aprovação — responsabilidade do servidor
-O dossiê gerado por IA é **apoio à decisão**, não substituto. Atos administrativos de aprovação ou rejeição precisam ter **motivação própria do servidor** para ter validade jurídica. O campo de "observações" deve ser tratado como obrigatório, não opcional — mesmo que seja breve. A IA resume; o analista decide e fundamenta.
+:::caution Decisão — responsabilidade do servidor
+O dossiê gerado por IA é **apoio à decisão**, não substituto. Atos administrativos precisam ter **motivação própria do servidor** para ter validade jurídica. O campo de observações deve ser preenchido pelo analista — mesmo que brevemente. A IA resume; o analista decide e fundamenta.
 :::
+
+---
 
 ## O que o Analista vê na Fila
 
@@ -56,10 +52,10 @@ Cada processo na fila exibe:
 
 | Campo | O que significa |
 |---|---|
-| **Status** | `submetido`, `em_analise`, `pendente`, `aprovado`, `aprovado_com_pra`, `rejeitado` |
-| **Score de completude** | 0–100% — quanto dos dados está preenchido |
+| **Status SICAR** | `Em Andamento`, `Em Análise`, `Pendente de Regularização`, `Regular` |
+| **Score de completude** | 0–100% — quanto dos dados está preenchido e validado |
 | **Score de risco** | 0–10 — baseado em alertas IBAMA/DETER |
-| **Tempo na fila** | Quanto tempo desde a submissão |
+| **Tempo na fila** | Quanto tempo desde o envio |
 | **Município / Estado** | Para filtros regionais |
 | **Tipo do imóvel** | Minifúndio, pequena, média, grande |
 
@@ -68,14 +64,14 @@ A fila é ordenada por: (1) prioridade urgente primeiro, (2) maior score de risc
 :::
 
 :::note Score de risco e isonomia
-Qualquer critério de priorização algorítmica em serviço público precisa de **fundamentação legal explícita** (portaria, instrução normativa do órgão) para não ser questionado por CGU/TCU ou em ação judicial por isonomia. O score de risco é uma ferramenta de apoio ao analista — não deve ser o único critério de ordenação sem respaldo normativo.
+Qualquer critério de priorização algorítmica em serviço público precisa de **fundamentação legal explícita** (portaria, instrução normativa do órgão) para não ser questionado por CGU/TCU ou em ação judicial por isonomia. O score de risco é ferramenta de apoio ao analista — não deve ser o único critério de ordenação sem respaldo normativo.
 :::
 
 ---
 
 ## O Dossiê Automático
 
-Ao assumir um processo, o CARla gera um dossiê em PDF com:
+Ao assumir um processo, a Carla gera um dossiê em PDF com:
 
 1. **Resumo executivo** — gerado por IA em linguagem técnica
 2. **Dados do requerente** — nome, CPF (mascarado), contato
@@ -91,21 +87,35 @@ O dossiê leva até 30 segundos para ser gerado. O analista pode começar a revi
 
 ---
 
-## Criar Pendência — Padrões de UX
+## Criar Pendência de Regularização — Padrões de UX
 
 Para criar pendência de forma eficiente:
 
 - **Templates pré-definidos** por tipo de problema (documentação faltante, geometria inválida, área divergente)
 - **Campo de descrição livre** para detalhar além do template
 - **Sugestão de prazo** baseada no tipo de pendência (padrão: 15 dias)
-- **Preview** da mensagem que o cidadão vai receber antes de confirmar
+- **Preview** da mensagem que o cidadão vai receber na Carla antes de confirmar
+
+Ao confirmar a pendência:
+- Status muda para `Pendente de Regularização`
+- Cidadão recebe notificação na Carla (Cenário D — destaque imediato) + email
+- Aba **Regularização Ambiental** é liberada no Demonstrativo da Situação do CAR
 
 :::warning Clareza na mensagem ao cidadão
-O texto da pendência vai direto para o cidadão. Evite termos técnicos e linguagem de servidor. Use o [guia de linguagem](../principios.md#linguagem-e-tom).
+O texto da pendência vai direto para o chat da Carla do cidadão. Evite termos técnicos e linguagem de servidor. Use o [guia de linguagem](../principios.md#linguagem-e-tom). O cidadão precisa entender exatamente o que fazer.
 :::
+
+---
+
+## Comunicação com o Cidadão
+
+O analista pode enviar mensagens diretamente pelo processo — o cidadão as recebe na Carla como mensagens do analista. Quando há mensagens não lidas com retorno necessário, a Carla prioriza e exibe o Cenário D na próxima abertura do cidadão.
+
+---
 
 ## Ver também
 
 - [Fluxo do Cidadão](./cidadao.md) — o que acontece do lado de quem submete
-- [API do Analista](../../apis/analista.md) — endpoints de aprovação e pendência
+- [Sequência de Mensagens](./mensagens-simuladas.md) — mensagens de notificação de pendência que o cidadão recebe
+- [API do Analista](../../apis/analista.md) — endpoints de encaminhamento e pendência
 - [Segurança & RBAC](../../seguranca/autenticacao.md) — permissões do analista

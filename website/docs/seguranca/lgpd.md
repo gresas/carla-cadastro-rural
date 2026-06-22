@@ -19,10 +19,11 @@ A Lei Geral de Proteção de Dados Pessoais (Lei 13.709/2018) impõe obrigaçõe
 | E-mail | Notificações | Interesse legítimo | 5 anos | pgcrypto |
 | Nome completo | Identificação em documentos | Obrigação legal | 10 anos | Armazenado em claro |
 | Geometria do imóvel | Registro CAR | Obrigação legal | Indefinida | RBAC estrito — o dado de imóvel rural é público nos termos da Lei 12.651, mas a geometria precisa de imóvel de pessoa física pode revelar informações patrimoniais sensíveis quando combinada com outros dados. Acesso individual só via autenticação; exports agregados e anonimizados. |
-| Número WhatsApp | Canal de atendimento | Consentimento | 30 dias (sessão) + revogação | Hash SHA-256 apenas |
+| Histórico de conversa (chat web) | Atendimento e retomada de sessão | Consentimento + execução de contrato | Enquanto a conta estiver ativa; pode ser solicitada exclusão via Portal | Vinculado ao user_id Gov.br; acesso restrito ao próprio titular via autenticação prata |
 | Documentos pessoais | Comprovação de propriedade | Obrigação legal | 10 anos pós-conclusão | AES-256 no MinIO |
-| Conversas com IA | Atendimento | Consentimento | 90 dias → anonimização | PII masking para LLM externo |
-| Áudio de voz (mensagem WhatsApp) | Transcrição para atendimento | Consentimento (ao enviar áudio ao bot) | **Deletado imediatamente após transcrição** — não persistido | Processamento on-premises (Whisper local); arquivo `.ogg` nunca enviado a serviços externos |
+| Respostas ao assistente IA | Atendimento | Consentimento | 90 dias → anonimização | PII masking antes de enviar ao LLM externo |
+| Número de telefone (adapter mensageria — futuro) | Canal de atendimento alternativo | Consentimento | 30 dias (sessão) + revogação | Hash SHA-256 apenas; nunca armazenado em claro |
+| Áudio de voz (adapter mensageria — futuro) | Transcrição para atendimento | Consentimento (ao enviar áudio) | **Deletado imediatamente após transcrição** — não persistido | Processamento on-premises (Whisper local); arquivo nunca enviado a serviços externos |
 
 ## Direitos dos Titulares (Art. 18 LGPD)
 

@@ -26,6 +26,7 @@ const sidebars: SidebarsConfig = {
         'dominio/agregados',
         'dominio/pra',
         'dominio/plataformas-estaduais',
+        'dominio/fundamentacao-legal',
       ],
     },
     {
@@ -40,6 +41,8 @@ const sidebars: SidebarsConfig = {
           items: [
             'design/fluxos/cidadao',
             'design/fluxos/analista',
+            'design/fluxos/abertura-carla',
+            'design/fluxos/mensagens-simuladas',
             'design/fluxos/whatsapp',
           ],
         },
@@ -66,6 +69,7 @@ const sidebars: SidebarsConfig = {
             'arquitetura/decisoes/adr-005-govbr',
             'arquitetura/decisoes/adr-006-ia',
             'arquitetura/decisoes/adr-007-whatsapp',
+            'arquitetura/decisoes/adr-008-canal-web-proprio',
           ],
         },
       ],
@@ -80,8 +84,12 @@ const sidebars: SidebarsConfig = {
         'apis/documentos',
         'apis/assistente',
         'apis/analista',
-        'apis/whatsapp',
         'apis/erros',
+        {
+          type: 'doc',
+          id: 'apis/whatsapp',
+          label: 'Adapter Mensageria (futuro)',
+        },
       ],
     },
     {
