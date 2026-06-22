@@ -21,7 +21,7 @@ const path = require('path');
 const fs = require('fs');
 
 const PLUGIN_ID = 'docusaurus-plugin-recently-updated';
-const THRESHOLD_DAYS = 7;
+const THRESHOLD_DAYS = 3;
 
 function findDocFiles(dir, base) {
   const result = [];
