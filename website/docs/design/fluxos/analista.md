@@ -11,6 +11,64 @@ tags: [design, ux, fluxo, analista]
 Designers e front-end engineers. Para os casos de uso formais, veja [UC-005 a UC-008](../../produto/casos-de-uso.md).
 :::
 
+## Estrutura do Painel do Analista
+
+O painel tem **5 KPIs globais** sempre visíveis e **3 abas** de navegação:
+
+### KPIs globais (topo)
+
+| KPI | Semântica |
+|---|---|
+| **Total de CARs** | Todos os processos ativos no sistema |
+| **Aguardam você** | Conversas com `aguardaResposta = analista` — prioridade máxima |
+| **Conversas paradas** | Sem atualização há 7+ dias (de qualquer parte) |
+| **Com passivo ambiental** | Processos com flag PRA ativo (déficit ambiental identificado) |
+| **Regularizados** | Processos com status `Regular` confirmado |
+
+### Aba 1 — Conversas
+
+Lista filtrável de todos os processos, com busca por proprietário, ID ou município. Ordenação padrão: conversas que aguardam o analista primeiro, depois por tempo parado (decrescente).
+
+**Filtros disponíveis:** status SICAR · aguarda (analista / proprietário / sem pendência) · parado (> 7d / > 15d / > 30d)
+
+**Colunas da tabela:**
+
+| Coluna | Detalhe |
+|---|---|
+| Nº Processo | Formato `UF-YYYY-NNNNN`; ⚠️ indica passivo ambiental (flag PRA) |
+| Proprietário | Nome + tipo de documento de domínio |
+| Município | — |
+| Área (ha) | — |
+| Etapa atual | Cadastrante / Imóvel / Domínio / Documentação / Geo / Informações / Regularização |
+| Status | Badge colorido com status oficial SICAR |
+| Última atividade | Dias desde a última mensagem; amarelo ≥ 7d, vermelho ≥ 15d |
+| Pendência | `⚡ Aguarda analista` ou `⏳ Aguarda proprietário · Nd` |
+
+**Banner de atenção:** quando há conversas `aguarda analista`, um painel azul as destaca no topo da aba com nome, município, área e etapa atual — evita que se percam na lista.
+
+**Tipos de documento de domínio reconhecidos:** Escritura · Contrato de Compra e Venda · Certidão de Registro · Autorização de Ocupação · Imissão de Posse · Termo de Autodeclaração
+
+### Aba 2 — Painel Administrativo
+
+KPIs de eficiência operacional do piloto (dados reais, Acre Jan–Jun 2026):
+
+| KPI | Valor |
+|---|---|
+| Atendimentos realizados | 1.284 (desde o lançamento) |
+| Tempo médio por CAR | 28 min (−41% vs. fluxo tradicional; tendência de queda) |
+| Horas de servidor poupadas | 312 h (≈ 39 dias de trabalho) |
+| Imóveis cadastrados via Carla | 847 de 1.284 iniciados |
+
+Inclui gráfico de avaliação de qualidade (4,5/5 média; 280 avaliações; 82% satisfeitos) e gráfico de tendência do tempo médio por mês (48 → 28 min).
+
+### Aba 3 — Visão Geral
+
+- **Distribuição por status** (donut): quantidade de processos em cada status SICAR
+- **Evolução mensal**: linha novos / concluídos / pendentes (Jan–Jun)
+- **CARs por município**: barra horizontal por município do piloto
+
+---
+
 ## Fluxo de Análise e Decisão
 
 ```mermaid

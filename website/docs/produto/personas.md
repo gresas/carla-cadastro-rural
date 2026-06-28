@@ -11,6 +11,10 @@ tags: [produto, ux, personas]
 Times de produto, design e pesquisa de UX. Para a versão focada em jornadas e fluxos de tela, veja [Personas UX](../design/personas.md).
 :::
 
+:::note Personas e o briefing do haCARthon
+O briefing do Desafio 1 usa **"Seu Raimundo"** para o produtor rural e **"Luana"** para a analista ambiental como personas canônicas. P1 (João) e P3 (Carlos) são os correspondentes internos com mais detalhe de implementação.
+:::
+
 ## P1 — João Silva | Produtor Rural
 
 **52 anos · Agricultor familiar · Interior do Maranhão · Propriedade de 50 ha**
@@ -19,7 +23,7 @@ João herdou a terra do pai. Usa smartphone Android básico, tem dificuldade com
 
 | Dimensão | Detalhe |
 |---|---|
-| **Objetivo principal** | Regularizar a propriedade para acessar crédito rural (exigência do banco) |
+| **Objetivo principal** | Regularizar a propriedade para acessar crédito rural, programas de PSA, CRA e descontos tributários (exigências que dependem de CAR regularizado) |
 | **Letramento digital** | Baixo — usa apps de mensageria no celular, pouco além |
 | **Canais preferidos** | Celular (chat, voz), atendimento presencial |
 | **Maior frustração** | "Não entendo o que estão pedindo e não tenho com quem tirar dúvida" |
@@ -58,11 +62,11 @@ Ana quer **pré-validar documentos antes de submeter** e ser notificada automati
 
 ---
 
-## P3 — Carlos Mendes | Analista Ambiental
+## P3 — Carlos Mendes | Analista Ambiental (OEMA)
 
 **40 anos · Técnico ambiental · Servidor SEMA-MT · 300+ processos na fila**
 
-Carlos trabalha com sistema legado lento e acumula horas extras para dar conta do volume. Abre processos e frequentemente descobre que falta documento básico — retrabalho evitável.
+Carlos trabalha no OEMA (Órgão Estadual de Meio Ambiente) com sistema legado lento e acumula horas extras para dar conta do volume. Abre processos e frequentemente descobre que falta documento básico — retrabalho evitável.
 
 | Dimensão | Detalhe |
 |---|---|
