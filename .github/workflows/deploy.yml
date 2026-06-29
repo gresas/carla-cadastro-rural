@@ -24,6 +24,26 @@ jobs:
           git clone --depth 1 --branch "${{ github.ref_name }}" \
             "${SERVER}/${{ github.repository }}.git" .
 
+      - name: Generate recently-updated manifest
+        run: |
+          # --depth 1 deixa git log por arquivo impreciso: todos os arquivos
+          # recebem o timestamp do único commit disponível. Aprofunda o clone
+          # até cobrir os últimos 4 dias para timestamps corretos por arquivo.
+          git fetch --shallow-since="$(date -d '4 days ago' '+%Y-%m-%dT%H:%M:%S')" 2>/dev/null || \
+            git fetch --unshallow 2>/dev/null || true
+          CUTOFF=$(( $(date +%s) - 3 * 86400 ))
+          DOCS=""
+          while IFS= read -r file; do
+            TS=$(git log -1 --pretty=format:"%ct" -- "$file" 2>/dev/null)
+            [ -n "$TS" ] && [ "$TS" -gt "$CUTOFF" ] || continue
+            ID="${file#website/docs/}"
+            ID="${ID%.md}"
+            ID="${ID%.mdx}"
+            DOCS="${DOCS:+${DOCS},}\"${ID}\""
+          done < <(find website/docs -name "*.md" -o -name "*.mdx" 2>/dev/null)
+          printf '{"docs":[%s],"thresholdDays":3}' "$DOCS" > website/.recently-updated-manifest.json
+          echo "[recently-updated] Manifest gerado com $(printf '%s' "$DOCS" | tr -cd ',' | wc -c) docs"
+
       - name: Setup nerdctl
         run: |
           if ! command -v nerdctl &>/dev/null || ! command -v buildctl &>/dev/null || ! command -v runc &>/dev/null; then
