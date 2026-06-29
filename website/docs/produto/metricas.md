@@ -39,7 +39,7 @@ PMs e gestores. As métricas técnicas têm alertas configurados em [Observabili
 | Métrica | Meta |
 |---|---|
 | NPS do cidadão | ≥ 70 |
-| CSAT do analista | ≥ 4,0/5,0 |
+| CSAT do analista | ≥ 4,0/5,0 (**piloto Acre: 4,5/5,0**) |
 | Taxa de uso do assistente IA | ≥ 40% dos MAU |
 
 ### Técnico (SLAs)
@@ -49,6 +49,54 @@ PMs e gestores. As métricas técnicas têm alertas configurados em [Observabili
 | Latência p99 da API | < 2s |
 | Taxa de erro HTTP 5xx | < 0,1% |
 | Cobertura de testes | ≥ 80% |
+
+## Resultados do Piloto — Acre (Jan–Jun 2026)
+
+:::tip Dados reais do painel administrativo
+Os números abaixo são do piloto em produção no estado do Acre. Base: painel do analista, jun/2026.
+:::
+
+### KPIs do piloto
+
+| Métrica | Resultado |
+|---|---|
+| **Atendimentos realizados** | 1.284 (desde o lançamento) |
+| **Imóveis cadastrados via Carla** | 847 (de 1.284 iniciados — 66% de conclusão) |
+| **Tempo médio por CAR** | 28 min (redução de **−41%** vs. fluxo tradicional) |
+| **Horas de servidor poupadas** | 312 h (equivalente a 39 dias de trabalho) |
+| **Satisfação** | **4,5/5** — 280 avaliações; 82% satisfeitos, 11% neutros, 7% insatisfeitos |
+
+### Evolução do tempo médio de atendimento (min)
+
+| Jan | Fev | Mar | Abr | Mai | Jun |
+|---|---|---|---|---|---|
+| 48 | 43 | 39 | 36 | 31 | 28 |
+
+### Atendimentos por mês (2026)
+
+| Mês | Iniciados | Cadastrados | Pendentes |
+|---|---|---|---|
+| Jan | 18 | 12 | 6 |
+| Fev | 24 | 19 | 8 |
+| Mar | 31 | 22 | 11 |
+| Abr | 28 | 25 | 9 |
+| Mai | 36 | 28 | 14 |
+| Jun | 22 | 15 | 12 |
+
+### Distribuição por município (Acre)
+
+| Município | CARs no sistema |
+|---|---|
+| Rio Branco | 47 |
+| Cruzeiro do Sul | 28 |
+| Sena Madureira | 19 |
+| Tarauacá | 14 |
+| Feijó | 11 |
+| Brasileia | 9 |
+| Xapuri | 8 |
+| Outros | 22 |
+
+---
 
 ## Critérios de Aceitação por Fase
 

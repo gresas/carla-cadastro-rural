@@ -33,7 +33,7 @@ Alguns estados têm plataformas próprias de registro CAR; os demais usam o SICA
 
 ## Origem: haCARthon e CAR DPG
 
-A Carla foi desenvolvida como solução para o **Desafio 1 do haCARthon**, maratona de inovação aberta realizada com parceria de MGI, FBDS, Enap e Governo da Noruega. Integra o projeto **CAR DPG (Digital Public Good)** — o que exige que o software seja open source e livre de dependências de fornecedores proprietários, para permitir replicação soberana por outros países.
+A Carla foi desenvolvida como solução para o **Desafio 1 do haCARthon**, maratona de inovação aberta realizada com parceria de MGI, FBDS, Enap e Impact Hub Brasil. Integra o projeto **CAR DPG (Digital Public Good)** — o que exige que o software seja open source e livre de dependências de fornecedores proprietários, para permitir replicação soberana por outros países.
 
 ## Diferenciais Centrais
 
@@ -72,7 +72,7 @@ Os dados oficiais do SICAR justificam a necessidade de uma solução como a Carl
 
 ## Contexto: Por que o CAR importa
 
-O Cadastro Ambiental Rural é a porta de entrada para a regularização ambiental de todo imóvel rural no Brasil. Sem ele, o produtor não acessa crédito rural, não pode vender madeira certificada e fica exposto a multas.
+O Cadastro Ambiental Rural é a porta de entrada para a regularização ambiental de todo imóvel rural no Brasil. Sem ele, o produtor não acessa crédito rural, programas de Pagamento por Serviços Ambientais (PSA), Cotas de Reserva Ambiental (CRA), descontos tributários nem pode vender madeira certificada — e fica exposto a multas e embargos.
 
 :::caution Obrigação legal
 A Lei 12.651/2012 (Código Florestal) torna o CAR obrigatório. O Decreto 7.830/2012 regulamenta o SICAR e define os instrumentos do PRA. Veja [Fundamentação Legal](../dominio/fundamentacao-legal.md).

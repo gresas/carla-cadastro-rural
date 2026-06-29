@@ -50,6 +50,10 @@ Engenheiros, PMs e designers. A linguagem ubíqua garante que todo o time fala a
 | **Status do cadastro (SICAR)** | Sequência oficial de status no SICAR: `Em Andamento` → `Cadastrado` → `Gravado/Enviado` → `Em Análise` → `Regular` ou `Pendente de Regularização`. Não usar termos genéricos como "aprovado" ou "rejeitado". |
 | **PRA** | Programa de Regularização Ambiental — programa de recuperação de APP e Reserva Legal, exigido para imóveis com déficit ambiental após o cadastro. Base legal: art. 59 da Lei 12.651/2012 e arts. 6º e 7º do Decreto 7.830/2012. O CAR é pré-requisito para adesão ao PRA. |
 | **Déficit Ambiental** | Situação em que a propriedade não atende os percentuais mínimos de APP ou Reserva Legal definidos pelo Código Florestal. Imóveis com déficit não são "rejeitados" — são aprovados com obrigação de aderir ao PRA. |
+| **PSA** | Pagamento por Serviços Ambientais — programa que remunera proprietários rurais pela conservação de vegetação nativa. O CAR regularizado (`Regular`) é pré-requisito para participação. |
+| **OEMA** | Órgão Estadual de Meio Ambiente — secretaria ou autarquia estadual responsável pela análise dos cadastros CAR no estado. É onde trabalham os analistas da Carla. Exemplos: SEMA-MT, SEMAD-GO, SEUC-AC, IPAAM-AM. |
+| **Passivo Ambiental** | Situação de um imóvel com déficit de APP ou Reserva Legal identificado na análise do SICAR. Resulta no status `Pendente de Regularização` e obrigação de adesão ao PRA. Sinalizado com flag ⚠️ no painel do analista. |
+| **Documento de Domínio** | Comprovante de propriedade ou posse apresentado na Etapa 3 (Domínio) do CAR. Tipos aceitos: Escritura, Contrato de Compra e Venda, Certidão de Registro, Autorização de Ocupação, Imissão de Posse, Termo de Autodeclaração. |
 | **Conversa** | Sessão de chat com o assistente inteligente, com contexto preservado |
 | **Base de Conhecimento** | Conjunto de documentos normativos indexados para o RAG do assistente IA |
 

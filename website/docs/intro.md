@@ -6,7 +6,7 @@ description: Visão geral do projeto Carla — assistente virtual do CAR (Cadast
 
 # O que é a Carla?
 
-A **Carla** é uma assistente virtual de chat para o Cadastro Ambiental Rural (CAR), desenvolvida como solução para o **Desafio 1 do haCARthon** — maratona de inovação aberta organizada por MGI, FBDS, Enap e Governo da Noruega, no contexto do projeto **CAR DPG (Digital Public Good)**.
+A **Carla** é uma assistente virtual de chat para o Cadastro Ambiental Rural (CAR), desenvolvida como solução para o **Desafio 1 do haCARthon** — maratona de inovação aberta organizada por MGI, FBDS, Enap e Impact Hub Brasil, no contexto do projeto **CAR DPG (Digital Public Good)**.
 
 :::info Para quem é esta página
 Para qualquer pessoa que chegou aqui pela primeira vez. Escolha depois a seção mais próxima da sua área.
@@ -16,16 +16,15 @@ A Carla é uma **interface web de chat própria**, acessada via `car.gov.br`. El
 
 ## O problema que resolve
 
-O Cadastro Ambiental Rural é obrigatório para qualquer imóvel rural no Brasil (Lei 12.651/2012). Sem ele, o produtor não acessa crédito rural nem pode comercializar produtos com regularidade ambiental.
+O CAR conta hoje com mais de **8,2 milhões de imóveis cadastrados**, representando uma área superior a **7 milhões de km²** — a maior base de dados ambiental e rural do Brasil. Mas o caminho entre a inscrição e a validação final é repleto de obstáculos que o próprio briefing do haCARthon nomeia como três gargalos centrais:
 
-Apesar da importância, o processo é marcado por dificuldades:
-
-| Quem sofre | Problema |
+| Gargalo | Quem sofre |
 |---|---|
-| **Produtor rural** | Formulário técnico sem orientação, documentação confusa, sem feedback claro de pendências |
-| **Analista ambiental** | Alto volume de processos incompletos, revisão manual repetitiva, sem triagem inteligente |
+| **Exclusão digital e técnica** — dificuldade para georreferenciar APPs e Reserva Legal de forma autônoma e precisa | Produtor rural |
+| **Ciclo de retificações infinitas** — dados inconsistentes sobrecarregam os OEMAs, que analisam os mesmos cadastros repetidas vezes | Analistas ambientais |
+| **Ruído na comunicação Estado-produtor** — notificações de pendência sem linguagem acessível; o produtor não sabe o que fazer, o processo para | Ambos |
 
-Os dados oficiais do sistema revelam o impacto dessas dificuldades:
+Os dados oficiais do SICAR revelam o impacto acumulado desses gargalos:
 
 - **Taxa de retificação** subiu de 5,7% (2014) para **77% em 2026** — a grande maioria dos cadastros precisa ser corrigida após a primeira tentativa
 - **93,8% dos imóveis** cadastrados são de perfil "Pequeno" — produtores com menos recursos e menor familiaridade com sistemas técnicos
