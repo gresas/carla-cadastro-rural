@@ -8,7 +8,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   url: 'https://gresas.github.io',
-  baseUrl: '/carla-cadastro-rural/',
+  baseUrl: '/portfolios/carla-hacarthon/',
 
   organizationName: 'gresas',
   projectName: 'carla-cadastro-rural',
