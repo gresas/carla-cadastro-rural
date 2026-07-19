@@ -4,8 +4,6 @@ WORKDIR /app/website
 COPY website/package.json website/package-lock.json ./
 RUN npm ci
 COPY website/ .
-# GitHub Pages usa baseUrl '/carla-cadastro-rural/'; k3s serve sob /portfolios/carla-hacarthon/
-RUN sed -i "s|baseUrl: '/carla-cadastro-rural/'|baseUrl: '/portfolios/carla-hacarthon/'|" docusaurus.config.ts
 RUN npm run build
 
 # ── Runtime ──────────────────────────────────────────────────────────────────
